@@ -29,5 +29,19 @@ def load_mnist(BATCH_SIZE):
 
     return train_loader, test_loader, val_loader
 
+def get_observation_pixels():
+    start=2
+    stop=26
+    obs_x_n=6
+    obs_y_n=6
+
+    obs_x=[]
+    obs_y=[]
+    for i in range(start,stop,obs_x_n):
+        for j in range(start,stop,obs_y_n):
+            obs_x.append(i)
+            obs_y.append(j)
+    return obs_x, obs_y
+
 
     
