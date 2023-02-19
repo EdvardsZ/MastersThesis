@@ -84,3 +84,9 @@ class VAE(nn.Module):
         if not batch_size:
             res = res.squeeze(0)
         return res
+    
+BCE_loss = nn.BCELoss(reduction = "sum")
+def loss(X, X_hat, mean, logvar):
+    reconstruction_loss = BCE_loss(X_hat, X)
+    KL_divergence = 0.5 * torch.sum(-1 - logvar + torch.exp(logvar) + mean**2)
+    return reconstruction_loss + KL_divergence
