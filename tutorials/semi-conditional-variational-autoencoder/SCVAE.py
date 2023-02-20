@@ -2,7 +2,7 @@ import torch
 import torch.nn as nn
 
 class Encoder(nn.Module):
-    def __init__(self,kernel_size=2, hidden_dims = [ 128, 256], latent_dim=2):
+    def __init__(self,kernel_size=3, hidden_dims = [ 128, 256], latent_dim=2):
         super(Encoder, self).__init__()
 
         self.kernel_size = kernel_size
@@ -16,7 +16,7 @@ class Encoder(nn.Module):
             modules.append(
                 nn.Sequential(
                     nn.Conv2d(in_channels, out_channels=h_dim,
-                              kernel_size= 3, stride= 2, padding  = 1),
+                              kernel_size=kernel_size, stride= 2, padding  = 1),
                     nn.BatchNorm2d(h_dim),
                     nn.LeakyReLU())
             )
@@ -36,7 +36,7 @@ class Encoder(nn.Module):
         return x, z_mean, z_log_var
 
 
-encoder = Encoder(28)
+encoder = Encoder()
 
 
 from ConditionalMNIST import load_mnist
