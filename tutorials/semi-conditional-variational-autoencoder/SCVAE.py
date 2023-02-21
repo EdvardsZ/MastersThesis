@@ -1,6 +1,9 @@
 import torch 
 import torch.nn as nn
 
+
+# ENCODER
+
 class Encoder(nn.Module):
     def __init__(self,kernel_size=3, hidden_dims = [ 128, 256], latent_dim=2):
         super(Encoder, self).__init__()
@@ -26,17 +29,35 @@ class Encoder(nn.Module):
 
         self.encoder = nn.Sequential(*modules)
 
-        self.fc_mu = nn.Linear(12544, latent_dim)
+        self.fc_mu = nn.Linear(12544, latent_dim) # To do calculate dimension size dynamicyally
         self.fc_var = nn.Linear(12544, latent_dim)
+
 
     def forward(self, inputs):
         x = self.encoder(inputs)
         z_mean = self.fc_mu(x)
         z_log_var = self.fc_var(x)
-        return x, z_mean, z_log_var
+        z = self.sampling(z_mean, z_log_var)
+        
+        return x, z_mean, z_log_var, z
+    
+    def sampling(self, z_mean, z_log_var):
+        eps = torch.randn_like(z_log_var)
+        z = z_mean + torch.exp(z_log_var / 2) * eps
+        return z
+    
+# CONDITONAL DECODER
+
+class ConditionalDecoder(nn.Module):
+    def __init__(self):
+        super(ConditionalDecoder, self).__init__()
+        return
+    
+    def forward(self, inputs):
+        return inputs
 
 
-encoder = Encoder()
+decoder = ConditionalDecoder()
 
 
 from ConditionalMNIST import load_mnist
@@ -46,10 +67,6 @@ example = next(iter(train_loader))[0]
 
 print(example.shape)
 
-res = encoder.forward(example)
+output = decoder(example)
 
-print(res[0].shape)
-
-print(res[1].shape)
-
-print(res[2].shape)
+print(output.shape)
