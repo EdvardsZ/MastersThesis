@@ -24,6 +24,11 @@ class ConditionalMNIST(Dataset):
         return cond_data
 
 
+
+
+
+
+
 def get_observation_pixels():
         start=2
         stop=26

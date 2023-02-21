@@ -105,8 +105,8 @@ class ConditionalVAE(nn.Module):
         self.decoder = ConditionalDecoder(kernel_size, [256, 128], latent_dim)
 
         # learn weight for KL loss through backprop
-        self.weight_kl = nn.Parameter(torch.tensor(0.0))
-        self.weight_recon = nn.Parameter(torch.tensor(1.0))
+        self.weight_kl = 1
+        self.weight_recon = 1
 
         
     def forward(self, inputs, cond_input):
@@ -125,34 +125,34 @@ class ConditionalVAE(nn.Module):
         kl_loss = self.kl_loss(z_mean, z_log_var)
         return recon_loss, kl_loss, self.weight_recon * recon_loss + self.weight_kl * kl_loss
 
-from ConditionalMNIST import load_mnist
-train_loader, test_loader, val_loader  = load_mnist(BATCH_SIZE=128)
+# from ConditionalMNIST import load_mnist
+# train_loader, test_loader, val_loader  = load_mnist(BATCH_SIZE=128)
 
-example = next(iter(train_loader))
-image = example[0]
-cond_image = example[1]
-print("Example shape image: ", image.shape)
-print("Example shape cond_image: ", cond_image.shape)
-encoder = Encoder()
-z_mean, z_log_var, z = encoder(image)
+# example = next(iter(train_loader))
+# image = example[0]
+# cond_image = example[1]
+# print("Example shape image: ", image.shape)
+# print("Example shape cond_image: ", cond_image.shape)
+# encoder = Encoder()
+# z_mean, z_log_var, z = encoder(image)
 
-decoder = ConditionalDecoder()
+# decoder = ConditionalDecoder()
 
-print("Example shape z_mean: ", z_mean.shape)
-print("Example shape z_log_var: ", z_log_var.shape)
-print("Example shape z: ", z.shape)
+# print("Example shape z_mean: ", z_mean.shape)
+# print("Example shape z_log_var: ", z_log_var.shape)
+# print("Example shape z: ", z.shape)
 
-output = decoder(z, cond_image)
+# output = decoder(z, cond_image)
 
-print(output.shape)
+# print(output.shape)
 
-cond_vae = ConditionalVAE()
-output, z_mean, z_log_var, z = cond_vae(image, cond_image)
+# cond_vae = ConditionalVAE()
+# output, z_mean, z_log_var, z = cond_vae(image, cond_image)
 
-print("Example shape output: ", output.shape)
-print("Example shape z_mean: ", z_mean.shape)
-print("Example shape z_log_var: ", z_log_var.shape)
+# print("Example shape output: ", output.shape)
+# print("Example shape z_mean: ", z_mean.shape)
+# print("Example shape z_log_var: ", z_log_var.shape)
 
 
-loss = cond_vae.loss(image, output, z_mean, z_log_var)
+# loss = cond_vae.loss(image, output, z_mean, z_log_var)
 
