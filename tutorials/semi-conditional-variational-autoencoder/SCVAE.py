@@ -115,31 +115,31 @@ class ConditionalVAE(nn.Module):
 
 
 
-from ConditionalMNIST import load_mnist
-train_loader, test_loader, val_loader  = load_mnist(BATCH_SIZE=128)
+# from ConditionalMNIST import load_mnist
+# train_loader, test_loader, val_loader  = load_mnist(BATCH_SIZE=128)
 
-example = next(iter(train_loader))
-image = example[0]
-cond_image = example[1]
-print("Example shape image: ", image.shape)
-print("Example shape cond_image: ", cond_image.shape)
-encoder = Encoder()
-z_mean, z_log_var, z = encoder(image)
+# example = next(iter(train_loader))
+# image = example[0]
+# cond_image = example[1]
+# print("Example shape image: ", image.shape)
+# print("Example shape cond_image: ", cond_image.shape)
+# encoder = Encoder()
+# z_mean, z_log_var, z = encoder(image)
 
-decoder = ConditionalDecoder()
+# decoder = ConditionalDecoder()
 
-print("Example shape z_mean: ", z_mean.shape)
-print("Example shape z_log_var: ", z_log_var.shape)
-print("Example shape z: ", z.shape)
+# print("Example shape z_mean: ", z_mean.shape)
+# print("Example shape z_log_var: ", z_log_var.shape)
+# print("Example shape z: ", z.shape)
 
-output = decoder(z, cond_image)
+# output = decoder(z, cond_image)
 
-print(output.shape)
+# print(output.shape)
 
-cond_vae = ConditionalVAE()
-output, z_mean, z_log_var, z = cond_vae(image, cond_image)
+# cond_vae = ConditionalVAE()
+# output, z_mean, z_log_var, z = cond_vae(image, cond_image)
 
-print("Example shape output: ", output.shape)
-print("Example shape z_mean: ", z_mean.shape)
-print("Example shape z_log_var: ", z_log_var.shape)
+# print("Example shape output: ", output.shape)
+# print("Example shape z_mean: ", z_mean.shape)
+# print("Example shape z_log_var: ", z_log_var.shape)
 
