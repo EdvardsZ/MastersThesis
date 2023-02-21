@@ -97,6 +97,19 @@ class ConditionalDecoder(nn.Module):
         return output
     
 
+# CONDITIONAL VAE
+class ConditionalVAE(nn.Module):
+    def __init__(self, kernel_size=3, hidden_dims = [128, 256], latent_dim=2):
+        super(ConditionalVAE, self).__init__()
+        self.encoder = Encoder(kernel_size, hidden_dims, latent_dim)
+        self.decoder = ConditionalDecoder(kernel_size, [256, 128], latent_dim)
+        
+    def forward(self, inputs, cond_input):
+        z_mean, z_log_var, z = self.encoder(inputs)
+        output = self.decoder(z, cond_input)
+        return output, z_mean, z_log_var, z
+    
+
 
 
 
@@ -122,4 +135,11 @@ print("Example shape z: ", z.shape)
 output = decoder(z, cond_image)
 
 print(output.shape)
+
+cond_vae = ConditionalVAE()
+output, z_mean, z_log_var, z = cond_vae(image, cond_image)
+
+print("Example shape output: ", output.shape)
+print("Example shape z_mean: ", z_mean.shape)
+print("Example shape z_log_var: ", z_log_var.shape)
 
