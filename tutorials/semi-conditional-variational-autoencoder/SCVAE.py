@@ -103,43 +103,56 @@ class ConditionalVAE(nn.Module):
         super(ConditionalVAE, self).__init__()
         self.encoder = Encoder(kernel_size, hidden_dims, latent_dim)
         self.decoder = ConditionalDecoder(kernel_size, [256, 128], latent_dim)
+
+        # learn weight for KL loss through backprop
+        self.weight_kl = nn.Parameter(torch.tensor(0.0))
+        self.weight_recon = nn.Parameter(torch.tensor(1.0))
+
         
     def forward(self, inputs, cond_input):
         z_mean, z_log_var, z = self.encoder(inputs)
         output = self.decoder(z, cond_input)
         return output, z_mean, z_log_var, z
     
+    def recon_loss(self, inputs, outputs):
+        return nn.functional.binary_cross_entropy(outputs, inputs, reduction='sum')
+    
+    def kl_loss(self, z_mean, z_log_var):
+        return -0.5 * torch.sum(1 + z_log_var - z_mean.pow(2) - z_log_var.exp())
+    
+    def loss(self, inputs, outputs, z_mean, z_log_var):
+        recon_loss = self.recon_loss(inputs, outputs)
+        kl_loss = self.kl_loss(z_mean, z_log_var)
+        return recon_loss, kl_loss, self.weight_recon * recon_loss + self.weight_kl * kl_loss
+
+from ConditionalMNIST import load_mnist
+train_loader, test_loader, val_loader  = load_mnist(BATCH_SIZE=128)
+
+example = next(iter(train_loader))
+image = example[0]
+cond_image = example[1]
+print("Example shape image: ", image.shape)
+print("Example shape cond_image: ", cond_image.shape)
+encoder = Encoder()
+z_mean, z_log_var, z = encoder(image)
+
+decoder = ConditionalDecoder()
+
+print("Example shape z_mean: ", z_mean.shape)
+print("Example shape z_log_var: ", z_log_var.shape)
+print("Example shape z: ", z.shape)
+
+output = decoder(z, cond_image)
+
+print(output.shape)
+
+cond_vae = ConditionalVAE()
+output, z_mean, z_log_var, z = cond_vae(image, cond_image)
+
+print("Example shape output: ", output.shape)
+print("Example shape z_mean: ", z_mean.shape)
+print("Example shape z_log_var: ", z_log_var.shape)
 
 
-
-
-
-
-# from ConditionalMNIST import load_mnist
-# train_loader, test_loader, val_loader  = load_mnist(BATCH_SIZE=128)
-
-# example = next(iter(train_loader))
-# image = example[0]
-# cond_image = example[1]
-# print("Example shape image: ", image.shape)
-# print("Example shape cond_image: ", cond_image.shape)
-# encoder = Encoder()
-# z_mean, z_log_var, z = encoder(image)
-
-# decoder = ConditionalDecoder()
-
-# print("Example shape z_mean: ", z_mean.shape)
-# print("Example shape z_log_var: ", z_log_var.shape)
-# print("Example shape z: ", z.shape)
-
-# output = decoder(z, cond_image)
-
-# print(output.shape)
-
-# cond_vae = ConditionalVAE()
-# output, z_mean, z_log_var, z = cond_vae(image, cond_image)
-
-# print("Example shape output: ", output.shape)
-# print("Example shape z_mean: ", z_mean.shape)
-# print("Example shape z_log_var: ", z_log_var.shape)
+loss = cond_vae.loss(image, output, z_mean, z_log_var)
 
