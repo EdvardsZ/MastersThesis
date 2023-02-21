@@ -90,10 +90,36 @@ class ConditionalDecoder(nn.Module):
         x_cond = torch.flatten(cond_input, start_dim=1)
         x_cat = torch.cat((z, x_cond), dim=1)
 
-        print("x_cat shape: ", x_cat.shape)
         input = self.decoder_input(x_cat)
 
         output = self.decoder_output(input)
 
         return output
     
+
+
+
+
+
+
+from ConditionalMNIST import load_mnist
+train_loader, test_loader, val_loader  = load_mnist(BATCH_SIZE=128)
+
+example = next(iter(train_loader))
+image = example[0]
+cond_image = example[1]
+print("Example shape image: ", image.shape)
+print("Example shape cond_image: ", cond_image.shape)
+encoder = Encoder()
+z_mean, z_log_var, z = encoder(image)
+
+decoder = ConditionalDecoder()
+
+print("Example shape z_mean: ", z_mean.shape)
+print("Example shape z_log_var: ", z_log_var.shape)
+print("Example shape z: ", z.shape)
+
+output = decoder(z, cond_image)
+
+print(output.shape)
+
