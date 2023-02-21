@@ -35,6 +35,8 @@ Cond_X_train=np.expand_dims(cond_x_train, axis=-1)
 cond_x_test = Conditioning(x_test, obs_x, obs_y)
 Cond_X_test=np.expand_dims(cond_x_test, axis=-1)
 
+print("x_train shape: ", x_train.shape)
+print(Cond_X_train.shape)
 x_train = np.reshape(x_train, [-1, image_size, image_size,1])
 x_test = np.reshape(x_test, [-1, image_size, image_size,1])
 

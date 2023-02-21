@@ -39,7 +39,7 @@ class Encoder(nn.Module):
         z_log_var = self.fc_var(x)
         z = self.sampling(z_mean, z_log_var)
         
-        return x, z_mean, z_log_var, z
+        return z_mean, z_log_var, z
     
     def sampling(self, z_mean, z_log_var):
         eps = torch.randn_like(z_log_var)
@@ -49,24 +49,51 @@ class Encoder(nn.Module):
 # CONDITONAL DECODER
 
 class ConditionalDecoder(nn.Module):
-    def __init__(self):
+    def __init__(self, kernel_size=3, hidden_dims = [256, 128], latent_dim=2):
         super(ConditionalDecoder, self).__init__()
+        self.image_size = 28
+
+        in_channels = 1
+
+        self.decoder_input = nn.Sequential(
+            nn.Linear(self.image_size*self.image_size + latent_dim, 12544),
+            nn.ReLU(),
+            nn.BatchNorm1d(12544),
+            nn.Unflatten(1, (256, 7, 7))
+        )
+
+        modules = []
+
+        modules.append(nn.Sequential(
+            nn.ConvTranspose2d(hidden_dims[0], hidden_dims[0], kernel_size=kernel_size, stride=2, padding=1, output_padding=1)
+        ))
+
+        for i in range(len(hidden_dims)-1):
+            modules.append(
+                nn.Sequential(
+                    nn.ConvTranspose2d(hidden_dims[i], hidden_dims[i+1],
+                                       kernel_size=kernel_size, stride=2, padding=1, output_padding=1),
+                    nn.BatchNorm2d(hidden_dims[i+1]),
+                    nn.ReLU())
+            )
+
+        modules.append(nn.Sequential(
+            nn.ConvTranspose2d(hidden_dims[-1], in_channels, kernel_size=3,padding=1),
+            nn.Sigmoid()
+        ))
+
+        self.decoder_output = nn.Sequential(*modules)
+        
         return
     
-    def forward(self, inputs):
-        return inputs
+    def forward(self, z, cond_input):
+        x_cond = torch.flatten(cond_input, start_dim=1)
+        x_cat = torch.cat((z, x_cond), dim=1)
 
+        print("x_cat shape: ", x_cat.shape)
+        input = self.decoder_input(x_cat)
 
-decoder = ConditionalDecoder()
+        output = self.decoder_output(input)
 
-
-from ConditionalMNIST import load_mnist
-train_loader, test_loader, val_loader  = load_mnist(BATCH_SIZE=128)
-
-example = next(iter(train_loader))[0]
-
-print(example.shape)
-
-output = decoder(example)
-
-print(output.shape)
+        return output
+    

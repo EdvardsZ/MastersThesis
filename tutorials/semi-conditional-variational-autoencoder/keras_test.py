@@ -104,7 +104,6 @@ plt.imshow(cond_x_train[1,:,:,0])
 def GundNet(cond_x_train, kernel_size=2, filters=32, image_size=image_size):
 
     cond_shape = (cond_x_train.shape[1],cond_x_train.shape[2],1)
-    cond_input = Input(shape=cond_shape, name='conditional_input')
     
     inputs = Input(shape=input_shape, name='encoder_input')
     
@@ -139,6 +138,7 @@ def GundNet(cond_x_train, kernel_size=2, filters=32, image_size=image_size):
     encoder = Model([inputs, cond_input], [z_mean, z_log_var, z], name='encoder')
 
     latent_inputs = Input(shape=(latent_dim,), name='z_sampling')
+    cond_input = Input(shape=cond_shape, name='conditional_input')
 
     x = Flatten()(cond_input)
     x = keras.layers.concatenate([latent_inputs, x])
