@@ -135,6 +135,9 @@ class ConditionalVAE(nn.Module):
         z = torch.randn(num_samples, self.latent_dim)
         samples = self.decoder(z, cond_input)
         return samples
+    
+
+
 
 # from ConditionalMNIST import load_mnist
 # train_loader, test_loader, val_loader  = load_mnist(BATCH_SIZE=128)
