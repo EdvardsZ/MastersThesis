@@ -34,7 +34,7 @@ class Encoder(nn.Module):
 
         self.encoder = nn.Sequential(*modules)
 
-        self.fc_mu = nn.Linear(resulting_size, latent_dim) # To do calculate dimension size dynamicyally
+        self.fc_mu = nn.Linear(resulting_size, latent_dim)
         self.fc_var = nn.Linear(resulting_size, latent_dim)
 
 
@@ -61,13 +61,15 @@ class ConditionalDecoder(nn.Module):
         resulting_size = (image_size[1] // 2**len(hidden_dims))**2 * hidden_dims[0]
         in_channels = image_size[0]
 
+
+
         
 
         self.decoder_input = nn.Sequential(
             nn.Linear(self.image_size[1] * self.image_size[1] + latent_dim, resulting_size),
             nn.ReLU(),
             nn.BatchNorm1d(resulting_size),
-            nn.Unflatten(1, (256, 7, 7))
+            nn.Unflatten(1, (hidden_dims[0], int(image_size[1]/(2**len(hidden_dims))), int(image_size[2]/(2**len(hidden_dims)))))
         )
 
         modules = []
