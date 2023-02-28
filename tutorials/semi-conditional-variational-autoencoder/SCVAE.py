@@ -3,7 +3,6 @@ import torch.nn as nn
 
 
 # ENCODER
-
 class Encoder(nn.Module):
     def __init__(self, image_size = (1, 28, 28), hidden_dims = [128, 256], latent_dim=2):
         super(Encoder, self).__init__()
@@ -52,7 +51,6 @@ class Encoder(nn.Module):
         return z
     
 # CONDITONAL DECODER
-
 class ConditionalDecoder(nn.Module):
     def __init__(self, image_size = (1, 28, 28), hidden_dims = [256, 128], latent_dim=2):
         super(ConditionalDecoder, self).__init__()
@@ -60,10 +58,6 @@ class ConditionalDecoder(nn.Module):
 
         resulting_size = (image_size[1] // 2**len(hidden_dims))**2 * hidden_dims[0]
         in_channels = image_size[0]
-
-
-
-        
 
         self.decoder_input = nn.Sequential(
             nn.Linear(self.image_size[1] * self.image_size[1] + latent_dim, resulting_size),
