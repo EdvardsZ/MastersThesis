@@ -1,5 +1,6 @@
 import torch 
 import torch.nn as nn
+import torch.nn.functional as F
 
 
 # ENCODER
@@ -68,23 +69,25 @@ class ConditionalDecoder(nn.Module):
 
         modules = []
 
-        modules.append(nn.Sequential(
-            nn.ConvTranspose2d(hidden_dims[0], hidden_dims[0], kernel_size=3, stride=2, padding=1, output_padding=1)
-        ))
-
         for i in range(len(hidden_dims)-1):
             modules.append(
                 nn.Sequential(
                     nn.ConvTranspose2d(hidden_dims[i], hidden_dims[i+1],
                                        kernel_size=3, stride=2, padding=1, output_padding=1),
                     nn.BatchNorm2d(hidden_dims[i+1]),
-                    nn.ReLU())
+                    nn.LeakyReLU())
             )
 
-        modules.append(nn.Sequential(
-            nn.ConvTranspose2d(hidden_dims[-1], in_channels, kernel_size=3,padding=1),
-            nn.Sigmoid()
-        ))
+        modules.append(
+            nn.Sequential(
+                nn.ConvTranspose2d(hidden_dims[-1], hidden_dims[-1], 
+                               kernel_size=3, stride = 2, padding=1, output_padding=1),
+                nn.BatchNorm2d(hidden_dims[-1]),
+                nn.LeakyReLU(),
+                nn.Conv2d(hidden_dims[-1], out_channels= 1,
+                                      kernel_size= 3, padding= 1, stride=1),
+            )
+        )
 
         self.decoder_output = nn.Sequential(*modules)
         
@@ -119,7 +122,7 @@ class ConditionalVAE(nn.Module):
         return output, z_mean, z_log_var, z
     
     def recon_loss(self, inputs, outputs):
-        return nn.functional.binary_cross_entropy(outputs, inputs, reduction='sum')
+        return F.mse_loss(inputs, outputs)
     
     def kl_loss(self, z_mean, z_log_var):
         return -0.5 * torch.sum(1 + z_log_var - z_mean.pow(2) - z_log_var.exp())
