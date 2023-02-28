@@ -29,5 +29,6 @@ def plot_samples_with_reconstruction(model, data, n=5):
         plt.imshow(reconstruction)
     plt.show()
 
+
     
 
