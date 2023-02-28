@@ -11,8 +11,10 @@ class Encoder(nn.Module):
         self.image_size = image_size
         self.latent_dim = latent_dim
         self.hidden_dims = hidden_dims
+        
 
-        in_channels = image_size[0]
+        print("Image size: ", image_size)
+        in_channels = self.image_size[0]
 
         modules = []
         # Build Encoder
@@ -52,30 +54,33 @@ class Encoder(nn.Module):
 # CONDITONAL DECODER
 
 class ConditionalDecoder(nn.Module):
-    def __init__(self, image_size = (1, 28, 28), kernel_size=3, hidden_dims = [256, 128], latent_dim=2):
+    def __init__(self, image_size = (1, 28, 28), hidden_dims = [256, 128], latent_dim=2):
         super(ConditionalDecoder, self).__init__()
-        self.image_size = 28
+        self.image_size = image_size
 
-        in_channels = 1
+        resulting_size = (image_size[1] // 2**len(hidden_dims))**2 * hidden_dims[0]
+        in_channels = image_size[0]
+
+        
 
         self.decoder_input = nn.Sequential(
-            nn.Linear(self.image_size*self.image_size + latent_dim, 12544),
+            nn.Linear(self.image_size[1] * self.image_size[1] + latent_dim, resulting_size),
             nn.ReLU(),
-            nn.BatchNorm1d(12544),
+            nn.BatchNorm1d(resulting_size),
             nn.Unflatten(1, (256, 7, 7))
         )
 
         modules = []
 
         modules.append(nn.Sequential(
-            nn.ConvTranspose2d(hidden_dims[0], hidden_dims[0], kernel_size=kernel_size, stride=2, padding=1, output_padding=1)
+            nn.ConvTranspose2d(hidden_dims[0], hidden_dims[0], kernel_size=3, stride=2, padding=1, output_padding=1)
         ))
 
         for i in range(len(hidden_dims)-1):
             modules.append(
                 nn.Sequential(
                     nn.ConvTranspose2d(hidden_dims[i], hidden_dims[i+1],
-                                       kernel_size=kernel_size, stride=2, padding=1, output_padding=1),
+                                       kernel_size=3, stride=2, padding=1, output_padding=1),
                     nn.BatchNorm2d(hidden_dims[i+1]),
                     nn.ReLU())
             )
@@ -104,8 +109,8 @@ class ConditionalDecoder(nn.Module):
 class ConditionalVAE(nn.Module):
     def __init__(self, kernel_size=3, hidden_dims = [128, 256], latent_dim=2):
         super(ConditionalVAE, self).__init__()
-        self.encoder = Encoder(kernel_size, hidden_dims, latent_dim)
-        self.decoder = ConditionalDecoder(kernel_size, [256, 128], latent_dim)
+        self.encoder = Encoder(hidden_dims = hidden_dims, latent_dim = latent_dim)
+        self.decoder = ConditionalDecoder(hidden_dims= [256, 128], latent_dim = latent_dim)
 
         # learn weight for KL loss through backprop
         self.weight_kl = 1
