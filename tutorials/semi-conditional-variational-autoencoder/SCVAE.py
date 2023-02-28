@@ -12,8 +12,6 @@ class Encoder(nn.Module):
         self.latent_dim = latent_dim
         self.hidden_dims = hidden_dims
         
-
-        print("Image size: ", image_size)
         in_channels = self.image_size[0]
 
         modules = []
@@ -110,6 +108,7 @@ class ConditionalVAE(nn.Module):
         super(ConditionalVAE, self).__init__()
         self.encoder = Encoder(hidden_dims = hidden_dims, latent_dim = latent_dim)
         self.decoder = ConditionalDecoder(hidden_dims= [256, 128], latent_dim = latent_dim)
+        self.latent_dim = latent_dim
 
         # learn weight for KL loss through backprop
         self.weight_kl = 1
@@ -131,6 +130,11 @@ class ConditionalVAE(nn.Module):
         recon_loss = self.recon_loss(inputs, outputs)
         kl_loss = self.kl_loss(z_mean, z_log_var)
         return recon_loss, kl_loss, self.weight_recon * recon_loss + self.weight_kl * kl_loss
+    
+    def sample(self, num_samples, cond_input):
+        z = torch.randn(num_samples, self.latent_dim)
+        samples = self.decoder(z, cond_input)
+        return samples
 
 # from ConditionalMNIST import load_mnist
 # train_loader, test_loader, val_loader  = load_mnist(BATCH_SIZE=128)
