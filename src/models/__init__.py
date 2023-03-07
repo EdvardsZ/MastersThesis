@@ -1,2 +1,2 @@
-from .scvae import SCVAE
+from .scvae import ConditionalVAE
 from .vae import VAE

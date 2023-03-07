@@ -1,7 +1,7 @@
 import torch
 import torch.nn as nn
-from decoders import Decoder
-from encoders import Encoder
+from models.decoders import Decoder
+from models.encoders import Encoder
 import torch.nn.functional as F
 
 # Convencional VAE

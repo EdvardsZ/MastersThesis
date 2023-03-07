@@ -1,5 +1,5 @@
 import torch.nn as nn
-
+import torch
 # ENCODER
 class Encoder(nn.Module):
     def __init__(self, image_size = (1, 28, 28), hidden_dims = [128, 256], latent_dim=2):
@@ -31,3 +31,18 @@ class Encoder(nn.Module):
 
         self.fc_mu = nn.Linear(resulting_size, latent_dim)
         self.fc_var = nn.Linear(resulting_size, latent_dim)
+
+    def forward(self, inputs):
+        x = self.encoder(inputs)
+        z_mean = self.fc_mu(x)
+        z_log_var = self.fc_var(x)
+        z = self.sampling(z_mean, z_log_var)
+        
+        return z_mean, z_log_var, z
+    
+    def sampling(self, z_mean, z_log_var):
+        eps = torch.randn_like(z_log_var)
+        z = z_mean + torch.exp(z_log_var / 2) * eps
+        return z
+
+    

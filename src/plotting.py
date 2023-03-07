@@ -1,6 +1,6 @@
 import matplotlib.pyplot as plt
 import numpy as np
-from ConditionalMNIST import get_observation_pixels
+from datasets import get_observation_pixels
 
 
 def plot_sample_with_conditioned_pixels(example):
