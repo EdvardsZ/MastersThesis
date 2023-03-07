@@ -9,7 +9,7 @@ class MultiDecoderConditionalVAE(nn.Module):
     def __init__(self, kernel_size=3, hidden_dims = [128, 256], latent_dim=2):
         super(MultiDecoderConditionalVAE, self).__init__()
         self.encoder = Encoder(hidden_dims = hidden_dims, latent_dim = latent_dim)
-        self.decoder = ConditionalDecoder(hidden_dims= [256, 128], latent_dim = latent_dim)
+        self.conditional_decoder = ConditionalDecoder(hidden_dims= [256, 128], latent_dim = latent_dim)
         self.latent_dim = latent_dim
 
         # learn weight for KL loss through backprop
@@ -19,7 +19,7 @@ class MultiDecoderConditionalVAE(nn.Module):
         
     def forward(self, inputs, cond_input):
         z_mean, z_log_var, z = self.encoder(inputs)
-        output = self.decoder(z, cond_input)
+        output = self.conditional_decoder(z, cond_input)
         return output, z_mean, z_log_var, z
     
     def recon_loss(self, inputs, outputs):
@@ -35,6 +35,6 @@ class MultiDecoderConditionalVAE(nn.Module):
     
     def sample(self, num_samples, cond_input):
         z = torch.randn(num_samples, self.latent_dim)
-        samples = self.decoder(z, cond_input)
+        samples = self.conditional_decoder(z, cond_input)
         return samples
     
