@@ -1,3 +1,4 @@
+#Conditional decoder
 import torch
 import torch.nn as nn
 
@@ -5,7 +6,8 @@ class ConditionalDecoder(nn.Module):
     def __init__(self, image_size = (1, 28, 28), hidden_dims = [256, 128], latent_dim=2):
         super(ConditionalDecoder, self).__init__()
         self.image_size = image_size
-
+        self.latent_dim = latent_dim
+        
         resulting_size = (image_size[1] // 2**len(hidden_dims))**2 * hidden_dims[0]
         in_channels = image_size[0]
 
