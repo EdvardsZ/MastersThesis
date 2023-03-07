@@ -12,7 +12,7 @@ class ConditionalVAE(nn.Module):
         self.decoder = ConditionalDecoder(hidden_dims= [256, 128], latent_dim = latent_dim)
         self.latent_dim = latent_dim
 
-        # TODO try learn weight for KL loss through backprop
+        # TODO try to learn weight for KL loss through backprop
         self.weight_kl = 1
         self.weight_recon = 1
 
