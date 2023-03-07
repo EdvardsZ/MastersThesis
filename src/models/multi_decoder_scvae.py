@@ -23,7 +23,7 @@ class MultiDecoderConditionalVAE(nn.Module):
         z_mean, z_log_var, z = self.encoder(inputs)
         output = self.conditional_decoder(z, cond_input)
         output_2 = self.decoder(z)
-        return output, z_mean, z_log_var, z, output_2
+        return output, output_2, z_mean, z_log_var, z
     
     def recon_loss(self, inputs, outputs):
         return F.mse_loss(inputs, outputs)
@@ -31,7 +31,7 @@ class MultiDecoderConditionalVAE(nn.Module):
     def kl_loss(self, z_mean, z_log_var):
         return -0.5 * torch.sum(1 + z_log_var - z_mean.pow(2) - z_log_var.exp())
     
-    def loss(self, inputs, outputs, z_mean, z_log_var, output_2):
+    def loss(self, inputs, outputs, output_2, z_mean, z_log_var):
         recon_loss = self.recon_loss(inputs, outputs)
         recon_loss_2 = self.recon_loss(inputs, output_2)
         kl_loss = self.kl_loss(z_mean, z_log_var)
