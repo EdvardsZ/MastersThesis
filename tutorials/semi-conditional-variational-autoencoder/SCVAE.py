@@ -100,7 +100,57 @@ class ConditionalDecoder(nn.Module):
         output = self.decoder_output(input)
 
         return output
+
+class ConditionalDecoder(nn.Module):
+    def __init__(self, image_size = (1, 28, 28), hidden_dims = [256, 128], latent_dim=2):
+        super(ConditionalDecoder, self).__init__()
+        self.image_size = image_size
+
+        resulting_size = (image_size[1] // 2**len(hidden_dims))**2 * hidden_dims[0]
+        in_channels = image_size[0]
+
+        self.decoder_input = nn.Sequential(
+            nn.Linear(self.image_size[1] * self.image_size[1] + latent_dim, resulting_size),
+            nn.ReLU(),
+            nn.BatchNorm1d(resulting_size),
+            nn.Unflatten(1, (hidden_dims[0], int(image_size[1]/(2**len(hidden_dims))), int(image_size[2]/(2**len(hidden_dims)))))
+        )
+
+        modules = []
+
+        for i in range(len(hidden_dims)-1):
+            modules.append(
+                nn.Sequential(
+                    nn.ConvTranspose2d(hidden_dims[i], hidden_dims[i+1],
+                                       kernel_size=3, stride=2, padding=1, output_padding=1),
+                    nn.BatchNorm2d(hidden_dims[i+1]),
+                    nn.LeakyReLU())
+            )
+
+        modules.append(
+            nn.Sequential(
+                nn.ConvTranspose2d(hidden_dims[-1], hidden_dims[-1], 
+                               kernel_size=3, stride = 2, padding=1, output_padding=1),
+                nn.BatchNorm2d(hidden_dims[-1]),
+                nn.LeakyReLU(),
+                nn.Conv2d(hidden_dims[-1], out_channels= 1,
+                                      kernel_size= 3, padding= 1, stride=1),
+            )
+        )
+
+        self.decoder_output = nn.Sequential(*modules)
+        
+        return
     
+    def forward(self, z, cond_input):
+        x_cond = torch.flatten(cond_input, start_dim=1)
+        x_cat = torch.cat((z, x_cond), dim=1)
+
+        input = self.decoder_input(x_cat)
+
+        output = self.decoder_output(input)
+
+        return output
 
 # CONDITIONAL VAE
 class ConditionalVAE(nn.Module):
@@ -137,6 +187,90 @@ class ConditionalVAE(nn.Module):
         return samples
     
 
+
+# Conventional Decoder
+class Decoder(nn.Module):
+    def __init__(self, image_size = (1, 28, 28), hidden_dims = [256, 128], latent_dim=2):
+        super(Decoder, self).__init__()
+        self.image_size = image_size
+        self.latent_dim = latent_dim
+
+        resulting_size = (image_size[1] // 2**len(hidden_dims))**2 * hidden_dims[0]
+        in_channels = image_size[0]
+
+        self.decoder_input = nn.Sequential(
+            nn.Linear(self.latent_dim, resulting_size),
+            nn.ReLU(),
+            nn.BatchNorm1d(resulting_size),
+            nn.Unflatten(1, (hidden_dims[0], int(image_size[1]/(2**len(hidden_dims))), int(image_size[2]/(2**len(hidden_dims)))))
+        )
+
+        modules = []
+
+        for i in range(len(hidden_dims)-1):
+            modules.append(
+                nn.Sequential(
+                    nn.ConvTranspose2d(hidden_dims[i], hidden_dims[i+1],
+                                       kernel_size=3, stride=2, padding=1, output_padding=1),
+                    nn.BatchNorm2d(hidden_dims[i+1]),
+                    nn.LeakyReLU())
+            )
+
+        modules.append(
+            nn.Sequential(
+                nn.ConvTranspose2d(hidden_dims[-1], hidden_dims[-1], 
+                               kernel_size=3, stride = 2, padding=1, output_padding=1),
+                nn.BatchNorm2d(hidden_dims[-1]),
+                nn.LeakyReLU(),
+                nn.Conv2d(hidden_dims[-1], out_channels= 1,
+                                      kernel_size= 3, padding= 1, stride=1),
+            )
+        )
+
+        self.decoder_output = nn.Sequential(*modules)
+        
+        return
+    
+    def forward(self, z):
+        input = self.decoder_input(z)
+        output = self.decoder_output(input)
+
+        return output
+    
+# Convencional VAE
+class VAE(nn.Module):
+    def __init__(self, kernel_size=3, hidden_dims = [128, 256], latent_dim=2):
+        super(VAE, self).__init__()
+        self.encoder = Encoder(hidden_dims = hidden_dims, latent_dim = latent_dim)
+        self.decoder = Decoder(hidden_dims= [256, 128], latent_dim = latent_dim)
+        self.latent_dim = latent_dim
+
+        # learn weight for KL loss through backprop
+        self.weight_kl = 1
+        self.weight_recon = 1
+
+        
+    def forward(self, inputs):
+        z_mean, z_log_var, z = self.encoder(inputs)
+        output = self.decoder(z)
+        return output, z_mean, z_log_var, z
+    
+    def recon_loss(self, inputs, outputs):
+        return F.mse_loss(inputs, outputs)
+    
+    def kl_loss(self, z_mean, z_log_var):
+        return -0.5 * torch.sum(1 + z_log_var - z_mean.pow(2) - z_log_var.exp())
+    
+    def loss(self, inputs, outputs, z_mean, z_log_var):
+        recon_loss = self.recon_loss(inputs, outputs)
+        kl_loss = self.kl_loss(z_mean, z_log_var)
+        return recon_loss, kl_loss, self.weight_recon * recon_loss + self.weight_kl * kl_loss
+    
+    def sample(self, num_samples):
+        z = torch.randn(num_samples, self.latent_dim)
+        samples = self.decoder(z)
+        return samples
+    
 
 
 # from ConditionalMNIST import load_mnist
