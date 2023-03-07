@@ -2,6 +2,7 @@ import torch
 import torch.nn as nn
 import torch.nn.functional as F
 from models.decoders import ConditionalDecoder
+from models.decoders import Decoder
 from models.encoders import Encoder
 
 # Multi decoder conditional VAE
@@ -10,6 +11,7 @@ class MultiDecoderConditionalVAE(nn.Module):
         super(MultiDecoderConditionalVAE, self).__init__()
         self.encoder = Encoder(hidden_dims = hidden_dims, latent_dim = latent_dim)
         self.conditional_decoder = ConditionalDecoder(hidden_dims= [256, 128], latent_dim = latent_dim)
+        self.decoder = Decoder(hidden_dims= [256, 128], latent_dim = latent_dim)
         self.latent_dim = latent_dim
 
         # learn weight for KL loss through backprop
@@ -20,7 +22,8 @@ class MultiDecoderConditionalVAE(nn.Module):
     def forward(self, inputs, cond_input):
         z_mean, z_log_var, z = self.encoder(inputs)
         output = self.conditional_decoder(z, cond_input)
-        return output, z_mean, z_log_var, z
+        output_2 = self.decoder(z)
+        return output, z_mean, z_log_var, z, output_2
     
     def recon_loss(self, inputs, outputs):
         return F.mse_loss(inputs, outputs)
@@ -28,13 +31,14 @@ class MultiDecoderConditionalVAE(nn.Module):
     def kl_loss(self, z_mean, z_log_var):
         return -0.5 * torch.sum(1 + z_log_var - z_mean.pow(2) - z_log_var.exp())
     
-    def loss(self, inputs, outputs, z_mean, z_log_var):
+    def loss(self, inputs, outputs, z_mean, z_log_var, output_2):
         recon_loss = self.recon_loss(inputs, outputs)
+        recon_loss_2 = self.recon_loss(inputs, output_2)
         kl_loss = self.kl_loss(z_mean, z_log_var)
-        return recon_loss, kl_loss, self.weight_recon * recon_loss + self.weight_kl * kl_loss
+        return recon_loss, recon_loss_2, kl_loss, self.weight_recon * recon_loss + self.weight_kl * kl_loss
     
-    def sample(self, num_samples, cond_input):
+    def sample(self, num_samples):
         z = torch.randn(num_samples, self.latent_dim)
-        samples = self.conditional_decoder(z, cond_input)
+        samples = self.decoder(z)
         return samples
     
