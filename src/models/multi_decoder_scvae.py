@@ -35,7 +35,7 @@ class MultiDecoderConditionalVAE(nn.Module):
         recon_loss = self.recon_loss(inputs, outputs)
         recon_loss_2 = self.recon_loss(inputs, output_2)
         kl_loss = self.kl_loss(z_mean, z_log_var)
-        return recon_loss, recon_loss_2, kl_loss, self.weight_recon * recon_loss + self.weight_kl * kl_loss
+        return recon_loss, recon_loss_2, kl_loss, self.weight_recon * recon_loss + self.weight_recon * recon_loss_2 + self.weight_kl * kl_loss
     
     def sample(self, num_samples):
         z = torch.randn(num_samples, self.latent_dim)
