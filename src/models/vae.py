@@ -4,7 +4,7 @@ from models.decoders import Decoder
 from models.encoders import Encoder
 import torch.nn.functional as F
 
-# Convencional VAE
+# Conventional VAE
 class VAE(nn.Module):
     def __init__(self, kernel_size=3, hidden_dims = [128, 256], latent_dim=2):
         super(VAE, self).__init__()
@@ -12,7 +12,7 @@ class VAE(nn.Module):
         self.decoder = Decoder(hidden_dims= [256, 128], latent_dim = latent_dim)
         self.latent_dim = latent_dim
 
-        # learn weight for KL loss through backprop
+        # TODO try learn weight for KL loss through backprop
         self.weight_kl = 1
         self.weight_recon = 1
 
