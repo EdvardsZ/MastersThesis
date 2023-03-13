@@ -1,6 +1,7 @@
 # MastersThesis
 
-# two channels for conditioning
+1. Changed dimnesions
 
-# 
-# Random sampling
+2. Conditionit with labels the conventional vae
+
+3. 
