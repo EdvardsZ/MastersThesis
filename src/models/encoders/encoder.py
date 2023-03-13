@@ -1,9 +1,8 @@
 import torch.nn as nn
 import torch
-import math
 # ENCODER
 class Encoder(nn.Module):
-    def __init__(self, image_size = (1, 28, 28), hidden_dims = [32, 64, 128, 256, 512], latent_dim=2):
+    def __init__(self, image_size = (1, 28, 28), hidden_dims = [128, 256], latent_dim=2):
         super(Encoder, self).__init__()
 
         self.image_size = image_size
@@ -18,7 +17,7 @@ class Encoder(nn.Module):
             modules.append(
                 nn.Sequential(
                     nn.Conv2d(in_channels, out_channels=h_dim,
-                              kernel_size=3, stride= 2, padding  = 1),
+                              kernel_size = 3, stride = 2, padding  = 1),
                     nn.BatchNorm2d(h_dim),
                     nn.LeakyReLU())
             )
@@ -26,7 +25,7 @@ class Encoder(nn.Module):
 
         modules.append(nn.Flatten())
 
-        resulting_size = math.ceil(image_size[1] / 2**len(hidden_dims))**2 * hidden_dims[-1]
+        resulting_size = (image_size[1] // 2**len(hidden_dims))**2 * hidden_dims[-1]
 
         self.encoder = nn.Sequential(*modules)
 
