@@ -2,8 +2,8 @@ import torch
 import torch.nn as nn
 import torch.nn.functional as F
 
-from src.models.encoders import Encoder
-from src.models.decoders import LabelConditionalDecoder
+from models.encoders import Encoder
+from models.decoders import LabelConditionalDecoder
 
 class LabelConditionalVAE(nn.Module):
     def __init__(self, kernel_size=3, hidden_dims = [128, 256], latent_dim=2) -> None:
