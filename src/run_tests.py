@@ -1,4 +1,4 @@
-from tests import test_conventional_encoder, test_conventional_decoder
+from tests import *
 
 def test_all():
     print("Running all tests...")
@@ -10,6 +10,8 @@ def test_all():
     print("Decoder tests:")
     print("1. Test conventional decoder")
     test_conventional_decoder()
+    print("2. Test label conditioned decoder")
+    test_label_conditioned_decoder()
     return
 
 if __name__ == "__main__":

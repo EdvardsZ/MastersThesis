@@ -38,22 +38,15 @@ def test_conventional_encoder(tab_count=1):
     z_mean, z_log_var, z = encoder(image)
 
     print(tab + "z_mean shape: ", z_mean.shape)
-
     print(tab + "z_log_var shape: ", z_log_var.shape)
-
     print(tab + "z shape: ", z.shape)
-
     print(tab + "---------------")
 
     assert z_mean.shape == (batch_size, 2)
-
     assert z_log_var.shape == (batch_size, 2)
-
     assert z.shape == (batch_size, 2)
 
     print(tab + "Test passed")
-
     print(tab + "===============")
-
 
     return
