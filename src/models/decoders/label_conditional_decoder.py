@@ -12,8 +12,12 @@ class LabelConditionalDecoder(nn.Module):
         resulting_size = (image_size[1] // 2**len(hidden_dims))**2 * hidden_dims[0]
         
         self.decoder_input = nn.Sequential(
-            nn.Linear(classes_count + latent_dim, resulting_size),
+            nn.Linear(classes_count + latent_dim, classes_count + latent_dim),
             nn.ReLU(),
+            nn.Linear(classes_count + latent_dim, classes_count + latent_dim),
+            nn.LeakyReLU(),
+            nn.Linear(classes_count + latent_dim, resulting_size),
+            nn.LeakyReLU(),
             nn.BatchNorm1d(resulting_size),
             nn.Unflatten(1, (hidden_dims[0], int(image_size[1]/(2**len(hidden_dims))), int(image_size[2]/(2**len(hidden_dims)))))
         )
@@ -46,8 +50,8 @@ class LabelConditionalDecoder(nn.Module):
     
     def forward(self, z, label):
         # label is (batch size, 1)
-        label_one_hot = torch.zeros(label.shape[0], self.classes)
-        label_one_hot[torch.arange(label.shape[0]), label.squeeze()] = 1
+        label_one_hot = torch.zeros(label.shape[0], self.classes).to(z.device)
+        label_one_hot[torch.arange(label.shape[0]), label] = 1
 
         x = torch.cat((z, label_one_hot), 1)
         x = self.decoder_input(x)

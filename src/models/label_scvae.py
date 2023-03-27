@@ -8,8 +8,8 @@ from models.decoders import LabelConditionalDecoder
 class LabelConditionalVAE(nn.Module):
     def __init__(self, kernel_size=3, hidden_dims = [128, 256], latent_dim=2) -> None:
         super(LabelConditionalVAE, self).__init__()
-        self.encoder = Encoder()
-        self.decoder = LabelConditionalDecoder()
+        self.encoder = Encoder(hidden_dims=hidden_dims, latent_dim=latent_dim)
+        self.decoder = LabelConditionalDecoder(hidden_dims= [256, 128], latent_dim = latent_dim)
 
         self.latent_dim = latent_dim
 
@@ -18,9 +18,9 @@ class LabelConditionalVAE(nn.Module):
         self.weight_recon = 1
 
     def forward(self, x, label):
-        z, mu, log_var = self.encoder(x)
-        x_hat = self.decoder(z, label)
-        return x_hat, mu, log_var
+        z_mean, z_log_var, z = self.encoder(x)
+        output = self.decoder(z, label)
+        return output, z_mean, z_log_var, z
     
     def recon_loss(self, inputs, outputs):
         return F.mse_loss(inputs, outputs)
