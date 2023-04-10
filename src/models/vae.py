@@ -12,9 +12,7 @@ class VAE(nn.Module):
         self.decoder = Decoder(hidden_dims= [256, 128], latent_dim = latent_dim)
         self.latent_dim = latent_dim
 
-        # TODO try to learn weight for KL loss through backprop
-        self.weight_kl = 1
-        self.weight_recon = 1
+        self.weight_kl = 0.00025
 
         
     def forward(self, inputs):
@@ -31,7 +29,7 @@ class VAE(nn.Module):
     def loss(self, inputs, outputs, z_mean, z_log_var):
         recon_loss = self.recon_loss(inputs, outputs)
         kl_loss = self.kl_loss(z_mean, z_log_var)
-        return recon_loss, kl_loss, self.weight_recon * recon_loss + self.weight_kl * kl_loss
+        return recon_loss, kl_loss, recon_loss + self.weight_kl * kl_loss
     
     def sample(self, num_samples):
         z = torch.randn(num_samples, self.latent_dim)
