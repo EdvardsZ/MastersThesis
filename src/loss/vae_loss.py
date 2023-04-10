@@ -11,4 +11,4 @@ class VAELoss(nn.Module):
     def forward(self, inputs, outputs, z_mean, z_log_var):
         recon = recon_loss(inputs, outputs)
         kl = kl_loss(z_mean, z_log_var)
-        return recon, kl, recon + self.weight_kl * kl
+        return { 'recon': recon, 'kl': kl, 'loss': recon + self.weight_kl * kl }
