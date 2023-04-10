@@ -15,7 +15,9 @@ class LinearDecoder(nn.Module):
             nn.Linear(hidden_dims[1], output_dim),
             nn.Sigmoid()
         )
+        self.image_size = image_size
 
     def forward(self, z):
         x_hat = self.decoder(z)
+        x_hat = x_hat.view(-1, *self.image_size)
         return x_hat
