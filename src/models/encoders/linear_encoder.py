@@ -9,6 +9,7 @@ class LinearEncoder(nn.Module):
 
  
         self.encoder = nn.Sequential(
+            nn.Flatten(),
             nn.Linear(input_dim, hidden_dims[0]),
             nn.ReLU(),
             nn.Linear(hidden_dims[0], hidden_dims[1]),
