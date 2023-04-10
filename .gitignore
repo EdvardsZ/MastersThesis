@@ -3,3 +3,5 @@ __pycache__
 lightning_logs
 *.ckpt
 __pycache__
+samples
+mnist_data
