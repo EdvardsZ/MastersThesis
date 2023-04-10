@@ -3,6 +3,7 @@ import torch.nn as nn
 from models.decoders import Decoder
 from models.encoders import Encoder
 import torch.nn.functional as F
+from loss import VAELoss
 
 # Conventional VAE
 class VAE(nn.Module):
@@ -13,23 +14,13 @@ class VAE(nn.Module):
         self.latent_dim = latent_dim
 
         self.weight_kl = 0.00025
+        self.loss = VAELoss(weight_kl=self.weight_kl)
 
         
     def forward(self, inputs):
         z_mean, z_log_var, z = self.encoder(inputs)
         output = self.decoder(z)
         return output, z_mean, z_log_var, z
-    
-    def recon_loss(self, inputs, outputs):
-        return F.mse_loss(inputs, outputs)
-    
-    def kl_loss(self, z_mean, z_log_var):
-        return -0.5 * torch.sum(1 + z_log_var - z_mean.pow(2) - z_log_var.exp())
-    
-    def loss(self, inputs, outputs, z_mean, z_log_var):
-        recon_loss = self.recon_loss(inputs, outputs)
-        kl_loss = self.kl_loss(z_mean, z_log_var)
-        return recon_loss, kl_loss, recon_loss + self.weight_kl * kl_loss
     
     def sample(self, num_samples):
         z = torch.randn(num_samples, self.latent_dim)
