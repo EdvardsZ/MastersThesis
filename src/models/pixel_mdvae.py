@@ -9,7 +9,7 @@ class PixelMDVAE(nn.Module):
         super(PixelMDVAE, self).__init__()
         self.encoder = Encoder()
 
-        self.label_decoder = PixelConditionedDecoder()
+        self.pixel_decoder = PixelConditionedDecoder()
         self.decoder = Decoder()
 
         self.latent_dim = latent_dim
@@ -18,6 +18,6 @@ class PixelMDVAE(nn.Module):
 
     def forward(self, inputs, cond_input):
         z_mean, z_log_var, z = self.encoder(inputs)
-        output = self.decoder(z)
-        output_label = self.label_decoder(z, cond_input)
-        return output, output_label, z_mean, z_log_var, z
+        output_0 = self.decoder(z)
+        output_1 = self.pixel_decoder(z, cond_input)
+        return [output_0, output_1], z_mean, z_log_var, z
