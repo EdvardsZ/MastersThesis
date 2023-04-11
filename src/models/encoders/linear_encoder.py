@@ -1,5 +1,6 @@
 import torch
 import torch.nn as nn
+from models.helpers import sampling
 
 class LinearEncoder(nn.Module):
     def __init__(self, image_size = (1, 28, 28), hidden_dims = [512, 256], latent_dim = 2):
@@ -24,6 +25,8 @@ class LinearEncoder(nn.Module):
 
         z_mean = self.z_mean(x)
         z_log_var = self.z_log_var(x)
+
+        z = sampling(z_mean, z_log_var)
         
-        return z_mean, z_log_var
+        return z_mean, z_log_var, z
         

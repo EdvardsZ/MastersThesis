@@ -1,6 +1,6 @@
 import torch
     
-def reparameterize(mu, logvar):
-    std = torch.exp(0.5 * logvar)
-    eps = torch.randn_like(std)
-    return eps * std + mu
+def sampling(z_mean, z_log_var):
+    eps = torch.randn_like(z_log_var)
+    z = z_mean + torch.exp(z_log_var / 2) * eps
+    return z

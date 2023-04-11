@@ -1,6 +1,5 @@
 from models.encoders import LinearEncoder
 from models.decoders import LinearDecoder
-from models.helpers import reparameterize
 from loss.vae_loss import VAELoss
 import torch.nn as nn
 
@@ -16,6 +15,5 @@ class LinearVAE(nn.Module):
         self.loss = VAELoss(weight_kl=1)
     
     def forward(self, x):
-        mu, log_var = self.encoder(x)
-        z = reparameterize(mu, log_var)
+        mu, log_var, z = self.encoder(x)
         return self.decoder(z), mu, log_var
