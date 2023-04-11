@@ -20,7 +20,10 @@ def plot_samples_with_reconstruction(model, data, n=6, device = 5):
 
     for i in range(n):
         image = data[0][i].detach().cpu().numpy().reshape(28, 28)
-        reconstruction = output[0][i].detach().cpu().numpy().reshape(28, 28)
+        if isinstance(output[0], list):
+            reconstruction = output[0][0][i].detach().cpu().numpy().reshape(28, 28)
+        else:
+            reconstruction = output[0][i].detach().cpu().numpy().reshape(28, 28)
 
 
         plt.subplot(2, n, i + 1)
