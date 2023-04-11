@@ -14,7 +14,7 @@ class LabelMDVAE(nn.Module):
 
         self.latent_dim = latent_dim
 
-        self.loss = VAELoss(weight_kl=1.0)
+        self.loss = VAELoss(weight_kl=1.0, loss_type='double')
 
     def forward(self, inputs, label):
         z_mean, z_log_var, z = self.encoder(inputs)
