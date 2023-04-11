@@ -12,7 +12,7 @@ def plot_sample_with_conditioned_pixels(example):
     plt.show()
 
 
-def plot_samples_with_reconstruction(model, data, n=10, device = 5):
+def plot_samples_with_reconstruction(model, data, n=6, device = 5):
     # plot n images and their reconstruction
     model.eval()
 
