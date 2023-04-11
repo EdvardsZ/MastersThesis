@@ -16,4 +16,4 @@ class LinearVAE(nn.Module):
     
     def forward(self, x):
         mu, log_var, z = self.encoder(x)
-        return self.decoder(z), mu, log_var
+        return self.decoder(z), mu, log_var, z

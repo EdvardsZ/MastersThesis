@@ -9,8 +9,8 @@ from loss.vae_loss import VAELoss
 class VAE(nn.Module):
     def __init__(self, kernel_size=3, hidden_dims = [128, 256], latent_dim=2):
         super(VAE, self).__init__()
-        self.encoder = Encoder(hidden_dims = hidden_dims, latent_dim = latent_dim)
-        self.decoder = Decoder(hidden_dims= [256, 128], latent_dim = latent_dim)
+        self.encoder = Encoder()
+        self.decoder = Decoder()
         self.latent_dim = latent_dim
 
         self.loss = VAELoss(weight_kl=1.0)
