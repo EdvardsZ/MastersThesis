@@ -12,7 +12,7 @@ class LinearVAE(nn.Module):
         self.encoder = LinearEncoder(image_size= image_size, hidden_dims = hidden_dims, latent_dim = latent_dim)
         self.decoder = LinearDecoder(image_size= image_size, hidden_dims = [256, 512], latent_dim = latent_dim)
 
-        self.loss = VAELoss(weight_kl=1)
+        self.loss = VAELoss()
     
     def forward(self, x):
         mu, log_var, z = self.encoder(x)

@@ -4,7 +4,7 @@ from loss.functional.helpers import kl_loss, recon_loss
 
 
 class VAELoss(nn.Module):
-    def __init__(self, weight_kl=1, loss_type = 'single'):
+    def __init__(self, weight_kl=1.0, loss_type = 'single'):
         super(VAELoss, self).__init__()
         self.weight_kl = weight_kl
         self.loss_type = loss_type

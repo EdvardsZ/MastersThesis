@@ -14,7 +14,7 @@ class PixelMDVAE(nn.Module):
 
         self.latent_dim = latent_dim
 
-        self.loss = VAELoss(weight_kl=1.0, loss_type='double')
+        self.loss = VAELoss(loss_type='double')
 
     def forward(self, inputs, cond_input):
         z_mean, z_log_var, z = self.encoder(inputs)

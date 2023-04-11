@@ -12,7 +12,7 @@ class PixelConditionedVAE(nn.Module):
         self.decoder = PixelConditionedDecoder()
         self.latent_dim = latent_dim
 
-        self.loss = VAELoss(weight_kl=1.0)
+        self.loss = VAELoss()
         
     def forward(self, inputs, cond_input):
         z_mean, z_log_var, z = self.encoder(inputs)
