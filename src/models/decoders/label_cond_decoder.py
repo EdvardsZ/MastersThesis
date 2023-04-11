@@ -1,9 +1,9 @@
 import torch
 import torch.nn as nn
 
-class LabelConditionalDecoder(nn.Module):
+class LabelConditionedDecoder(nn.Module):
     def __init__(self, image_size = (1, 28, 28), hidden_dims = [256, 128], latent_dim=2, classes_count = 10):
-        super(LabelConditionalDecoder, self).__init__()
+        super(LabelConditionedDecoder, self).__init__()
         self.image_size = image_size
         self.latent_dim = latent_dim
         self.classes = classes_count
