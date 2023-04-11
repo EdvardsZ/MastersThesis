@@ -2,22 +2,19 @@ import torch
 import torch.nn as nn
 from models.decoders import Decoder, PixelConditionedDecoder
 from models.encoders import Encoder
+
 from loss.vae_loss import VAELoss
 
-class PixelMDVAE(nn.Module):
+class PixelConditionedVAE(nn.Module):
     def __init__(self, kernel_size=3, hidden_dims = [128, 256], latent_dim=2):
-        super(PixelMDVAE, self).__init__()
+        super(PixelConditionedVAE, self).__init__()
         self.encoder = Encoder()
-
-        self.label_decoder = PixelConditionedDecoder()
-        self.decoder = Decoder()
-
+        self.decoder = PixelConditionedDecoder()
         self.latent_dim = latent_dim
 
-        self.loss = VAELoss(weight_kl=1.0, loss_type='double')
-
+        self.loss = VAELoss(weight_kl=1.0)
+        
     def forward(self, inputs, cond_input):
         z_mean, z_log_var, z = self.encoder(inputs)
-        output = self.decoder(z)
-        output_label = self.label_decoder(z, cond_input)
-        return output, output_label, z_mean, z_log_var, z
+        output = self.decoder(z, cond_input)
+        return output, z_mean, z_log_var, z
