@@ -1,1 +1,1 @@
-from .linear_vae import *
+from .lin_vae import *

@@ -1,6 +1,7 @@
 from models.encoders import LinearEncoder
 from models.decoders import LinearDecoder
 from models.helpers import reparameterize
+import torch.nn as nn
 
 class LinearVAE(nn.Module):
     def __init__(self, hidden_dims = [512, 256], latent_dim = 2):
