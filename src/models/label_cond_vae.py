@@ -14,7 +14,7 @@ class LabelConditionedVAE(nn.Module):
 
         self.loss = VAELoss(weight_kl=1.0)
         
-    def forward(self, inputs):
+    def forward(self, inputs, label):
         z_mean, z_log_var, z = self.encoder(inputs)
-        output = self.decoder(z)
+        output = self.decoder(z, label)
         return output, z_mean, z_log_var, z
