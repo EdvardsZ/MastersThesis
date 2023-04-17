@@ -15,12 +15,10 @@ class Encoder(nn.Module):
         modules = []
 
         # Build Encoder
-        print(hidden_dims)
         feature_map_size = self.image_size[1:]
-        for i, h_dim in enumerate(hidden_dims):
-            print(feature_map_size)
+        for h_dim in hidden_dims:
             stride = 2 if any(map(lambda x: x % 2 == 0, feature_map_size)) else 1
-            
+
             modules.append(
                 nn.Sequential(
                     nn.Conv2d(in_channels, out_channels=h_dim,
