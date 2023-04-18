@@ -19,3 +19,6 @@ class VAE(nn.Module):
         z_mean, z_log_var, z = self.encoder(inputs)
         output = self.decoder(z)
         return output, z_mean, z_log_var, z
+    
+    def decode(self, z):
+        return self.decoder(z)
