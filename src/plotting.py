@@ -12,11 +12,11 @@ def plot_sample_with_conditioned_pixels(example):
     plt.show()
 
 
-def plot_samples_with_reconstruction(model, data, n=6, device = 5):
+def plot_samples_with_reconstruction(model, data, n=6):
     # plot n images and their reconstruction
     model.eval()
 
-    output = model(data[:n][0].cuda( device = 5), data[:n][1].cuda( device = 5), data[:n][2].cuda( device = 5))
+    output = model(data[:n][0], data[:n][1], data[:n][2])
 
     for i in range(n):
         image = data[0][i].detach().cpu().numpy().reshape(28, 28)
