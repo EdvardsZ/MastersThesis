@@ -1,5 +1,5 @@
 # MastersThesis
 
-1. Make latent space visualizations.
+1. Try "smarter" losses
 
-2. Try smarter losses
+2. Try multiple tasks
