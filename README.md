@@ -1,7 +1,7 @@
 # MastersThesis
 
-1. Changed dimnesions
+1. Make your nets deeper and maybe wider.
 
-2. Conditionit with labels the conventional vae
+2. Make latent space visualizations.
 
-3. 
+2. Think of smart ways of weighting the loss function.

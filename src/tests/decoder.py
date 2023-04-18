@@ -1,4 +1,4 @@
-from models.decoders import Decoder, LabelConditionalDecoder
+from models.decoders import Decoder, LabelConditionedDecoder
 import torch
 
 def test_conventional_decoder(tab_count=1):
@@ -39,7 +39,7 @@ def test_label_conditioned_decoder(tab_count=1):
     # int label
     label = torch.rand(batch_size, 1).int()
 
-    decoder = LabelConditionalDecoder(latent_dim=latent_dim)
+    decoder = LabelConditionedDecoder(latent_dim=latent_dim)
 
     x_hat = decoder(z, label)
 
