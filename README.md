@@ -1,5 +1,5 @@
 # MastersThesis
 
-2. Make latent space visualizations.
+1. Make latent space visualizations.
 
-2. Think of smart ways of weighting the loss function.
+2. Try smarter losses

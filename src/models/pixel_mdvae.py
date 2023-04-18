@@ -21,3 +21,5 @@ class PixelMDVAE(nn.Module):
         output_0 = self.decoder(z)
         output_1 = self.pixel_decoder(z, cond_input)
         return [output_0, output_1], z_mean, z_log_var, z
+    def decode(self, z):
+        return self.decoder(z)

@@ -21,6 +21,8 @@ class LabelMDVAE(nn.Module):
         output_0 = self.decoder(z)
         output_1 = self.label_decoder(z, label)
         return [output_0, output_1], z_mean, z_log_var, z
+    def decode(self, z):
+        return self.decoder(z)
 
 
 
