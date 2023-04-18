@@ -1,13 +1,6 @@
 import torch
 import torch.nn as nn
-import math
-
-def count_div_by_2(num):
-    count = 0
-    while num % 2 == 0 and num > 0:
-        count += 1
-        num //= 2
-    return count
+from models.helpers.sampling import count_div_by_2
     
 # Conventional Decoder
 class Decoder(nn.Module):
