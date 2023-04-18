@@ -9,9 +9,11 @@ def test_all():
     print("---------------------------")
     print("Decoder tests:")
     print("1. Test conventional decoder")
-    #test_conventional_decoder()
+    test_conventional_decoder()
     print("2. Test label conditioned decoder")
-    #test_label_conditioned_decoder()
+    test_label_conditioned_decoder()
+    print("3. Test pixel conditioned decoder")
+    test_pixel_conditioned_decoder()
     return
 
 if __name__ == "__main__":
