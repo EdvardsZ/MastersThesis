@@ -33,7 +33,7 @@ class VectorQuantizer(nn.Module):
         quantized = quantized.view(x.shape)
         # quantized.shape = (batch_size, height, width, embedding_dim)
 
-        return quantized
+        return quantized,  embedding_indices
     
     def get_code_indices(self, x):
         # Calculate L2-normalized distance between the inputs and the codes.
