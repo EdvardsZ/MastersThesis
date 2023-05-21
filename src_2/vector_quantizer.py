@@ -13,7 +13,7 @@ class VectorQuantizer(nn.Module):
         # x.shape = (batch_size, height, width, embedding_dim)
 
         # Flatten input.
-        flattened = x.view(-1, self.embedding_dim)
+        flattened = x.reshape(-1, self.embedding_dim)
         # flattened.shape = (batch_size * height * width, embedding_dim)
 
         # Calculate distances between embedding vectors and input vectors and get the indices of the minimum distances.
