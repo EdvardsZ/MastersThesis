@@ -43,14 +43,4 @@ class VectorQuantizer(nn.Module):
         encoding_indices = torch.argmin(distances, dim=1).unsqueeze(1)
         
         return encoding_indices
-        
-
-print("test")
-
-model = VectorQuantizer(10, 10)
-
-rand = torch.rand((64, 220, 220, 10))
-
-res = model(rand)
-
-print(res.shape)
+    
