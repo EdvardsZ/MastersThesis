@@ -36,7 +36,7 @@ class Decoder(nn.Module):
         modules.append(
             nn.Sequential(
                 nn.ConvTranspose2d(hidden_dims[-1],
-                                   out_channels=3,
+                                   out_channels=in_channels,
                                    kernel_size=4,
                                    stride=2, padding=1),
                 nn.Tanh()))

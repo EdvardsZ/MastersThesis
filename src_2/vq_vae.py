@@ -28,4 +28,4 @@ class VQVAE(nn.Module):
 
         x_hat = self.decoder(z)
 
-        return x_hat, embedding_indices
+        return x_hat, z, embedding_indices
