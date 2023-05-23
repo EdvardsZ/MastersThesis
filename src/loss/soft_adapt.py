@@ -3,11 +3,13 @@ import torch.nn as nn
 from loss.functional.helpers import kl_loss, recon_loss
 
 class SoftAdaptVAELoss(nn.Module):
-    def __init__(self, n, variant=[]):
+    def __init__(self, n, variant=[], beta=0.1):
         super(SoftAdaptVAELoss, self).__init__()
+        self.dummy = nn.Parameter(torch.zeros(1), requires_grad=False)
         self.n = n
         self.variant = variant
         self.loss_buffer = []
+        self.beta = beta
 
     def forward(self, inputs, outputs, z_mean, z_log_var):
         recon = recon_loss(inputs, outputs)
@@ -15,9 +17,9 @@ class SoftAdaptVAELoss(nn.Module):
 
         self.update_losses(recon + kl)
 
-        weighted_loss = self.weighted_loss([recon, kl])
+        weighted_loss = self.weighted_loss([recon + kl])
 
-        return { 'recon_loss': recon, 'kl_loss': kl, 'loss': weighted_loss, "loss(no_weights)" : recon + kl }
+        return {'recon_loss': recon, 'kl_loss': kl, 'loss': weighted_loss, "loss(no_weights)": recon + kl}
 
     def update_losses(self, loss):
         self.loss_buffer.append(loss)
@@ -26,39 +28,29 @@ class SoftAdaptVAELoss(nn.Module):
 
     def weighted_loss(self, losses):
         # Compute the rate of change and average of previous losses
+        if len(self.loss_buffer) < self.n:
+            return torch.sum(torch.stack(losses))
+
         delta_l = []
-        for i in range(len(losses)):
-            if len(self.loss_buffer) > i:
-                delta_l.append((losses[i] - self.loss_buffer[-i-1]) / self.loss_buffer[-i-1])
-            else:
-                delta_l.append(0.0)
-        avg_l = sum(self.loss_buffer) / len(self.loss_buffer)
+        for i in range(1, len(self.loss_buffer)):
+            delta_l.append(self.loss_buffer[i] - self.loss_buffer[i-1])
+        si = torch.stack(delta_l)
+        fi = torch.mean(torch.stack(self.loss_buffer))
 
-        # Compute the normalization factor
+        # Compute the SoftAdapt weights
+        beta = self.beta
         if "Normalized" in self.variant:
-            norm_factor = sum([abs(dl) for dl in delta_l]) + 1e-8
+            nsi = si / torch.abs(si).sum() + 1e-8
+            exp_sum = torch.sum(torch.exp(beta * (nsi - torch.max(nsi)))) + 1e-8
+            alpha = [torch.exp(beta * (ns_i - torch.max(nsi))) / exp_sum for ns_i in nsi]
         else:
-            norm_factor = 1.0
-        
-        # Compute the weighting factors
-        beta = 0.1
-        alpha = []
-        for i in range(len(losses)):
-            if "Normalized" in self.variant:
-                ns_i = delta_l[i] / norm_factor
-                exp_sum = sum([torch.exp(beta * (ns_j - max(delta_l))) for j, ns_j in enumerate(delta_l)]) + 1e-8
-                alpha_i = torch.exp(beta * (ns_i - max(delta_l))) / exp_sum
-            else:
-                si = delta_l[i]
-                exp_sum = sum([torch.exp(beta * (sj - max(delta_l))) for j, sj in enumerate(delta_l)]) + 1e-8
-                alpha_i = torch.exp(beta * (si - max(delta_l))) / exp_sum
-            if "Loss Weighted" in self.variant:
-                alpha_i *= self.loss_buffer[i] / avg_l
-            alpha.append(alpha_i)
-        
-        # Compute the weighted loss
-        weighted_loss = sum([alpha[i] * losses[i] for i in range(len(losses))])
-        
-        return weighted_loss
+            exp_sum = torch.sum(torch.exp(beta * (si - torch.max(si)))) + 1e-8
+            alpha = [torch.exp(beta * (s_i - torch.max(si))) / exp_sum for s_i in si]
 
-        
+        if "Loss Weighted" in self.variant:
+            avg_l = torch.mean(torch.stack(self.loss_buffer))
+            alpha = [(alpha_i * self.loss_buffer[i]) / avg_l for i, alpha_i in enumerate(alpha)]
+
+        # Compute the weighted loss
+        weighted_loss = torch.sum(torch.stack([alpha[i] * losses[i] for i in range(len(losses))]))
+        return weighted_loss

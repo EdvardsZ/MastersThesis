@@ -3,7 +3,7 @@ import torch.nn as nn
 from models.decoders import Decoder
 from models.encoders import Encoder
 import torch.nn.functional as F
-from loss.vae_loss import VAELoss
+from loss import VAELoss, SoftAdaptVAELoss
 
 
 class VAE(nn.Module):
@@ -13,7 +13,7 @@ class VAE(nn.Module):
         self.decoder = Decoder()
         self.latent_dim = latent_dim
 
-        self.loss = VAELoss(weight_kl=1.0)
+        self.loss = SoftAdaptVAELoss(n = 15, variant=["Normalized", "Loss Weighted"])
         
     def forward(self, inputs):
         z_mean, z_log_var, z = self.encoder(inputs)
