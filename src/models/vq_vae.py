@@ -2,6 +2,8 @@ import torch
 import torch.nn as nn
 from models.encoders import VQEncoder
 from models.decoders import VQDecoder
+from models.layers import VectorQuantizer
+from loss import VQLoss
 
 class VQVAE(nn.Module):
     def __init__(self, in_channels, num_embeddings, embedding_dim):
@@ -15,6 +17,8 @@ class VQVAE(nn.Module):
         self.codebook = VectorQuantizer(num_embeddings, embedding_dim)
 
         self.decoder = VQDecoder(in_channels, embedding_dim)
+
+        self.loss = VQLoss()
 
 
     def forward(self, x):
