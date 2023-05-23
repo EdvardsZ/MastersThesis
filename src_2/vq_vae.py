@@ -23,9 +23,9 @@ class VQVAE(nn.Module):
         z = self.encoder(x)
 
         z = z.permute(0, 2, 3, 1) # (B, C, H, W) -> (B, H, W, C)
-        z, embedding_indices = self.codebook(z)
+        z, embedding_indices, loss = self.codebook(z)
         z = z.permute(0, 3, 1, 2) # (B, H, W, C) -> (B, C, H, W)
 
         x_hat = self.decoder(z)
 
-        return x_hat, z, embedding_indices
+        return x_hat, z, embedding_indices, loss

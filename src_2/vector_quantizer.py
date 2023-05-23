@@ -1,5 +1,6 @@
 import torch 
 import torch.nn as nn
+import torch.nn.functional as F
 
 class VectorQuantizer(nn.Module):
     def __init__(self, num_embeddings, embedding_dim):
@@ -33,7 +34,9 @@ class VectorQuantizer(nn.Module):
         quantized = quantized.view(x.shape)
         # quantized.shape = (batch_size, height, width, embedding_dim)
 
-        return quantized,  embedding_indices
+        loss = self.calculate_loss(x, quantized)
+
+        return quantized,  embedding_indices, loss
     
     def get_code_indices(self, x):
         # Calculate L2-normalized distance between the inputs and the codes.
@@ -43,4 +46,15 @@ class VectorQuantizer(nn.Module):
         encoding_indices = torch.argmin(distances, dim=1).unsqueeze(1)
         
         return encoding_indices
+    
+
+    def calculate_loss(self, x, quantized):
+
+        embeddding_loss = F.mse_loss(quantized, x.detach())
+        commitment_loss = F.mse_loss(quantized.detach(), x)
+        loss = embeddding_loss + commitment_loss * 0.25
+
+        return loss
+
+
     
