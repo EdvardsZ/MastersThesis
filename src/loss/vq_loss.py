@@ -7,10 +7,15 @@ class VQLoss(nn.Module):
         super(VQLoss, self).__init__()
         self.beta = beta
 
-    def forward(self, vq_loss, reconstructions, x):
+    def forward(self, latent, quantized, reconstructions, x):
         # Calculate the MSE loss between the quantized latent vectors and the input vectors.
         recon_loss = F.mse_loss(reconstructions, x)
 
+        embeddding_loss = F.mse_loss(quantized, latent.detach())
+        commitment_loss = F.mse_loss(quantized.detach(), latent)
+
+        vq_loss = embeddding_loss + commitment_loss * self.beta
+
         loss = recon_loss + vq_loss
         
-        return loss
+        return { "loss": loss, "recon_loss": recon_loss, "vq_loss": vq_loss, "commitment_loss": commitment_loss, "embeddding_loss": embeddding_loss }
