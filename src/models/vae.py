@@ -13,7 +13,8 @@ class VAE(nn.Module):
         self.decoder = Decoder()
         self.latent_dim = latent_dim
 
-        self.loss = SoftAdaptVAELoss(n = 15, variant=["Normalized", "Loss Weighted"])
+        self.loss = SoftAdaptVAELoss(n = 100, variant=["Normalized", "Loss Weighted"])
+        #self.loss = VAELoss(weight_kl=1.0)
         
     def forward(self, inputs):
         z_mean, z_log_var, z = self.encoder(inputs)
