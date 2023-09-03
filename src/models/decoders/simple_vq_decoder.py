@@ -1,7 +1,7 @@
 import torch
 import torch.nn as nn
 
-class SimpleVQDecoder:
+class SimpleVQDecoder(nn.Module):
     def __init__(self, latent_dim=16):
         super(SimpleVQDecoder, self).__init__()
         self.decoder = nn.Sequential(
