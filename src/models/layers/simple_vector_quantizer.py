@@ -3,11 +3,10 @@ import torch.nn as nn
 import torch.nn.functional as F
 
 class SimpleVectorQuantizer(nn.Module):
-    def __init__(self, num_embeddings, embedding_dim, beta=0.25):
+    def __init__(self, num_embeddings, embedding_dim):
         super(SimpleVectorQuantizer, self).__init__()
         self.embedding_dim = embedding_dim
         self.num_embeddings = num_embeddings
-        self.beta = beta
 
         w_init = torch.nn.init.uniform_
         self.embeddings = nn.Parameter(w_init(torch.empty(self.embedding_dim, self.num_embeddings)))

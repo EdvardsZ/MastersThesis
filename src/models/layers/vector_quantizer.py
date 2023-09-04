@@ -8,42 +8,65 @@ class VectorQuantizer(nn.Module):
         self.embedding_dim = embedding_dim
         self.num_embeddings = num_embeddings
 
-        self.embeddings = nn.Linear(embedding_dim, num_embeddings, bias=False)
+        self.embeddings = nn.Linear(embedding_dim, num_embeddings, bias=False) 
+        # This is basically a matrix num_embeddings x embedding_dim
 
     def forward(self, x):
-        # x.shape = (batch_size, height, width, embedding_dim)
+        # x.shape = (B, E, H_f, W_f)
+        input_shape = x.shape
 
-        # Flatten input.
+        # 1. Reshape
+        # -----------------------
         flattened = x.reshape(-1, self.embedding_dim)
-        # flattened.shape = (batch_size * height * width, embedding_dim)
+        # flattened.shape = (B * H_f * W_f, E)
+        # -----------------------
 
-        # Calculate distances between embedding vectors and input vectors and get the indices of the minimum distances.
-        embedding_indices = self.get_code_indices(flattened)
-        # embedding_indices.shape = (batch_size * height * width, 1)
+        # 2. Calculate distances and get the indices of the minimum distances.
+        # -----------------------
+        indices = self.get_code_indices(flattened)
+        # indices.shape = (B * H_f * W_f)
+        # -----------------------
 
-        # Convert the indices into one-hot vectors.
-        codebook = nn.functional.one_hot(embedding_indices, self.num_embeddings).float()
-        codebook = codebook.view(-1, self.num_embeddings)
-        # codebook.shape = (batch_size * height * width, num_embeddings)
+        # 3. Index from the "codebook"
+        # -----------------------
+        encodings = F.one_hot(indices, num_classes=self.num_embeddings).to(flattened.device).float()
+        # encodings.shape = (B * H_f * W_f, num_embeddings)
+        quantized = torch.matmul(encodings.float(), self.embeddings.weight)
+        # quantized.shape = (B, E, H_f, W_f, E)
+        # -----------------------
 
-        # Calculate the quantized latent vectors.
-        quantized = torch.matmul(codebook, self.embeddings.weight)
-        # quantized.shape = (batch_size * height * width, embedding_dim)
+        # 4. Reshape back
+        # -----------------------
+        quantized = quantized.reshape(input_shape)
+        # quantized.shape = (B, E, H_f, W_f)
+        # -----------------------
 
-        # Convert the quantized vectors back to the original shape.
-        quantized = quantized.view(x.shape)
-        # quantized.shape = (batch_size, height, width, embedding_dim)
-
-        return quantized,  embedding_indices
-    
-    def get_code_indices(self, x):
-        # Calculate L2-normalized distance between the inputs and the codes.
-        # x.shape = (batch_size * height * width, embedding_dim)
-        similarity = self.embeddings(x)
-        distances = torch.sum(x ** 2, dim=1, keepdim=True) + torch.sum(self.embeddings.weight ** 2, dim=1) - 2 * similarity
-        encoding_indices = torch.argmin(distances, dim=1).unsqueeze(1)
+        # 5. Copy the gradient
+        # -----------------------
+        quantized_with_grad = x + (quantized - x).detach()
+        # quantized_with_grad.shape = (B, E, H_f, W_f)
+        # -----------------------
         
+        return quantized_with_grad, quantized, indices
+    
+    def get_code_indices(self, flattened):
+        # a^2
+        flattened_squared = flattened.pow(2).sum(dim=1, keepdim=True).sum(dim=1, keepdim=True)
+
+        # b^2
+        embedding_squared = self.embeddings.weight.pow(2).sum(dim=1)
+
+        # 2ab
+        product = (self.embeddings(flattened) * 2)
+
+        # a^2 + b^2 - 2ab
+        distances = flattened_squared + embedding_squared - product
+
+        # argmin
+        encoding_indices = torch.argmin(distances, dim=1)
+
         return encoding_indices
+
     
 
 
