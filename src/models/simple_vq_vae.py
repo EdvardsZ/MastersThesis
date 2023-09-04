@@ -15,8 +15,12 @@ class SimpleVQVAE(nn.Module):
 
     def forward(self, x):
         z = self.encoder(x)
-        quantized, vq_loss, encoding_indices = self.vector_quantizer(z)
-        x_hat = self.decoder(quantized)
+        quantized_with_grad, quantized, encoding_indices = self.vector_quantizer(z)
+        x_hat = self.decoder(quantized_with_grad)
+
+        commitment_loss = torch.mean((quantized.detach() - z) ** 2)
+        codebook_loss = torch.mean((quantized - z.detach()) ** 2)
+        vq_loss = 0.25 * commitment_loss + codebook_loss
 
         vq_loss = vq_loss + F.mse_loss(x_hat, x)
         return x_hat, vq_loss, encoding_indices

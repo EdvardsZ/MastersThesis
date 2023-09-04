@@ -20,14 +20,11 @@ class SimpleVectorQuantizer(nn.Module):
         encodings = F.one_hot(encoding_indices, num_classes=self.num_embeddings).to(flattened.device)
         quantized = torch.matmul(encodings.float(), self.embeddings.t())
 
-        quantized = quantized.view(input_shape)
+        quantized = quantized.view(input_shape) # Take this for the loss
 
-        commitment_loss = torch.mean((quantized.detach() - x) ** 2)
-        codebook_loss = torch.mean((quantized - x.detach()) ** 2)
-        self.loss = self.beta * commitment_loss + codebook_loss
+        quantized_with_grad = x + (quantized - x).detach()  # This part copies the gradient
 
-        quantized = x + (quantized - x).detach()
-        return quantized, self.loss, encoding_indices
+        return quantized_with_grad, quantized, encoding_indices
 
     def get_code_indices(self, flattened_inputs):
         similarity = torch.matmul(flattened_inputs, self.embeddings)
