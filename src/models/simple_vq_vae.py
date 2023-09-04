@@ -3,6 +3,7 @@ import torch.nn as nn
 from models.encoders import SimpleVQEncoder
 from models.decoders import SimpleVQDecoder
 from models.layers import SimpleVectorQuantizer
+from loss import VQLoss
 import torch.nn.functional as F
 
 class SimpleVQVAE(nn.Module):
@@ -13,17 +14,14 @@ class SimpleVQVAE(nn.Module):
 
         self.vector_quantizer = SimpleVectorQuantizer(num_embeddings, embedding_dim, beta=beta)
 
+        self.loss = VQLoss(beta)
+
     def forward(self, x):
-        z = self.encoder(x)
-        quantized_with_grad, quantized, encoding_indices = self.vector_quantizer(z)
+        latent = self.encoder(x)
+        quantized_with_grad, quantized, encoding_indices = self.vector_quantizer(latent)
         x_hat = self.decoder(quantized_with_grad)
 
-        commitment_loss = torch.mean((quantized.detach() - z) ** 2)
-        codebook_loss = torch.mean((quantized - z.detach()) ** 2)
-        vq_loss = 0.25 * commitment_loss + codebook_loss
-
-        vq_loss = vq_loss + F.mse_loss(x_hat, x)
-        return x_hat, vq_loss, encoding_indices
+        return x_hat, quantized, latent, encoding_indices
     
 
 
