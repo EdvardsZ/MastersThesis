@@ -13,14 +13,24 @@ class SimpleVectorQuantizer(nn.Module):
         self.embeddings = nn.Parameter(w_init(torch.empty(self.embedding_dim, self.num_embeddings)))
         
     def forward(self, x):
+        # x.shape = (B, E, H, W)
         input_shape = x.shape
-        flattened = x.view(-1, self.embedding_dim)
 
+        flattened = x.view(-1, self.embedding_dim)
+        # flattened.shape = (batch_size * height * width, embedding_dim)
+
+        # Calculate distances between embedding vectors and input vectors and get the indices of the minimum distances.
         encoding_indices = self.get_code_indices(flattened)
+        # embedding_indices.shape = (batch_size * height * width)
+        
         encodings = F.one_hot(encoding_indices, num_classes=self.num_embeddings).to(flattened.device)
+        # encodings.shape = (batch_size * height * width, num_embeddings)
+
         quantized = torch.matmul(encodings.float(), self.embeddings.t())
+        # quantized.shape = (batch_size * height * width, embedding_dim)
 
         quantized = quantized.view(input_shape) # Take this for the loss
+        # quantized.shape = (batch_size, embedding, height, width)
 
         quantized_with_grad = x + (quantized - x).detach()  # This part copies the gradient
 
