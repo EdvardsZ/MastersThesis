@@ -23,16 +23,10 @@ class VQVAE(nn.Module):
 
     def forward(self, x):
         # Input: (B, C, H, W)
-        z = self.encoder(x)
+        latent = self.encoder(x)
 
-        z = z.permute(0, 2, 3, 1) # (B, C, H, W) -> (B, H, W, C)
-        latent = z
+        quantized_with_grad, quantized, embedding_indices = self.codebook(latent)
 
-        z, embedding_indices = self.codebook(z)
-        quantized = z
-
-        z = z.permute(0, 3, 1, 2) # (B, H, W, C) -> (B, C, H, W)
-
-        x_hat = self.decoder(z)
+        x_hat = self.decoder(quantized_with_grad)
 
         return x_hat, quantized, latent, embedding_indices
