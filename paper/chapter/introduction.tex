@@ -1,64 +1,20 @@
 \chapter{Introduction}
 
-Natum mucius vim id. Tota detracto ei sed, id sumo sapientem sed. Vim in nostro latine gloriatur, cetero vocent vim id. Erat sanctus eam te, nec assueverit necessitatibus ex, id delectus fabellas has.
+In recent years, Variational Autoencoders (VAEs) have emerged as a powerful tool in the field of deep learning and generative modeling. VAEs offer a principled framework for capturing complex data distributions and have found applications in diverse domains, including image generation, anomaly detection, and natural language processing. However, like any other machine learning model, VAEs have their own set of limitations and challenges.
 
-Lorem ipsum dolor sit amet, iisque feugait quo eu, sed vocent commodo aliquid an. Minim suavitate dissentiet te eos. Dicunt eirmod adolescens no sed. Esse nonumy melius an mel, mei ut maiorum luptatum. Eu eum iudico scripta, movet option assueverit mel ex, mea at odio noluisse efficiendi. Ad vidisse atomorum conceptam quo, saepe volumus philosophia eos eu, delenit conceptam no usu.
+One of the key challenges in training VAEs is achieving a balance between the reconstruction accuracy and the effectiveness of the learned latent representations. Traditional VAEs are typically trained to optimize a single objective, which often results in suboptimal performance on complex datasets with multiple sources of variation. In real-world scenarios, data often exhibits multiple underlying structures and tasks, and capturing these structures with a single VAE can be a challenging endeavor.
 
-Vituperata sadipscing deterruisset ei mel, at qui nonumy blandit. Delectus dissentiet et sea, ut rebum regione numquam nam, cum ex augue constituto. Te per nihil semper. Posse voluptatum qui an, aliquando democritum disputando id quo, everti perpetua cu vim. Laudem fabellas mei an, eu reprimique quaerendum usu. Quidam prompta fabellas ne est.
+Multitask learning, on the other hand, is a paradigm that aims to improve model generalization and performance by simultaneously learning multiple related tasks. The idea of combining VAEs with multitask learning has recently gained attention in the machine learning community. Multitask Variational Autoencoders (MT-VAEs) extend the VAE framework to enable the joint learning of multiple latent variable spaces, each dedicated to a specific task or source of variation. This approach holds the promise of not only improving the reconstruction accuracy of VAEs but also enhancing their interpretability and generalization capabilities.
 
-\section{Background}
+This research endeavors to investigate the effectiveness of MT-VAEs and their potential to outperform traditional VAEs in terms of data generation, representation learning, and task-specific performance. By conducting a comprehensive analysis and experimentation, we aim to shed light on the advantages and limitations of MT-VAEs and provide insights into the conditions under which they excel.
 
-Lorem ipsum dolor sit amet, cu graecis propriae sea. Eam feugiat docendi an, ei scripta blandit pri. Nonumes delicata reprimique nam ut. Eu suas alterum concludaturque est, ferri mucius sensibus id sed~\cite{raftAlg}.
+\section{Research Question}
 
-We can do glossary for acronymes and abriviations also: \gls{saas}. As you see the first time it is used, the full version is used, but the second time we use \gls{saas} the short form is used. It is also a link to the lookup.
+The central research question addressed in this thesis is as follows:
+
+\begin{quote}
+\textit{Can Multitask Variational Autoencoders (MT-VAEs) enhance the performance and versatility of Variational Autoencoders (VAEs) by jointly optimizing multiple tasks, and under what conditions do MT-VAEs demonstrate superior performance in comparison to traditional VAEs?}
+\end{quote}
 
 
-\subsection{Listings}
-You can do listings, like in Listing~\ref{ListingReference}
-\begin{lstlisting}[caption={[Short caption]Look at this cool listing. Find the rest in Appendix~\ref{Listing}},label=ListingReference]
-$ java -jar myAwesomeCode.jar
-\end{lstlisting}
 
-You can also do language highlighting for instance with Golang:
-And in line~\ref{LineThatDoesSomething} of Listing~\ref{ListingGolang} you can see that we can ref to lines in listings.
-
-\begin{lstlisting}[caption={Hello world in Golang},label=ListingGolang,escapechar=|]
-package main
-
-import "fmt"
-
-func main() {
-    fmt.Println("hello world") |\label{LineThatDoesSomething}|
-}
-
-\end{lstlisting}
-
-\subsection{Figures}
-
-Example of a centred figure
-\begin{figure}[H]
-    \centering
-    \includegraphics[scale=0.5]{figures/Flowchart}
-    \caption{Caption for flowchart}
-  	\medskip 
-	\hspace*{15pt}\hbox{\scriptsize Credit: Acme company makes everything \url{https://acme.com/}}
-    \label{FlowchartFigure}
-\end{figure}
-
-\subsection{Tables}
-
-We can also do tables. Protip: use \url{https://www.tablesgenerator.com/} for generating tables.
-\begin{table}[H]
-\centering
-\caption{Caption of table}
-\label{TableLabel}
-\begin{tabular}{|l|l|l|}
-\hline
-Title1 & Title2 & Title3 \\ \hline
-data1  & data2  & data3  \\ \hline
-\end{tabular}
-\end{table}
-
-\subsection{\gls{git}}
-
-\gls{git} is fun, use it!
