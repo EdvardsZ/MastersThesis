@@ -32,7 +32,7 @@ class VectorQuantizer(nn.Module):
         encodings = F.one_hot(indices, num_classes=self.num_embeddings).to(flattened.device).float()
         # encodings.shape = (B * H_f * W_f, num_embeddings)
         quantized = torch.matmul(encodings.float(), self.embeddings.weight)
-        # quantized.shape = (B, E, H_f, W_f, E)
+        # quantized.shape = (B * H_f * W_f, E)
         # -----------------------
 
         # 4. Reshape back
@@ -48,6 +48,26 @@ class VectorQuantizer(nn.Module):
         # -----------------------
         
         return quantized_with_grad, quantized, indices
+    
+    def quantize_from_indices(self, indices):
+
+        # 1. Index from the "codebook"
+        # -----------------------
+        encodings = F.one_hot(indices, num_classes=self.num_embeddings).to(indices.device).float()
+        # encodings.shape = (B * H_f * W_f, num_embeddings)
+        quantized = torch.matmul(encodings.float(), self.embeddings.weight)
+        # quantized.shape = (B, E, H_f, W_f, E)
+        # -----------------------
+
+        print("quantized.shape = ", quantized.shape)
+
+        # 2. Reshape back
+        # -----------------------
+        quantized = quantized.reshape((100, 64, 7, 7))
+        # quantized.shape = (B, E, H_f, W_f)
+        # -----------------------
+
+        return quantized
     
     def get_code_indices(self, flattened):
         # a^2

@@ -30,3 +30,8 @@ class VQVAE(nn.Module):
         x_hat = self.decoder(quantized_with_grad)
 
         return x_hat, quantized, latent, embedding_indices
+    
+    def reconstruct_from_indices(self, indices):
+        quantized = self.codebook.quantize_from_indices(indices)
+        x_hat = self.decoder(quantized)
+        return x_hat
