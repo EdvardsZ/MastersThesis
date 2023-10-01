@@ -6,7 +6,7 @@ from models.layers import VectorQuantizer
 from loss import VQLoss
 
 class VQVAE(nn.Module):
-    def __init__(self, in_channels, num_embeddings, embedding_dim):
+    def __init__(self, num_embeddings, embedding_dim, in_channels = 1):
         super(VQVAE, self).__init__()
         self.in_channels = in_channels
         self.embedding_dim = embedding_dim
