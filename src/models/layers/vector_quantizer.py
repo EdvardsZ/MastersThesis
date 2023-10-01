@@ -58,9 +58,6 @@ class VectorQuantizer(nn.Module):
         quantized = torch.matmul(encodings.float(), self.embeddings.weight)
         # quantized.shape = (B, E, H_f, W_f, E)
         # -----------------------
-
-        print("quantized.shape = ", quantized.shape)
-
         # 2. Reshape back
         # -----------------------
         quantized = quantized.reshape((100, 64, 7, 7))
