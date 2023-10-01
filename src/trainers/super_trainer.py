@@ -21,5 +21,5 @@ class SuperTrainer(pl.Trainer):
         super().fit(model, train_dataloader, val_dataloader)
 
     def save_model_checkpoint(self):
-        super().save_checkpoint('checkpoints/' + self.logger_name + '_' + self._epochs  + '.ckpt')
+        super().save_checkpoint('checkpoints/' + self.logger_name + '_' + str(self._epochs)  + '.ckpt')
     
