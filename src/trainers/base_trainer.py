@@ -6,13 +6,19 @@ class BaseTrainer(pl.LightningModule, ABC):
     def __init__(self, model):
         super(BaseTrainer, self).__init__()
         self.model = model
-        
+
+
+    # override if needed  
     def forward(self, x, x_cond, y):
         return self.model(x, x_cond, y)
     
-    @abstractmethod
+    # override if needed
     def step(self, batch, batch_idx, mode='train'):
-        pass
+        x, x_cond, y = batch
+        x_hat, *other_outputs = self(x, x_cond, y)
+        loss = self.model.loss(x, x_hat, *other_outputs)
+        self.log_dict({f"{mode}_{key}": val.item() for key, val in loss.items()}, sync_dist=True, prog_bar=True)
+        return loss['loss']
     
     def training_step(self, batch, batch_idx):
         return self.step(batch, batch_idx, 'train')

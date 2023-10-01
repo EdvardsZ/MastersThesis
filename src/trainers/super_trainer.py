@@ -6,7 +6,7 @@ import pytorch_lightning as pl
 class SuperTrainer(pl.Trainer):
     def __init__(self, logger_name: str, max_epochs = int, devices = [5]):
         self.logger_name  = logger_name
-        self.max_epochs = max_epochs
+        self._epochs = max_epochs
         logger = TensorBoardLogger('logs/', name=logger_name)
         checkpoint_callback = ModelCheckpoint(
             monitor='val_loss',
@@ -20,6 +20,6 @@ class SuperTrainer(pl.Trainer):
     def fit(self, model, train_dataloader, val_dataloader):
         super().fit(model, train_dataloader, val_dataloader)
 
-    def save_checkpoint(self):
-        super().save_checkpoint('checkpoints/' + self.logger_name + '_' + self.max_epochs  + '.ckpt')
+    def save_model_checkpoint(self):
+        super().save_checkpoint('checkpoints/' + self.logger_name + '_' + self._epochs  + '.ckpt')
     
