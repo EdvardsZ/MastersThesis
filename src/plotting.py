@@ -40,6 +40,36 @@ def plot_samples_with_reconstruction(model, data, n=6):
     plt.show()
 
 
+def plot_samples_with_reconstruction_and_indices(model, data, n=6):
+    # plot n images and their reconstruction
+    model.eval()
+
+    output = model(data[:n][0], data[:n][1], data[:n][2])
+    indices = output[3].reshape(-1, 1, 7, 7)
+
+    #make the plot smaller
+    plt.figure(figsize=(n, 3))
+
+    for i in range(n):
+        image = data[0][i].detach().cpu().numpy().reshape(28, 28)
+        indice_image = indices[i][0].detach().cpu().numpy().reshape(7, 7)
+        reconstruction = output[0][i].detach().cpu().numpy().reshape(28, 28)
+
+        # axis off
+        plt.subplot(3, n, i + 1)
+        plt.imshow(image)
+        plt.axis('off')
+        plt.subplot(3, n, i + 1 + n)
+        plt.imshow(indice_image)
+        plt.axis('off')
+        plt.subplot(3, n, i + 1 + 2 *n)
+        plt.imshow(reconstruction)
+        plt.axis('off')
+
+
+    plt.show()
+
+
 def plot_latent_images(model, n=20):
     # plot n*n images in the latent space
     model.eval()
