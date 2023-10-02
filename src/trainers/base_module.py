@@ -2,23 +2,17 @@ import pytorch_lightning as pl
 import torch.optim as optim
 from abc import ABC, abstractmethod
 
-class BaseTrainer(pl.LightningModule, ABC):
+class BaseModule(pl.LightningModule, ABC):
     def __init__(self, model):
-        super(BaseTrainer, self).__init__()
+        super(BaseModule, self).__init__()
         self.model = model
 
-
-    # override if needed  
+    @abstractmethod
     def forward(self, x, x_cond, y):
-        return self.model(x, x_cond, y)
-    
-    # override if needed
+        pass
+    @abstractmethod
     def step(self, batch, batch_idx, mode='train'):
-        x, x_cond, y = batch
-        x_hat, *other_outputs = self(x, x_cond, y)
-        loss = self.model.loss(x, x_hat, *other_outputs)
-        self.log_dict({f"{mode}_{key}": val.item() for key, val in loss.items()}, sync_dist=True, prog_bar=True)
-        return loss['loss']
+        pass
     
     def training_step(self, batch, batch_idx):
         return self.step(batch, batch_idx, 'train')

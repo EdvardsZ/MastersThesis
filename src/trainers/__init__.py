@@ -1,2 +1,2 @@
-from .base_trainer import *
+from .base_module import *
 from .super_trainer import *

@@ -1,6 +1,6 @@
+model_name: vq_vae
 model_params:
   num_embeddings: 128
   embedding_dim: 64
 trainer_params:
-  model_name: "vq_vae"
-  max_epochs: 1
+  max_epochs: 50
