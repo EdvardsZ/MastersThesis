@@ -19,6 +19,9 @@ def plot_samples_with_reconstruction(model, data, n=6):
 
     output = model(data[:n][0], data[:n][1], data[:n][2])
 
+    #make the plot smaller
+    plt.figure(figsize=(n, 2))
+
     for i in range(n):
         image = data[0][i].detach().cpu().numpy().reshape(28, 28)
         if isinstance(output[0], list):
@@ -26,11 +29,14 @@ def plot_samples_with_reconstruction(model, data, n=6):
         else:
             reconstruction = output[0][i].detach().cpu().numpy().reshape(28, 28)
 
-
+        # axis off
         plt.subplot(2, n, i + 1)
         plt.imshow(image)
+        plt.axis('off')
         plt.subplot(2, n, i + 1 + n)
         plt.imshow(reconstruction)
+        plt.axis('off')
+
     plt.show()
 
 
