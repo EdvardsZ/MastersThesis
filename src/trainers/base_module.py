@@ -24,6 +24,6 @@ class BaseModule(pl.LightningModule, ABC):
         return self.step(batch, batch_idx, 'test')
     
     def configure_optimizers(self):
-        return optim.Adam(self.model.parameters(), lr=1e-3)
+        return optim.AdamW(self.model.parameters(), lr=1e-3)
 
     

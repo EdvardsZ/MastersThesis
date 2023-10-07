@@ -1,8 +1,8 @@
 import torch
 import torch.nn as nn
-from models.encoders import VQEncoder
-from models.decoders import VQDecoder
-from models.layers import VectorQuantizer
+from models.encoders import VQEncoder, SimpleVQEncoder
+from models.decoders import VQDecoder, SimpleVQDecoder
+from models.layers import VectorQuantizer, SimpleVectorQuantizer, NewVectorQuantizer
 from loss import VQLoss
 
 class VQVAE(nn.Module):
@@ -12,11 +12,11 @@ class VQVAE(nn.Module):
         self.embedding_dim = embedding_dim
         self.num_embeddings = num_embeddings
 
-        self.encoder = VQEncoder(in_channels, embedding_dim)
+        self.encoder = SimpleVQEncoder(in_channels, embedding_dim)
 
-        self.codebook = VectorQuantizer(num_embeddings, embedding_dim)
+        self.codebook = NewVectorQuantizer(num_embeddings, embedding_dim)
 
-        self.decoder = VQDecoder(in_channels, embedding_dim)
+        self.decoder = SimpleVQDecoder(in_channels, embedding_dim)
 
         self.loss = VQLoss()
 

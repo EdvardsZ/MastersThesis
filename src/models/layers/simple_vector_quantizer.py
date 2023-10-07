@@ -43,3 +43,20 @@ class SimpleVectorQuantizer(nn.Module):
 
         encoding_indices = torch.argmin(distances, dim=1)
         return encoding_indices
+    
+    def quantize_from_indices(self, indices, batch_size):
+        # indices.shape = (B * H_f * W_f)
+        # 1. Index from the "codebook"
+        # -----------------------
+        encodings = F.one_hot(indices, num_classes=self.num_embeddings).to(indices.device).float()
+        # encodings.shape = (B * H_f * W_f, num_embeddings)
+        quantized = torch.matmul(encodings.float(), self.embeddings.t())
+        # quantized.shape = (B, E, H_f, W_f, E)
+        # -----------------------
+        # 2. Reshape back
+        # -----------------------
+        quantized = quantized.reshape((batch_size, self.embedding_dim, 7, 7))
+        # quantized.shape = (B, E, H_f, W_f)
+        # -----------------------
+
+        return quantized
