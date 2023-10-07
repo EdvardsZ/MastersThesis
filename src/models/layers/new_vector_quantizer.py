@@ -52,7 +52,6 @@ class NewVectorQuantizer(nn.Module):
         # input.shape = [B, H ,W]
         quantize = self.embed_code(indices)
         # quantize.shape = embed_ind.shape = [B, H, W, E]
-        print(quantize.shape)
         quantize = quantize.permute(0, 3, 1, 2)
 
         return quantize
