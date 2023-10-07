@@ -16,6 +16,6 @@ class VQLoss(nn.Module):
 
         vq_loss = commitment_loss * self.beta + embeddding_loss
 
-        loss = recon_loss + 2 * vq_loss
+        loss = recon_loss + vq_loss
         
         return { "loss": loss, "recon_loss": recon_loss, "vq_loss": vq_loss, "commitment_loss": commitment_loss, "embeddding_loss": embeddding_loss }
