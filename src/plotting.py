@@ -91,7 +91,7 @@ def plot_latent_images(model, n=20):
         for j in range(n):
             z = normal_distribution.icdf(torch.tensor([grid_x[i], grid_y[j]]))
             z = z.view(1, -1).float()
-            image = model.decode(z).detach().cpu().numpy().reshape(image_width, image_height)
+            image = model.model.decode(z).detach().cpu().numpy().reshape(image_width, image_height)
             full_image[i * image_width: (i + 1) * image_width, j * image_height: (j + 1) * image_height] = image
 
     plt.imshow(full_image)
