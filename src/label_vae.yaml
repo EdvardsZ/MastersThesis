@@ -1,0 +1,6 @@
+model_name: label_vae
+model_params:
+  hidden_dims: [128, 256]
+  latent_dim: 16
+trainer_params:
+  max_epochs: 50
