@@ -12,12 +12,10 @@ class VectorQuantizer(nn.Module):
         # This is basically a matrix num_embeddings x embedding_dim
 
     def forward(self, x):
-        # x.shape = (B, E, H_f, W_f)
-        input_shape = x.shape
 
-        # 1. Reshape
-        # -----------------------
-        flattened = x.reshape(-1, self.embedding_dim)
+        input_permuted = x.permute(0, 2, 3, 1)
+        #(B ,H_f, W_f, E)
+        flattened = input_permuted.reshape(-1, self.embedding_dim)
         # flattened.shape = (B * H_f * W_f, E)
         # -----------------------
 
@@ -34,13 +32,12 @@ class VectorQuantizer(nn.Module):
         quantized = torch.matmul(encodings.float(), self.embeddings.weight)
         # quantized.shape = (B * H_f * W_f, E)
         # -----------------------
-
         # 4. Reshape back
         # -----------------------
-        quantized = quantized.reshape(input_shape)
-        # quantized.shape = (B, E, H_f, W_f)
+        quantized = quantized.reshape(input_permuted.shape)
+        # quantized.shape = (B, H_f, W_f, E)
         # -----------------------
-
+        quantized = quantized.permute(0, 3, 1, 2)
         # 5. Copy the gradient
         # -----------------------
         quantized_with_grad = x + (quantized - x).detach()
@@ -56,12 +53,9 @@ class VectorQuantizer(nn.Module):
         encodings = F.one_hot(indices, num_classes=self.num_embeddings).to(indices.device).float()
         # encodings.shape = (B * H_f * W_f, num_embeddings)
         quantized = torch.matmul(encodings.float(), self.embeddings.weight)
-        # quantized.shape = (B, E, H_f, W_f, E)
+        # quantized.shape = (B, H_f, W_f, E)
         # -----------------------
-        # 2. Reshape back
-        # -----------------------
-        quantized = quantized.reshape((batch_size, self.embedding_dim, 7, 7))
-        # quantized.shape = (B, E, H_f, W_f)
+        quantized = quantized.permute(0, 3, 1, 2)
         # -----------------------
 
         return quantized
