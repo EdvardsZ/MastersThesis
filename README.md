@@ -4,6 +4,4 @@
 
 2. Try multiple tasks
 
-3. FashionMNIST,
-
-7. Check if somehow the image is not correctly shown
+3. FashionMNIST
