@@ -1,4 +1,7 @@
 model_name: vae
+data_params:
+  dataset: MNIST
+  batch_size: 128
 model_params:
   hidden_dims: [128, 256]
   latent_dim: 16
