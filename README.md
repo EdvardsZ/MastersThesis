@@ -6,8 +6,8 @@
 
 3. FashionMNIST
 
-4. Fix other vector quantizer layers 
-
 5. Create multi task VQ-VAE
 
 6. Reduce code dublication
+
+7. Make a visualization for VQVAE

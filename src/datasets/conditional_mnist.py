@@ -1,12 +1,18 @@
 import torch
 from torch.utils.data import Dataset
-from torchvision.datasets import MNIST
+from torchvision.datasets import MNIST, FashionMNIST
 from torchvision import transforms
 
 class ConditionalMNIST(Dataset):
 
-    def __init__(self, root, train=True, transform=None, target_transform=None, download=False):
-        self.mnist = MNIST(root, train, transform, target_transform, download)
+    def __init__(self, root, train=True, transform=None, target_transform=None, download=False, dataset = "MNIST"):
+        if dataset == "MNIST":
+            self.mnist = MNIST(root, train, transform, target_transform, download)
+        else:
+            if dataset == "FashionMNIST":
+                self.mnist = FashionMNIST(root, train, transform, target_transform, download)
+            else:
+                raise ValueError("dataset must be MNIST or FashionMNIST")
         self.data = self.mnist.data
 
     def __getitem__(self, index):
@@ -39,15 +45,17 @@ def get_observation_pixels():
                 obs_y.append(j)
         return obs_x, obs_y
 
-def load_mnist(BATCH_SIZE):
+def load_dataset(data_config):
+    BATCH_SIZE = data_config['batch_size']
+    dataset = data_config['dataset']
 
     preprocess = transforms.Compose([
         transforms.ToTensor(),
         transforms.Lambda(lambda x: x - 0.5)
     ])
 
-    train_set = ConditionalMNIST(root='data', train=True, download=True, transform=preprocess)
-    test_val_set = ConditionalMNIST(root='data', train=False, download=True, transform=preprocess)
+    train_set = ConditionalMNIST(root='data', train=True, download=True, transform=preprocess, dataset = dataset)
+    test_val_set = ConditionalMNIST(root='data', train=False, download=True, transform=preprocess, dataset = dataset)
     # split test and validation set
     test_size = 0.5
     test_set_size = int(len(test_val_set) * test_size)

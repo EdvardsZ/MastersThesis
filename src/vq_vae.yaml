@@ -1,4 +1,7 @@
 model_name: vq_vae
+data_params:
+  dataset: MNIST
+  batch_size: 128
 model_params:
   num_embeddings: 128
   embedding_dim: 16
