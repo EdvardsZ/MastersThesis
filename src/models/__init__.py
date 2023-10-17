@@ -7,7 +7,7 @@ from .pixel_mdvae import *
 from .vq_vae import *
 from .simple_vq_vae import *
 
-MODELS_LIST = [ VQVAE]
+MODELS_LIST = [ VQVAE, VAE]
 
 
 def get_model(model_name):

@@ -1,4 +1,4 @@
-model_name: vq_vae
+model_name: VQVAE
 data_params:
   dataset: MNIST
   batch_size: 128

@@ -21,7 +21,7 @@ class VQVAE(nn.Module):
         self.loss = VQLoss()
 
 
-    def forward(self, x):
+    def forward(self, x, x_cond, y):
         # Input: (B, C, H, W)
         latent = self.encoder(x)
 
