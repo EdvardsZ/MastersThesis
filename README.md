@@ -4,6 +4,8 @@
 
 2. Try multiple tasks
 
+3. Try Random conditioning
+
 3. FashionMNIST
 
 5. Create multi task VQ-VAE
