@@ -2,11 +2,11 @@
 from .base_module import BaseModule
 from models import get_model
 
-class ModelTrainer(BaseModule):
+class VAEModule(BaseModule):
     def __init__(self, model_params, model_name):
         model_class = get_model(model_name)
         model = model_class(model_params)
-        super(ModelTrainer, self).__init__(model)
+        super(VAEModule, self).__init__(model)
         self.save_hyperparameters()
         
     def forward(self, x, x_cond, y):
@@ -24,4 +24,4 @@ class ModelTrainer(BaseModule):
     
     def load_model_checkpoint(model_name):
         path = ('checkpoints/' + model_name + '.ckpt')
-        return ModelTrainer.load_from_checkpoint(path)
+        return VAEModule.load_from_checkpoint(path)
