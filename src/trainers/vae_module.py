@@ -5,7 +5,7 @@ from models import get_model
 class VAEModule(BaseModule):
     def __init__(self, model_params, model_name):
         model_class = get_model(model_name)
-        model = model_class(model_params)
+        model = model_class(**model_params)
         super(VAEModule, self).__init__(model)
         self.save_hyperparameters()
         
