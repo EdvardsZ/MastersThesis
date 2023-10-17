@@ -13,3 +13,5 @@
 6. Reduce code dublication
 
 7. Make a visualization for VQVAE
+
+8. Maybe cifar dataset?
