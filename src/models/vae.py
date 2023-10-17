@@ -4,21 +4,31 @@ from models.decoders import Decoder
 from models.encoders import Encoder
 import torch.nn.functional as F
 from loss import VAELoss, SoftAdaptVAELoss
+from models.helpers import sampling
 
 
 class VAE(nn.Module):
     def __init__(self, kernel_size=3, hidden_dims = [128, 256], latent_dim=2):
         super(VAE, self).__init__()
-        self.encoder = Encoder()
-        self.decoder = Decoder()
+        self.encoder = Encoder(latent_dim=latent_dim)
+        self.decoder = Decoder(latent_dim=latent_dim)
+
+        self.fc_mu = nn.LazyLinear(latent_dim)
+        self.fc_var = nn.LazyLinear(latent_dim)
         self.latent_dim = latent_dim
 
         #self.loss = SoftAdaptVAELoss(n = 100, variant=["Normalized", "Loss Weighted"])
         self.loss = VAELoss(weight_kl=1.0)
         
     def forward(self, x, x_cond, y):
-        inputs = x
-        z_mean, z_log_var, z = self.encoder(inputs)
+        
+        feature_map = self.encoder(x)
+        flattened = nn.Flatten()(feature_map)
+
+        z_mean = self.fc_mu(flattened)
+        z_log_var = self.fc_var(flattened)
+        z = sampling(z_mean, z_log_var)
+
         output = self.decoder(z)
         return output, z_mean, z_log_var, z
     

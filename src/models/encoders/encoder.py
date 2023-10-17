@@ -30,19 +30,9 @@ class Encoder(nn.Module):
             if stride == 2:
                 feature_map_size = tuple(map(lambda x: (x + 1) // 2, feature_map_size))
 
-        modules.append(nn.Flatten())
-
-        resulting_size = in_channels * feature_map_size[0] * feature_map_size[1]
 
         self.encoder = nn.Sequential(*modules)
 
-        self.fc_mu = nn.Linear(resulting_size, latent_dim)
-        self.fc_var = nn.Linear(resulting_size, latent_dim)
-
     def forward(self, inputs):
-        x = self.encoder(inputs)
-        z_mean = self.fc_mu(x)
-        z_log_var = self.fc_var(x)
-        z = sampling(z_mean, z_log_var)
+        return self.encoder(inputs)
         
-        return z_mean, z_log_var, z
