@@ -2,6 +2,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 from datasets import get_observation_pixels
 import torch
+import torch.nn.functional as F
 
 
 def plot_sample_with_conditioned_pixels(example):
@@ -97,4 +98,37 @@ def plot_latent_images(model, n=20):
     plt.imshow(full_image)
     plt.show()
 
+
+
+def generate_indices_and_reconstruct(model, count = 10):
+    vae = model.vae
+    sample = torch.Tensor(count, 1, 7, 7)
+    sample.fill_(0)
+    #Generating images pixel by pixel
+    for i in range(7):
+        for j in range(7):
+            out = model(sample)
+            probs = F.softmax(out[:,:,i,j], dim=-1).data
+            sample[:,:,i,j] = torch.multinomial(probs, 1).float()
+    # plot the images
+    #test = sample.view(-1)
+    test = sample.long()
+
+    # from {B, 1, 7, 7}
+    # 
+    # {B 7, 7}
+    test = test.squeeze(1)
     
+    x_hat = vae.model.reconstruct_from_indices(test, count)
+
+    #FIGURE SIZE
+    plt.figure(figsize=(10, 2))
+    for i in range(count):
+        # show both codes and reconstructions
+        plt.subplot(2, count, i + 1)
+        plt.imshow(test[i].cpu().numpy())
+        plt.axis('off')
+
+        plt.subplot(2, count, i + 1 + count)
+        plt.imshow(x_hat[i][0].cpu().numpy())
+        plt.axis('off')
