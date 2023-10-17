@@ -1,9 +1,9 @@
-from pytorch_lightning.callbacks import ModelCheckpoint
-from pytorch_lightning.loggers import TensorBoardLogger
-import pytorch_lightning as pl
+from lightning.pytorch.callbacks import ModelCheckpoint
+from lightning.pytorch.loggers import TensorBoardLogger
+import lightning as L
 
 
-class SuperTrainer(pl.Trainer):
+class SuperTrainer(L.Trainer):
     def __init__(self, model_name: str, max_epochs: int, devices = [5]):
         self.model_name  = model_name
 

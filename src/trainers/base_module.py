@@ -1,8 +1,8 @@
-import pytorch_lightning as pl
 import torch.optim as optim
 from abc import ABC, abstractmethod
+import lightning as L
 
-class BaseModule(pl.LightningModule, ABC):
+class BaseModule(L.LightningModule, ABC):
     def __init__(self, model):
         super(BaseModule, self).__init__()
         self.model = model
