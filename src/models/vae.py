@@ -30,9 +30,9 @@ class VAE(nn.Module):
         feature_map = self.latentToFeatureMap(z)
 
         output = self.decoder(feature_map)
-        
+
         return output, z_mean, z_log_var, z
     
     def decode(self, z):
-        decoder_input = self.decoder_input(z)
-        return self.decoder(decoder_input)
+        feature_map = self.latentToFeatureMap(z)
+        return self.decoder(feature_map)
