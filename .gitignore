@@ -6,3 +6,4 @@ __pycache__
 samples
 mnist_data
 *.out
+src/wandb

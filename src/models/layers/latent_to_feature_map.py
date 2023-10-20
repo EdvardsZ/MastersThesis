@@ -6,9 +6,8 @@ class LatentToFeatureMap(nn.Module):
         if input_size is None:
             input_size = latent_dim
 
-
         self.decoder_input = nn.Sequential(
-            nn.Linear(latent_dim, num_channels * feature_map_size * feature_map_size),
+            nn.Linear(input_size, num_channels * feature_map_size * feature_map_size),
             nn.ReLU(),
             nn.BatchNorm1d(num_channels * feature_map_size * feature_map_size),
             nn.Unflatten(1, (num_channels, feature_map_size, feature_map_size))
