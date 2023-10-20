@@ -17,13 +17,6 @@ class Decoder(nn.Module):
         res_dim = (image_size[1] // 2**feature_size)
         resulting_size = res_dim**2 * hidden_dims[0]
 
-        self.decoder_input = nn.Sequential(
-            nn.Linear(self.latent_dim, resulting_size),
-            nn.ReLU(),
-            nn.BatchNorm1d(resulting_size),
-            nn.Unflatten(1, (hidden_dims[0], res_dim,  res_dim))
-        )
-
         modules = []
 
         for i in range(len(hidden_dims)-1):
@@ -53,7 +46,6 @@ class Decoder(nn.Module):
         return
     
     def forward(self, z):
-        input = self.decoder_input(z)
-        output = self.decoder_output(input)
+        output = self.decoder_output(z)
 
         return output
