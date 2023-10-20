@@ -3,11 +3,10 @@ import torch
 from models.helpers import sampling
 
 class Encoder(nn.Module):
-    def __init__(self, image_size=(1, 28, 28), hidden_dims=[32, 64, 128, 256], latent_dim=2):
+    def __init__(self, image_size=(1, 28, 28), hidden_dims=[32, 64, 128, 256]):
         super(Encoder, self).__init__()
 
         self.image_size = image_size
-        self.latent_dim = latent_dim
         self.hidden_dims = hidden_dims
         
         in_channels = self.image_size[0]

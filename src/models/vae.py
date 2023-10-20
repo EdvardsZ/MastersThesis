@@ -5,34 +5,26 @@ from models.encoders import Encoder
 import torch.nn.functional as F
 from loss import VAELoss, SoftAdaptVAELoss
 from models.helpers import sampling
-from models.layers import LatentLayer, LatentToFeatureMap
+from models.layers import EncoderWithLatentLayer, DecoderWithLatentLayer
 
 
 class VAE(nn.Module):
     def __init__(self, kernel_size=3, hidden_dims = [128, 256], latent_dim=2):
         super(VAE, self).__init__()
-        self.encoder = Encoder(latent_dim=latent_dim)
+        self.encoder = EncoderWithLatentLayer(latent_dim=latent_dim)
 
-        self.latent = LatentLayer(latent_dim)
-        self.latentToFeatureMap = LatentToFeatureMap(latent_dim=latent_dim, feature_map_size=7, num_channels=256)
-
-        self.decoder = Decoder(latent_dim=latent_dim)
+        self.decoder = DecoderWithLatentLayer(latent_dim=latent_dim)
 
         #self.loss = SoftAdaptVAELoss(n = 100, variant=["Normalized", "Loss Weighted"])
         self.loss = VAELoss(weight_kl=1.0)
         
     def forward(self, x, x_cond, y):
 
-        feature_map = self.encoder(x)
+        z, z_mean, z_log_var = self.encoder(x)
 
-        z, z_mean, z_log_var = self.latent(feature_map)
-
-        feature_map = self.latentToFeatureMap(z)
-
-        output = self.decoder(feature_map)
+        output = self.decoder(z)
 
         return output, z_mean, z_log_var, z
     
     def decode(self, z):
-        feature_map = self.latentToFeatureMap(z)
-        return self.decoder(feature_map)
+        return self.decoder(z)

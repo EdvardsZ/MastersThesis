@@ -1,8 +1,11 @@
 import torch.nn as nn
 
 class LatentToFeatureMap(nn.Module):
-    def __init__(self, latent_dim, feature_map_size, num_channels):
+    def __init__(self, latent_dim, feature_map_size, num_channels, input_size=None):
         super(LatentToFeatureMap, self).__init__()
+        if input_size is None:
+            input_size = latent_dim
+
 
         self.decoder_input = nn.Sequential(
             nn.Linear(latent_dim, num_channels * feature_map_size * feature_map_size),

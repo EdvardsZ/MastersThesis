@@ -3,7 +3,7 @@ import torch.nn as nn
 from models.layers import ResidualLayer
 
 class VQEncoder(nn.Module):
-    def __init__(self, in_channels, embedding_dim, hidden_dims = [128, 256], stride = 2):
+    def __init__(self, in_channels, embedding_dim , hidden_dims = [128, 256]):
         super(VQEncoder, self).__init__()
         self.in_channels = in_channels
         self.hidden_dims = hidden_dims
