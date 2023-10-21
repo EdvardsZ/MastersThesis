@@ -101,10 +101,11 @@ def plot_latent_images(model, n=20, save_name=None):
             image = model.model.decode(z).detach().cpu().numpy().reshape(image_width, image_height)
             full_image[i * image_width: (i + 1) * image_width, j * image_height: (j + 1) * image_height] = image
 
+    
     plt.imshow(full_image)
 
     if save_name is not None:
-        plt.savefig("assets/generated/" + save_name + ".png")
+        plt.savefig("assets/latent/" + save_name + ".png")
 
     plt.show()
 
