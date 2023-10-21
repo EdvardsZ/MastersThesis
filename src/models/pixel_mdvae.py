@@ -19,12 +19,13 @@ class PixelMDVAE(nn.Module):
         self.loss = VAELoss(loss_type='double')
 
     def forward(self, x, x_cond, y):
-        z_mean, z_log_var, z = self.encoder(x)
+        z, z_mean, z_log_var = self.encoder(x)
 
         x_cat = concat_latent_with_cond(z, x_cond)
 
         output_0 = self.decoder(z)
         output_1 = self.pixel_decoder(x_cat)
+
         return [output_0, output_1], z_mean, z_log_var, z
     
     def decode(self, z):
