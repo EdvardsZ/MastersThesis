@@ -14,7 +14,7 @@ def plot_sample_with_conditioned_pixels(example):
     plt.show()
 
 
-def plot_samples_with_reconstruction(model, data, n=6):
+def plot_samples_with_reconstruction(model, data, n=6, save_name=None):
     # plot n images and their reconstruction
     model.eval()
 
@@ -38,10 +38,13 @@ def plot_samples_with_reconstruction(model, data, n=6):
         plt.imshow(reconstruction)
         plt.axis('off')
 
+    if save_name is not None:
+        plt.savefig("assets/reconstructions/" + save_name + ".png")
+
     plt.show()
 
 
-def plot_samples_with_reconstruction_and_indices(model, data, n=6):
+def plot_samples_with_reconstruction_and_indices(model, data, n=6, save_name=None):
     # plot n images and their reconstruction
     model.eval()
 
@@ -67,11 +70,14 @@ def plot_samples_with_reconstruction_and_indices(model, data, n=6):
         plt.imshow(reconstruction)
         plt.axis('off')
 
+    if save_name is not None:
+        plt.savefig("assets/reconstructions/" + save_name + ".png")
+
 
     plt.show()
 
 
-def plot_latent_images(model, n=20):
+def plot_latent_images(model, n=20, save_name=None):
     # plot n*n images in the latent space
     model.eval()
 
@@ -96,11 +102,15 @@ def plot_latent_images(model, n=20):
             full_image[i * image_width: (i + 1) * image_width, j * image_height: (j + 1) * image_height] = image
 
     plt.imshow(full_image)
+
+    if save_name is not None:
+        plt.savefig("assets/generated/" + save_name + ".png")
+
     plt.show()
 
 
 
-def generate_indices_and_reconstruct(model, count = 10):
+def generate_indices_and_reconstruct(model, count = 10, save_name=None):
     vae = model.vae
     sample = torch.Tensor(count, 1, 7, 7)
     sample.fill_(0)
@@ -132,3 +142,8 @@ def generate_indices_and_reconstruct(model, count = 10):
         plt.subplot(2, count, i + 1 + count)
         plt.imshow(x_hat[i][0].cpu().numpy())
         plt.axis('off')
+
+    if save_name is not None:
+        plt.savefig("assets/generated/" + save_name + ".png")
+
+    plt.show()

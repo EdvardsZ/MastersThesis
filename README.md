@@ -14,6 +14,8 @@
 
 7. Make a visualization for VQVAE
 
-8. Maybe cifar dataset?
+8. Maybe cifar, CelebA dataset?
 
 9. Make sure all params are actually passed from config not hard coded
+
+10. Load the lowest loss model

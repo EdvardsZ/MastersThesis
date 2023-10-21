@@ -2,7 +2,7 @@ import torch
 import torch.nn as nn
 from models.encoders import SimpleVQEncoder
 from models.decoders import SimpleVQDecoder
-from models.layers import SimpleVectorQuantizer, VectorQuantizer
+from models.layers import SimpleVectorQuantizer, VectorQuantizer, NewVectorQuantizer
 from loss import VQLoss
 import torch.nn.functional as F
 
@@ -12,7 +12,7 @@ class SimpleVQVAE(nn.Module):
         self.encoder = SimpleVQEncoder(embedding_dim)
         self.decoder = SimpleVQDecoder(embedding_dim)
 
-        self.vector_quantizer = SimpleVectorQuantizer(num_embeddings, embedding_dim)
+        self.vector_quantizer = NewVectorQuantizer(num_embeddings, embedding_dim)
 
         self.loss = VQLoss(beta)
 
