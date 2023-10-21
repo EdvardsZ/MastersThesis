@@ -1,7 +1,5 @@
 import torch
 import torch.nn as nn
-from models.decoders import Decoder
-from models.encoders import Encoder
 import torch.nn.functional as F
 from loss import VAELoss, SoftAdaptVAELoss
 from models.helpers import sampling

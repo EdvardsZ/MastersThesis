@@ -21,22 +21,43 @@ def plot_samples_with_reconstruction(model, data, n=6, save_name=None):
     output = model(data[:n][0], data[:n][1], data[:n][2])
 
     #make the plot smaller
-    plt.figure(figsize=(n, 2))
+    if isinstance(output[0], list):
+        plt.figure(figsize=(n, 3))
+    else:
+        plt.figure(figsize=(n, 2))
 
     for i in range(n):
         image = data[0][i].detach().cpu().numpy().reshape(28, 28)
         if isinstance(output[0], list):
-            reconstruction = output[0][0][i].detach().cpu().numpy().reshape(28, 28)
+            reconstruction_1 = output[0][0][i].detach().cpu().numpy().reshape(28, 28)
+            reconstruction_2 = output[0][1][i].detach().cpu().numpy().reshape(28, 28)
         else:
             reconstruction = output[0][i].detach().cpu().numpy().reshape(28, 28)
 
-        # axis off
-        plt.subplot(2, n, i + 1)
-        plt.imshow(image)
-        plt.axis('off')
-        plt.subplot(2, n, i + 1 + n)
-        plt.imshow(reconstruction)
-        plt.axis('off')
+        if isinstance(output[0], list):
+            
+            plt.subplot(3, n, i + 1)
+            plt.imshow(image)
+            plt.axis('off')
+            plt.subplot(3, n, i + 1 + n)
+            plt.imshow(reconstruction_1)
+            plt.axis('off')
+            plt.subplot(3, n, i + 1 + 2 * n)
+            plt.imshow(reconstruction_2)
+            plt.axis('off')
+        else:
+            plt.subplot(2, n, i + 1)
+            plt.imshow(image)
+            plt.axis('off')
+            plt.subplot(2, n, i + 1 + n)
+            plt.imshow(reconstruction)
+            plt.axis('off')
+
+    #plot titles
+    if isinstance(output[0], list):
+        plt.suptitle("Original vs Reconstruction (Non conditioned) vs Reconstruction (Conditioned)")
+    else:
+        plt.suptitle("Original vs Reconstruction")
 
     if save_name is not None:
         plt.savefig("assets/reconstructions/" + save_name + ".png")
@@ -79,6 +100,11 @@ def plot_samples_with_reconstruction_and_indices(model, data, n=6, save_name=Non
 
 def plot_latent_images(model, n=20, save_name=None):
     # plot n*n images in the latent space
+    if model is None or model.model.latent_dim != 2:
+        print("Model is None or latent dim is not 2")
+        return
+    
+    
     model.eval()
 
     normal_distribution = torch.distributions.Normal(0, 1)
