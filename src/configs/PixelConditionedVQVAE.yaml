@@ -1,4 +1,4 @@
-model_name: VQVAE
+model_name: PixelConditionedVQVAE
 data_params:
   dataset: MNIST
   batch_size: 128
