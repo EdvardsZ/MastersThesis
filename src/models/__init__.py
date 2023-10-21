@@ -8,7 +8,11 @@ from .vq_vae import *
 from .simple_vq_vae import *
 from .pixel_cond_vqvae import *
 
-MODELS_LIST = [ VQVAE, VAE, PixelConditionedVQVAE]
+MODELS_LIST = [ VQVAE,
+                VAE, 
+                PixelMDVAE,
+                PixelConditionedVAE,
+                ]
 
 
 def get_model(model_name):

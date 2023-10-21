@@ -1,4 +1,4 @@
-model_name: pixel_mdvae
+model_name: PixelMDVAE
 data_params:
   dataset: MNIST
   batch_size: 128

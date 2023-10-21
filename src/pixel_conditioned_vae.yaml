@@ -1,4 +1,4 @@
-model_name: pixel_conditioned_vae
+model_name: PixelConditionedVAE
 data_params:
   dataset: MNIST
   batch_size: 128

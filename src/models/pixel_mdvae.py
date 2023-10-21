@@ -4,6 +4,7 @@ from models.decoders import Decoder, PixelConditionedDecoder
 from models.encoders import Encoder
 from loss.vae_loss import VAELoss
 from models.layers import EncoderWithLatentLayer, DecoderWithLatentLayer
+from models.helpers import concat_latent_with_cond
 
 class PixelMDVAE(nn.Module):
     def __init__(self, kernel_size=3, hidden_dims = [128, 256], latent_dim=2):
@@ -22,8 +23,7 @@ class PixelMDVAE(nn.Module):
     def forward(self, x, x_cond, y):
         z_mean, z_log_var, z = self.encoder(x)
 
-        x_cond = torch.flatten(x_cond, start_dim=1)
-        x_cat = torch.cat((z, x_cond), dim=1)
+        x_cat = concat_latent_with_cond(z, x_cond)
 
         output_0 = self.decoder(z)
         output_1 = self.pixel_decoder(x_cat)

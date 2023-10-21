@@ -4,10 +4,9 @@ from models.helpers.sampling import count_div_by_2
     
 # Conventional Decoder
 class Decoder(nn.Module):
-    def __init__(self, image_size = (1, 28, 28), hidden_dims = [256, 128, 64, 32], latent_dim=2):
+    def __init__(self, image_size = (1, 28, 28), hidden_dims = [256, 128, 64, 32]):
         super(Decoder, self).__init__()
         self.image_size = image_size
-        self.latent_dim = latent_dim
 
 
         count_div = count_div_by_2(image_size[1])
