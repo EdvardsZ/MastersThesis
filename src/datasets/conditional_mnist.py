@@ -1,4 +1,5 @@
 import torch
+import torch.nn as nn
 from torch.utils.data import Dataset
 from torchvision.datasets import MNIST, FashionMNIST
 from torchvision import transforms
@@ -14,11 +15,15 @@ class ConditionalMNIST(Dataset):
             else:
                 raise ValueError("dataset must be MNIST or FashionMNIST")
         self.data = self.mnist.data
+        self.classes_count = len(self.mnist.classes)
 
     def __getitem__(self, index):
         x, y = self.mnist[index]
         x_cond = self.condition(x)
-        return x, x_cond, y
+        classes_count = len(self.mnist.classes)
+        y_one_hot = torch.zeros(classes_count)
+        y_one_hot[y] = 1
+        return x, x_cond, y_one_hot
     
     def __len__(self):
         return len(self.mnist)

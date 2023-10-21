@@ -1,4 +1,4 @@
-model_name: label_vae
+model_name: LabelConditionedVAE
 data_params:
   dataset: MNIST
   batch_size: 128

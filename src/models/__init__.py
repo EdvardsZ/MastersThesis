@@ -1,4 +1,3 @@
-from .lin_vae import *
 from .vae import *
 from .label_cond_vae import *
 from .label_mdvae import *
@@ -12,6 +11,7 @@ MODELS_LIST = [ VQVAE,
                 VAE, 
                 PixelMDVAE,
                 PixelConditionedVAE,
+                LabelConditionedVAE,
                 ]
 
 

@@ -12,10 +12,6 @@ class Decoder(nn.Module):
         count_div = count_div_by_2(image_size[1])
         feature_size = len(hidden_dims) - count_div
 
-
-        res_dim = (image_size[1] // 2**feature_size)
-        resulting_size = res_dim**2 * hidden_dims[0]
-
         modules = []
 
         for i in range(len(hidden_dims)-1):
