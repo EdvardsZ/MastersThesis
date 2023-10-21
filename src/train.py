@@ -41,7 +41,7 @@ def train_and_evaluate(config_path, verbose=False):
             input("Press enter to continue")
 
         # 2nd stage training
-        pixel_cnn_model_name = "PIXEL_CNN_" + model_name
+        pixel_cnn_model_name = "Pixel_CNN_" + model_name
         model = PixelCNNModule(vae_name=model_name)
 
         trainer = SuperTrainer(**config['trainer_params'], model_name = pixel_cnn_model_name)
