@@ -17,7 +17,7 @@ class LabelMDVAE(nn.Module):
         self.loss = VAELoss(loss_type='double')
 
     def forward(self, x, x_cond, y):
-        z_mean, z_log_var, z = self.encoder(x)
+        z, z_mean, z_log_var = self.encoder(x)
 
         output_0 = self.decoder(z)
 

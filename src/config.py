@@ -1,9 +1,8 @@
 import yaml
-
-config = yaml.load(open('vq_vae.yaml', 'r'), Loader=yaml.FullLoader)
+import os
 
 def load_config(model_name):
-    return yaml.load(open(model_name + '.yaml', 'r'), Loader=yaml.FullLoader)
+    return yaml.load(open('configs/' + model_name + '.yaml', 'r'), Loader=yaml.FullLoader)
 
 
 def get_model_name(config):
@@ -19,5 +18,13 @@ def get_model_name(config):
 
     trainer_parameter_string = '&'.join([ str(key) +"="+ str(value) for key, value in config.items()])
     return model_name + '(' + model_parameter_string + ')' + '?' + trainer_parameter_string
+
+
+def find_all_configs():
+    configs = []
+    for file in os.listdir("configs"):
+        if file.endswith(".yaml"):
+            configs.append(file[:-5])
+    return configs
 
 
