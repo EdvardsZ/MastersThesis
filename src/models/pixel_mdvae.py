@@ -10,9 +10,9 @@ class PixelMDVAE(nn.Module):
         image_size_flattented = 28 * 28
         self.encoder = EncoderWithLatentLayer(latent_dim)
 
-        self.decoder = DecoderWithLatentLayer(latent_dim)
+        self.decoder = DecoderWithLatentLayer()
 
-        self.pixel_decoder = DecoderWithLatentLayer(latent_dim, input_size=latent_dim + image_size_flattented)
+        self.pixel_decoder = DecoderWithLatentLayer()
 
         self.latent_dim = latent_dim
 

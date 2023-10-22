@@ -12,7 +12,7 @@ class VAE(nn.Module):
         self.latent_dim = latent_dim
         self.encoder = EncoderWithLatentLayer(latent_dim=latent_dim)
 
-        self.decoder = DecoderWithLatentLayer(latent_dim=latent_dim)
+        self.decoder = DecoderWithLatentLayer()
 
         #self.loss = SoftAdaptVAELoss(n = 100, variant=["Normalized", "Loss Weighted"])
         self.loss = VAELoss(weight_kl=1.0)

@@ -16,6 +16,8 @@ class PixelConditionedVQVAE(nn.Module):
 
         self.codebook = NewVectorQuantizer(num_embeddings, embedding_dim)
 
+        
+
         self.decoder = SimpleVQDecoder(in_channels, embedding_dim)
 
         self.loss = VQLoss()
@@ -25,6 +27,10 @@ class PixelConditionedVQVAE(nn.Module):
         latent = self.encoder(x)
 
         quantized_with_grad, quantized, embedding_indices = self.codebook(latent)
+
+
+
+        
 
         x_hat = self.decoder(quantized_with_grad)
 

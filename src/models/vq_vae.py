@@ -12,11 +12,11 @@ class VQVAE(nn.Module):
         self.embedding_dim = embedding_dim
         self.num_embeddings = num_embeddings
 
-        self.encoder = SimpleVQEncoder(in_channels, embedding_dim)
+        self.encoder = VQEncoder(in_channels, embedding_dim)
 
         self.codebook = NewVectorQuantizer(num_embeddings, embedding_dim)
 
-        self.decoder = SimpleVQDecoder(in_channels, embedding_dim)
+        self.decoder = VQDecoder(in_channels, embedding_dim)
 
         self.loss = VQLoss()
 

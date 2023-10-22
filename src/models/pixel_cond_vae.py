@@ -10,7 +10,7 @@ class PixelConditionedVAE(nn.Module):
         super(PixelConditionedVAE, self).__init__()
         image_size_flattented = 28 * 28
         self.encoder = EncoderWithLatentLayer(latent_dim)
-        self.decoder = DecoderWithLatentLayer(latent_dim, input_size=latent_dim + image_size_flattented)
+        self.decoder = DecoderWithLatentLayer()
         self.latent_dim = latent_dim
 
         self.loss = VAELoss()

@@ -10,7 +10,7 @@ class LabelConditionedVAE(nn.Module):
         super(LabelConditionedVAE, self).__init__()
         self.classes_count = 10
         self.encoder = EncoderWithLatentLayer(latent_dim)
-        self.decoder = DecoderWithLatentLayer(latent_dim, input_size=latent_dim + self.classes_count)
+        self.decoder = DecoderWithLatentLayer()
         self.latent_dim = latent_dim
 
         self.loss = VAELoss()

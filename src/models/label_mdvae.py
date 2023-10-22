@@ -9,8 +9,8 @@ class LabelMDVAE(nn.Module):
         super(LabelMDVAE, self).__init__()
         self.encoder = EncoderWithLatentLayer(latent_dim=latent_dim)
 
-        self.decoder = DecoderWithLatentLayer(latent_dim=latent_dim)
-        self.label_decoder = DecoderWithLatentLayer(latent_dim=latent_dim, input_size=latent_dim + 10)
+        self.decoder = DecoderWithLatentLayer()
+        self.label_decoder = DecoderWithLatentLayer()
 
         self.latent_dim = latent_dim
 
