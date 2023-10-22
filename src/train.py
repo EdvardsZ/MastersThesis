@@ -3,7 +3,7 @@ from datasets import load_dataset
 from trainers import SuperTrainer, VAEModule, PixelCNNModule
 from loss import VAELoss
 from plotting import plot_samples_with_reconstruction_and_indices, generate_indices_and_reconstruct
-
+from plotting import plot_samples_with_reconstruction, plot_latent_images
 def train_and_evaluate(config_path, verbose=False):
     """Fully trains and evaluates a model for a given config"""
 
@@ -32,13 +32,18 @@ def train_and_evaluate(config_path, verbose=False):
     model.eval()
     # check if loss is instance of VAELoss
     if isinstance(model.model.loss, VAELoss):
-        print("VAE toodoooo")
+        print("Training done")
+
+        plot_samples_with_reconstruction(model, next(iter(test_loader)), save_name = model_name)
+        plot_latent_images(model, save_name = model_name)
+
+        print("All done")
+        print("----"*20)
+
     else:
         plot_samples_with_reconstruction_and_indices(model, next(iter(test_loader)), save_name=model_name)
 
         print("1st stage training done")
-        if verbose :
-            input("Press enter to continue")
 
         # 2nd stage training
         pixel_cnn_model_name = "Pixel_CNN_" + model_name

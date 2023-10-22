@@ -13,6 +13,7 @@ MODELS_LIST = [ VQVAE,
                 PixelConditionedVAE,
                 LabelConditionedVAE,
                 LabelMDVAE,
+                PixelConditionedVQVAE
                 ]
 
 
