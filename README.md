@@ -1,16 +1,14 @@
 # MastersThesis
 
-2. Try multiple tasks
+2. Try multiple tasks, for both vqvae and vae -------- PRIORITY
 
-3. Try Random conditioning
+3. Try Random conditioning -------- PRIORITY
 
-5. Create multi task VQ-VAE
+4. Maybe cifar, CelebA dataset -----PRIORITY
 
-6. Reduce code dublication (Make one runner for all), Try use only one implementation of encoders/decoders
+6. Reduce code dublication (Make one runner for all), Try use only one implementation of encoders/decoders.
 
 7. Make a visualization for VQVAE
-
-8. Maybe cifar, CelebA dataset
 
 9. Make sure all params are actually passed from config not hard coded
 
