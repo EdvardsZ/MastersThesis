@@ -6,6 +6,7 @@ class ClassificationLayer(nn.Module):
         super(ClassificationLayer, self).__init__()
 
         self.clasification = nn.Sequential(
+            nn.Flatten(),
             nn.LazyLinear(512),
             nn.ReLU(),
             nn.LazyLinear(num_classes)
