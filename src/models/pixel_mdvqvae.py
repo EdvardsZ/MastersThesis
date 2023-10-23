@@ -6,9 +6,9 @@ from models.layers import VectorQuantizer, SimpleVectorQuantizer, NewVectorQuant
 from loss import VQLoss
 from models.helpers import concat_latent_with_cond
 
-class PixelConditionedVQVAE(nn.Module):
+class PixelMDVQVAE(nn.Module):
     def __init__(self, num_embeddings, embedding_dim, in_channels = 1):
-        super(PixelConditionedVQVAE, self).__init__()
+        super(PixelMDVQVAE, self).__init__()
         self.in_channels = in_channels
         self.embedding_dim = embedding_dim
         self.num_embeddings = num_embeddings
@@ -18,6 +18,8 @@ class PixelConditionedVQVAE(nn.Module):
         self.codebook = NewVectorQuantizer(num_embeddings, embedding_dim)
 
         self.decoder_input = ToFeatureMap(feature_map_size=7, num_channels=embedding_dim)
+
+        self.pixel_decoder = VQDecoder(in_channels, embedding_dim)
 
         self.decoder = VQDecoder(in_channels, embedding_dim)
 
@@ -29,14 +31,14 @@ class PixelConditionedVQVAE(nn.Module):
 
         quantized_with_grad, quantized, embedding_indices = self.codebook(latent)
 
-        quantized_with_grad = nn.Flatten()(quantized_with_grad)
+        quantized_with_grad_concat = nn.Flatten()(quantized_with_grad) # TODO: make a module for this
 
-        quantized_with_grad = concat_latent_with_cond(quantized_with_grad, x_cond)
+        quantized_with_grad_concat = concat_latent_with_cond(quantized_with_grad_concat, x_cond)
 
-        quantized_with_grad = self.decoder_input(quantized_with_grad)
+        quantized_with_grad_concat = self.decoder_input(quantized_with_grad_concat)
 
-        x_hat = self.decoder(quantized_with_grad)
+        output_1 = self.pixel_decoder(quantized_with_grad)
 
-        return x_hat, quantized, latent, embedding_indices
+        output_2 = self.pixel_decoder(quantized_with_grad_concat)
 
-    
+        return [output_1, output_2], quantized, latent, embedding_indices
