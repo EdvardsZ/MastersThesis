@@ -10,34 +10,47 @@ class VQLoss(nn.Module):
 
     def forward(self, inputs, outputs):
         x, x_cond, y = inputs
-        reconstructions, quantized, latent, embedding_indices = outputs
 
-        if self.loss_type == 'single':
-            # Calculate the MSE loss between the quantized latent vectors and the input vectors.
-            recon_loss = F.mse_loss(reconstructions, x) / 0.09493041879725218 
+        classification = None
+        try:
+            reconstructions, quantized, latent, embedding_indices, classification = outputs
+        except:
+            reconstructions, quantized, latent, embedding_indices = outputs
 
-            embeddding_loss = F.mse_loss(quantized, latent.detach())
-            commitment_loss = F.mse_loss(quantized.detach(), latent)
 
-            vq_loss = commitment_loss * self.beta + embeddding_loss
+        loss = 0
+        loss_dict = {}
 
-            loss = recon_loss + vq_loss
-            
-            return { "loss": loss, "recon_loss": recon_loss, "vq_loss": vq_loss, "commitment_loss": commitment_loss, "embeddding_loss": embeddding_loss }
-        
-        if self.loss_type == 'double':
+        if isinstance(reconstructions, list):
+            recon_0 = F.mse_loss(reconstructions[0], x) / 0.09493041879725218
+            loss_dict['recon_loss'] = recon_0
+            loss += recon_0
+            recon_1 = F.mse_loss(reconstructions[1], x) / 0.09493041879725218
+            loss_dict['recon_loss_2'] = recon_1
+            loss += recon_1
+        else:
+            recon_0 = F.mse_loss(reconstructions, x) / 0.09493041879725218
+            loss_dict['recon_loss'] = recon_0
+            loss += recon_0
 
-            recon_loss = F.mse_loss(reconstructions[0], x) / 0.09493041879725218
-            recon_loss_2 = F.mse_loss(reconstructions[1], x) / 0.09493041879725218
+        embeddding_loss = F.mse_loss(quantized, latent.detach())
+        loss_dict['embeddding_loss'] = embeddding_loss
 
-            embeddding_loss = F.mse_loss(quantized, latent.detach())
-            commitment_loss = F.mse_loss(quantized.detach(), latent)
-        
-            vq_loss = commitment_loss * self.beta + embeddding_loss
+        commitment_loss = F.mse_loss(quantized.detach(), latent)
+        loss_dict['commitment_loss'] = commitment_loss
 
-            loss = recon_loss + recon_loss_2 + vq_loss
+        vq_loss = commitment_loss * self.beta + embeddding_loss
 
-            return { "loss": loss, "recon_loss": recon_loss, "recon_loss_2": recon_loss_2, "vq_loss": vq_loss, "commitment_loss": commitment_loss, "embeddding_loss": embeddding_loss }
-        
-        raise Exception('Invalid loss type')
+        loss_dict['vq_loss'] = vq_loss
+
+        loss += vq_loss
+
+        if classification is not None:
+            classification = nn.CrossEntropyLoss(reduction='sum')(classification, y)
+            loss_dict['classification_loss'] = classification
+            loss += classification
+
+        loss_dict['loss'] = loss
+
+        return loss_dict
         
