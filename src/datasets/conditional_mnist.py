@@ -57,19 +57,22 @@ def get_observation_pixels(image_shape):
 
     obs_x=[]
     obs_y=[]
-    print(list(range(start,stop,obs_x_n)))
     for i in range(start,stop,obs_x_n):
         for j in range(start,stop,obs_y_n):
             obs_x.append(i)
             obs_y.append(j)
     return obs_x, obs_y
 
-def get_random_observation_pixels():
-    obs_x, obs_y = get_observation_pixels()
-    obs_x = torch.tensor(obs_x)
-    obs_y = torch.tensor(obs_y)
-    obs_x = obs_x[torch.randperm(len(obs_x))]
-    obs_y = obs_y[torch.randperm(len(obs_y))]
+def get_random_observation_pixels(image_shape):
+
+    obs_x = []
+    obs_y = []
+
+    rand = torch.randperm(image_shape[1] * image_shape[2])[:16]
+    
+    for i in range(16):
+        obs_x.append(int(rand[i] / image_shape[2]))
+        obs_y.append(rand[i]% image_shape[2])
     return obs_x, obs_y
 
 def load_dataset(data_config):

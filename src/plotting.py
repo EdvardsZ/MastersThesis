@@ -1,6 +1,6 @@
 import matplotlib.pyplot as plt
 import numpy as np
-from datasets import get_observation_pixels
+from datasets import get_observation_pixels, get_random_observation_pixels
 import torch
 import torch.nn.functional as F
 
@@ -13,7 +13,7 @@ def plot_sample_with_random_conditioned_pixels(example):
     plt.imshow(reshaped)
     plt.axis('off')
 
-    obs_x, obs_y = get_observation_pixels(example.shape)
+    obs_x, obs_y = get_random_observation_pixels(example.shape)
     for i in range(len(obs_x)):
         reshaped[obs_x[i], obs_y[i]] = 1
     plt.imshow(reshaped)
