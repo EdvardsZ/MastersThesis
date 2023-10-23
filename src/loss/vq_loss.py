@@ -46,7 +46,7 @@ class VQLoss(nn.Module):
         loss += vq_loss
 
         if classification is not None:
-            classification = nn.CrossEntropyLoss(reduction='sum')(classification, y)
+            classification = nn.CrossEntropyLoss(reduction='sum')(classification, y) / 100
             loss_dict['classification_loss'] = classification
             loss += classification
 
