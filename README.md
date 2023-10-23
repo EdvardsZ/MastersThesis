@@ -18,3 +18,5 @@
 
 11. Different hyperparameters.
 
+12. Dataset variance implementation
+

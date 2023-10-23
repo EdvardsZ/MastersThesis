@@ -5,9 +5,11 @@ class ClassificationLayer(nn.Module):
     def __init__(self, num_classes):
         super(ClassificationLayer, self).__init__()
 
-
-        self.linear = nn.LazyLinear(num_classes)
-        self.softmax = nn.Softmax(dim=1)
+        self.clasification = nn.Sequential(
+            nn.LazyLinear(512),
+            nn.ReLU(),
+            nn.LazyLinear(num_classes)
+        )
 
     def forward(self, x):
-        return x
+        return self.clasification(x)
