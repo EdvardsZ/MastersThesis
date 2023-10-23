@@ -23,7 +23,7 @@ class PixelMDVQVAE(nn.Module):
 
         self.decoder = VQDecoder(in_channels, embedding_dim)
 
-        self.loss = VQLoss()
+        self.loss = VQLoss(loss_type='double')
 
     def forward(self, x, x_cond, y):
         # Input: (B, C, H, W)

@@ -6,6 +6,7 @@ from .pixel_mdvae import *
 from .vq_vae import *
 from .simple_vq_vae import *
 from .pixel_cond_vqvae import *
+from .pixel_mdvqvae import *
 
 MODELS_LIST = [ VQVAE,
                 VAE, 
@@ -13,7 +14,8 @@ MODELS_LIST = [ VQVAE,
                 PixelConditionedVAE,
                 LabelConditionedVAE,
                 LabelMDVAE,
-                PixelConditionedVQVAE
+                PixelConditionedVQVAE,
+                PixelMDVQVAE
                 ]
 
 

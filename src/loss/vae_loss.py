@@ -17,8 +17,10 @@ class VAELoss(nn.Module):
             recon = recon_loss(x, reconstructions)
             kl = kl_loss(z_mean, z_log_var)
             return { 'recon_loss': recon, 'kl_loss': kl, 'loss': recon + self.weight_kl * kl }
-        elif self.loss_type == 'double':
+        if self.loss_type == 'double':
             recon_loss_1 = recon_loss(x, reconstructions[0])
             recon_loss_2 = recon_loss(x, reconstructions[1])
             kl = kl_loss(z_mean, z_log_var)
             return { 'recon_loss': recon_loss_1, 'recon_loss_2': recon_loss_2, 'kl_loss': kl, 'loss': recon_loss_1 + recon_loss_2 + self.weight_kl * kl }
+        
+        raise Exception('Invalid loss type')
