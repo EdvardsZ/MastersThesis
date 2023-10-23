@@ -9,6 +9,7 @@
 4. Maybe cifar, CelebA dataset -----PRIORITY
 
 5. Reduce code dublication (Make one runner for all), Try use only one implementation of encoders/decoders.
+Check if to train PixelCNN. 
 
 6. Make a visualization for VQVAE
 

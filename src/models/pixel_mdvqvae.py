@@ -42,3 +42,8 @@ class PixelMDVQVAE(nn.Module):
         output_2 = self.pixel_decoder(quantized_with_grad_concat)
 
         return [output_1, output_2], quantized, latent, embedding_indices
+    
+    def reconstruct_from_indices(self, indices, batch_size):
+        quantized = self.codebook.quantize_from_indices(indices, batch_size)
+        x_hat = self.decoder(quantized)
+        return x_hat
