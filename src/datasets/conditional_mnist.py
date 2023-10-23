@@ -6,7 +6,7 @@ from torchvision import transforms
 
 class ConditionalMNIST(Dataset):
 
-    def __init__(self, root, train=True, transform=None, target_transform=None, download=False, dataset = "MNIST"):
+    def __init__(self, root, train=True, transform=None, target_transform=None, download=False, dataset = "MNIST", conditioning_mode = "exact"):
         if dataset == "MNIST":
             self.mnist = MNIST(root, train, transform, target_transform, download)
         else:
@@ -16,6 +16,7 @@ class ConditionalMNIST(Dataset):
                 raise ValueError("dataset must be MNIST or FashionMNIST")
         self.data = self.mnist.data
         self.classes_count = len(self.mnist.classes)
+        self.conditioning_mode = conditioning_mode
 
     def __getitem__(self, index):
         x, y = self.mnist[index]
@@ -29,7 +30,10 @@ class ConditionalMNIST(Dataset):
         return len(self.mnist)
 
     def condition(self, data):
-        obs_x, obs_y = get_observation_pixels()
+        if self.conditioning_mode == "exact":
+            obs_x, obs_y = get_observation_pixels()
+        else:
+            raise ValueError("conditioning_mode must be exact")
         cond_data = torch.zeros_like(data)
         cond_data[:, obs_x, obs_y] = data[:, obs_x, obs_y]
         return cond_data
@@ -37,7 +41,7 @@ class ConditionalMNIST(Dataset):
 
 
 def get_observation_pixels():
-        start=2
+        start=4
         stop=26
         obs_x_n=6
         obs_y_n=6
@@ -53,6 +57,7 @@ def get_observation_pixels():
 def load_dataset(data_config):
     BATCH_SIZE = data_config['batch_size']
     dataset = data_config['dataset']
+    #conditioning_mode = data_config['conditioning_mode']
 
     preprocess = transforms.Compose([
         transforms.ToTensor(),

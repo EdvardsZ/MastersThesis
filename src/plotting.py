@@ -6,12 +6,22 @@ import torch.nn.functional as F
 
 
 def plot_sample_with_conditioned_pixels(example):
-    plt.imshow(example)
-    # print on top of the image the observation pixels
+
+    plt.figure(figsize=(4, 2))
+
+    plt.subplot(1, 2, 1)
+    reshaped = example.detach().cpu().numpy().reshape(28, 28)
+    plt.imshow(reshaped)
+    plt.axis('off')
+
     obs_x, obs_y = get_observation_pixels()
     for i in range(len(obs_x)):
-        plt.text(obs_x[i], obs_y[i], 'X', color='red')
-    plt.show()
+        reshaped[obs_x[i], obs_y[i]] = 1
+    plt.imshow(reshaped)
+
+    plt.subplot(1, 2, 2)
+    plt.imshow(example.detach().cpu().numpy().reshape(28, 28))
+    plt.axis('off')
 
 
 def plot_samples_with_reconstruction(model, data, n=6, save_name=None):
