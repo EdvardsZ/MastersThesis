@@ -3,6 +3,7 @@ import torch.nn as nn
 from torch.utils.data import Dataset
 from torchvision.datasets import MNIST, FashionMNIST
 from torchvision import transforms
+import math
 
 class ConditionalMNIST(Dataset):
 
@@ -31,7 +32,7 @@ class ConditionalMNIST(Dataset):
 
     def condition(self, data):
         if self.conditioning_mode == "exact":
-            obs_x, obs_y = get_observation_pixels()
+            obs_x, obs_y = get_observation_pixels(data.shape)
         else:
             raise ValueError("conditioning_mode must be exact")
         cond_data = torch.zeros_like(data)
@@ -39,20 +40,37 @@ class ConditionalMNIST(Dataset):
         return cond_data
 
 
+## to do make this more general. (I could have different size of images)
+def get_observation_pixels(image_shape):
+    
+    image_size= image_shape[1]
 
-def get_observation_pixels():
-        start=4
-        stop=26
-        obs_x_n=6
-        obs_y_n=6
+    observation_rows = 4
+    spacing = math.ceil(((image_size - observation_rows) / (observation_rows + 1)))
+    without_sides = ((spacing * (observation_rows - 1)) + observation_rows)
+    sides = (image_size - without_sides)
+    start = int(sides / 2) + 1
+    stop = int(image_size  - (sides - start))
 
-        obs_x=[]
-        obs_y=[]
-        for i in range(start,stop,obs_x_n):
-            for j in range(start,stop,obs_y_n):
-                obs_x.append(i)
-                obs_y.append(j)
-        return obs_x, obs_y
+    obs_x_n=int(spacing)
+    obs_y_n=int(spacing)
+
+    obs_x=[]
+    obs_y=[]
+    print(list(range(start,stop,obs_x_n)))
+    for i in range(start,stop,obs_x_n):
+        for j in range(start,stop,obs_y_n):
+            obs_x.append(i)
+            obs_y.append(j)
+    return obs_x, obs_y
+
+def get_random_observation_pixels():
+    obs_x, obs_y = get_observation_pixels()
+    obs_x = torch.tensor(obs_x)
+    obs_y = torch.tensor(obs_y)
+    obs_x = obs_x[torch.randperm(len(obs_x))]
+    obs_y = obs_y[torch.randperm(len(obs_y))]
+    return obs_x, obs_y
 
 def load_dataset(data_config):
     BATCH_SIZE = data_config['batch_size']

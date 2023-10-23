@@ -5,22 +5,41 @@ import torch
 import torch.nn.functional as F
 
 
-def plot_sample_with_conditioned_pixels(example):
-
+def plot_sample_with_random_conditioned_pixels(example):
     plt.figure(figsize=(4, 2))
 
     plt.subplot(1, 2, 1)
-    reshaped = example.detach().cpu().numpy().reshape(28, 28)
+    reshaped = example.detach().cpu().numpy().reshape(example.shape[1], example.shape[2])
     plt.imshow(reshaped)
     plt.axis('off')
 
-    obs_x, obs_y = get_observation_pixels()
+    obs_x, obs_y = get_observation_pixels(example.shape)
     for i in range(len(obs_x)):
         reshaped[obs_x[i], obs_y[i]] = 1
     plt.imshow(reshaped)
 
     plt.subplot(1, 2, 2)
-    plt.imshow(example.detach().cpu().numpy().reshape(28, 28))
+    plt.imshow(example.detach().cpu().numpy().reshape(example.shape[1], example.shape[2]))
+    plt.axis('off')
+
+
+
+def plot_sample_with_conditioned_pixels(example):
+
+    plt.figure(figsize=(4, 2))
+
+    plt.subplot(1, 2, 1)
+    reshaped = example.detach().cpu().numpy().reshape(example.shape[1], example.shape[2])
+    plt.imshow(reshaped)
+    plt.axis('off')
+
+    obs_x, obs_y = get_observation_pixels(example.shape)
+    for i in range(len(obs_x)):
+        reshaped[obs_x[i], obs_y[i]] = 1
+    plt.imshow(reshaped)
+
+    plt.subplot(1, 2, 2)
+    plt.imshow(example.detach().cpu().numpy().reshape(example.shape[1], example.shape[2]))
     plt.axis('off')
 
 
