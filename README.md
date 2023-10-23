@@ -4,6 +4,8 @@
 
 3. Try Random conditioning -------- PRIORITY
 
+4. Try Special random conditioning ------- PRIORITY
+
 4. Maybe cifar, CelebA dataset -----PRIORITY
 
 6. Reduce code dublication (Make one runner for all), Try use only one implementation of encoders/decoders.
