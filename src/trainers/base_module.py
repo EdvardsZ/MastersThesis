@@ -3,9 +3,10 @@ from abc import ABC, abstractmethod
 import lightning as L
 
 class BaseModule(L.LightningModule, ABC):
-    def __init__(self, model):
+    def __init__(self, model, lr=1e-3):
         super(BaseModule, self).__init__()
         self.model = model
+        self.lr = lr
 
     @abstractmethod
     def forward(self, x, x_cond, y):
@@ -24,6 +25,6 @@ class BaseModule(L.LightningModule, ABC):
         return self.step(batch, batch_idx, 'test')
     
     def configure_optimizers(self):
-        return optim.AdamW(self.model.parameters(), lr=1e-3)
+        return optim.AdamW(self.model.parameters(), lr=self.lr)
 
     

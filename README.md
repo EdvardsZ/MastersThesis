@@ -21,3 +21,5 @@ Check if to train PixelCNN.
 
 10. Dataset variance detection and use implementation
 
+11. Beta for vq logging
+

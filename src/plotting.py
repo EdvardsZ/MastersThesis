@@ -3,6 +3,17 @@ import numpy as np
 from datasets import get_observation_pixels, get_random_observation_pixels
 import torch
 import torch.nn.functional as F
+from loss import VAELoss
+from trainers import VAEModule
+
+def plot_stage_one_results(model_name, data_loader):
+    model = VAEModule.load_model_checkpoint(model_name)
+    model.eval()
+    if isinstance(model.model.loss, VAELoss):
+        plot_samples_with_reconstruction(model, next(iter(data_loader)), save_name=model_name)
+        plot_latent_images(model, save_name=model_name)
+    else:
+        plot_samples_with_reconstruction_and_indices(model, next(iter(data_loader)), save_name=model_name)
 
 
 def plot_sample_with_random_conditioned_pixels(example):
@@ -129,8 +140,8 @@ def plot_samples_with_reconstruction_and_indices(model, data, n=6, save_name=Non
 
 def plot_latent_images(model, n=20, save_name=None):
     # plot n*n images in the latent space
-    if model is None or model.model.latent_dim != 2:
-        print("Model is None or latent dim is not 2")
+    if model is None or model.model.latent_dim != 2 or not hasattr(model.model, 'decode'):
+        print("Model is None or latent dim is not 2 or model has no decoder")
         return
     
     
