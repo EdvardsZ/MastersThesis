@@ -2,11 +2,17 @@ import torch
 from torch.utils.data import Dataset
 from torchvision.datasets import MNIST, FashionMNIST
 from .observations import PartialObservation
+from torchvision import transforms
 
 from typing import Tuple
 
 class ConditionalDataset(Dataset):
     def __init__(self, root: str ='data', train: bool =True, transform=None, target_transform=None, download: bool=False, dataset: str = "MNIST", conditioning_mode: str = "exact"):
+        if transform is None:
+            transform = transforms.Compose([
+                transforms.ToTensor()
+            ])
+        
         if dataset == "MNIST":
             self.dataset = MNIST(root, train, transform, target_transform, download)
         else:

@@ -8,7 +8,7 @@ class PartialObservation:
     def __init__(self, conditioning_mode: str):
         self.conditioning_mode = conditioning_mode
 
-    def get_partial_observation(self, image: Image.Image) -> torch.Tensor:
+    def get_partial_observation(self, image: torch.Tensor) -> torch.Tensor:
         data = self.image_to_tensor(image)
         self.image_shape = data.shape
 

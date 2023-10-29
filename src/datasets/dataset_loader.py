@@ -11,8 +11,7 @@ def load_dataset(data_config: dict) -> Tuple[torch.utils.data.DataLoader, torch.
 
 
     preprocess = transforms.Compose([
-        transforms.ToTensor(),
-        transforms.Lambda(lambda x: x - 0.5)
+        transforms.ToTensor()
     ])
 
     train_set = ConditionalDataset(train=True, download=True, transform=preprocess, dataset = dataset, conditioning_mode = conditioning_mode)
