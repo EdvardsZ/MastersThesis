@@ -1,9 +1,10 @@
 from config import get_model_name
 from datasets import load_dataset
-from trainers import SuperTrainer, VAEModule, PixelCNNModule
+from trainers import VAEModule, PixelCNNModule
 from loss import VAELoss
 from plotting import plot_samples_with_reconstruction_and_indices, generate_indices_and_reconstruct
 from plotting import plot_samples_with_reconstruction, plot_latent_images, plot_stage_one_results
+from lightning_extensions import ExtendedTrainer
 def train_and_evaluate(config, verbose=False):
     """Fully trains and evaluates a model for a given config"""
 
@@ -19,7 +20,7 @@ def train_and_evaluate(config, verbose=False):
 
     model = VAEModule(config['model_params'], model_name=config['model_name'])
 
-    trainer = SuperTrainer(**config['trainer_params'], model_name=model_name)
+    trainer = ExtendedTrainer(project_name="MultiTaskVariationalAutoecnoders_test", **config['trainer_params'], model_name=model_name, )
     trainer.fit(model, train_loader, val_loader)
     #saves model checkpoint
     trainer.save_model_checkpoint()

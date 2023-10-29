@@ -1,5 +1,5 @@
 
-from .base_module import BaseModule
+from lightning_extensions import BaseModule
 from .vae_module import VAEModule
 from models.autoregresive import SimplePixelCNN
 import torch.nn as nn

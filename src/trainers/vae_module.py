@@ -1,5 +1,5 @@
 
-from .base_module import BaseModule
+from lightning_extensions import BaseModule
 from models import get_model
 
 class VAEModule(BaseModule):
