@@ -18,12 +18,12 @@ class ConditionalDataset(Dataset):
         self.partial_observation = PartialObservation(conditioning_mode)
 
 
-    def __getitem__(self, index):
+    def __getitem__(self, index) -> Tuple[torch.Tensor, torch.Tensor, torch.Tensor]:
         x, y = self.dataset[index]
 
         x_cond = self.partial_observation.get_partial_observation(x)
 
         return x, x_cond, y
     
-    def __len__(self):
+    def __len__(self) -> int:
         return len(self.dataset)

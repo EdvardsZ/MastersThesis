@@ -29,4 +29,4 @@ def load_dataset(data_config: dict) -> Tuple[torch.utils.data.DataLoader, torch.
     test_loader = torch.utils.data.DataLoader(test_set, batch_size=BATCH_SIZE, shuffle=False, num_workers=12, pin_memory=True)
     val_loader = torch.utils.data.DataLoader(val_set, batch_size=BATCH_SIZE, shuffle=False, num_workers=12, pin_memory=True)
 
-    return train_loader, test_loader, val_loader
+    return train_loader, val_loader, test_loader

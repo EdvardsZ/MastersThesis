@@ -67,5 +67,6 @@ class PartialObservation:
         return obs_x, obs_y
     
     def image_to_tensor(self, image: Image.Image) -> torch.Tensor:
+        image = transforms.ToPILImage()(image)
         data = transforms.ToTensor()(image)
         return data

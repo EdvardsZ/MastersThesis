@@ -23,3 +23,8 @@ Check if to train PixelCNN.
 
 11. Beta for vq logging
 
+
+----------------
+Optional TODOS:
+1. Make validation for loading the configuration from file. Make sure to have correct types
+    https://www.andrewvillazon.com/validate-yaml-python-schema/
