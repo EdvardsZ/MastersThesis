@@ -1,2 +1,2 @@
-from encoder_with_latent_layer import EncoderWithLatentLayer
-from decoder_with_latent_layer import DecoderWithLatentLayer
+from .encoder_with_latent_layer import EncoderWithLatentLayer
+from .decoder_with_latent_layer import DecoderWithLatentLayer
