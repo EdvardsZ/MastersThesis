@@ -38,7 +38,7 @@ def train_and_evaluate(config, verbose=False):
         pixel_cnn_model_name = "Pixel_CNN_" + model_name
         model = PixelCNNModule(vae_name=model_name)
 
-        trainer = SuperTrainer(**config['trainer_params'], model_name = pixel_cnn_model_name)
+        trainer = ExtendedTrainer(project_name="MultiTaskVariationalAutoecnoders_test",**config['trainer_params'], model_name = pixel_cnn_model_name)
         trainer.fit(model, train_loader, val_loader)
         #save
         trainer.save_model_checkpoint()
