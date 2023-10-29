@@ -7,3 +7,4 @@ samples
 mnist_data
 *.out
 src/wandb
+src_1/wandb
