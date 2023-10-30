@@ -22,6 +22,7 @@ class VAEModule(BaseModule):
     def decode(self, z):
         return self.model.decode(z)
     
+    @classmethod
     def load_model_checkpoint(self, model_name : str): 
         path = "checkpoints/" + model_name + ".ckpt"
         return VAEModule.load_from_checkpoint(path)
