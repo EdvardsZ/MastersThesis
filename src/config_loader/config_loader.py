@@ -2,7 +2,13 @@ import yaml
 import os
 
 def load_config(model_name: str) -> dict:
-    return yaml.load(open('configs/' + model_name + '.yaml', 'r'), Loader=yaml.FullLoader)
+    file_name = model_name + '.yaml'
+    
+    for folder in os.listdir('configs'):
+        if os.path.isfile('configs/' + folder + '/' + file_name):
+            return yaml.load(open('configs/' + folder + '/' + file_name, 'r'), Loader=yaml.FullLoader)
+        
+    raise FileNotFoundError('Config file not found')
 
 def get_model_name(config: dict) -> str:
     model_params = config['model_params']
@@ -21,7 +27,9 @@ def get_model_name(config: dict) -> str:
 
 def find_all_configs() -> list:
     configs = []
-    for file in os.listdir("configs"):
-        if file.endswith(".yaml"):
-            configs.append(file[:-5])
+    for folder in os.listdir("configs"):
+        if(os.path.isdir("configs/" + folder)):
+            for file in os.listdir("configs/" + folder):
+                if(file.endswith(".yaml")):
+                    configs.append(file[:-5])
     return configs
