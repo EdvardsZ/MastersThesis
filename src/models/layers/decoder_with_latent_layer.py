@@ -1,7 +1,7 @@
 import torch
 import torch.nn as nn
 from models.decoders import Decoder
-from .to_feature_map import ToFeatureMap
+from models.layers.common import ToFeatureMap
 
 class DecoderWithLatentLayer(nn.Module):
     def __init__(self):

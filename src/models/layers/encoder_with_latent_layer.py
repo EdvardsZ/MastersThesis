@@ -1,13 +1,12 @@
-import torch
 import torch.nn as nn
-from models.encoders import Encoder
-from .latent_layer import LatentLayer
+from models.encoders import VQEncoder
+from models.layers.common.latent_layer import LatentLayer
 
 class EncoderWithLatentLayer(nn.Module):
     def __init__(self, latent_dim):
         super(EncoderWithLatentLayer, self).__init__()
         self.latent_dim = latent_dim
-        self.encoder = Encoder()
+        self.encoder = VQEncoder(in_channels=1, embedding_dim=256)
         self.latent = LatentLayer(latent_dim)
 
     def forward(self, x):
