@@ -4,7 +4,7 @@ from models.layers import EncoderWithLatentLayer, DecoderWithLatentLayer
 
 
 class VAE(nn.Module):
-    def __init__(self, hidden_dims = [128, 256], latent_dim=2):
+    def __init__(self, latent_dim=2):
         super(VAE, self).__init__()
         self.latent_dim = latent_dim
         self.encoder = EncoderWithLatentLayer(latent_dim=latent_dim)

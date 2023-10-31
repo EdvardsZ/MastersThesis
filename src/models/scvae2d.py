@@ -4,7 +4,7 @@ from models.layers import EncoderWithLatentLayer, DecoderWithLatentLayer
 from models.helpers import concat_latent_with_cond
 
 class SCVAE2D(nn.Module):
-    def __init__(self, hidden_dims = [128, 256], latent_dim=2):
+    def __init__(self, latent_dim=2):
         super(SCVAE2D, self).__init__()
         self.latent_dim = latent_dim
         self.encoder = EncoderWithLatentLayer(latent_dim=latent_dim)
