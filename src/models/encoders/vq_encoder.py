@@ -3,7 +3,7 @@ import torch.nn as nn
 from models.layers.common import ResidualLayer
 
 class VQEncoder(nn.Module):
-    def __init__(self, in_channels, embedding_dim , hidden_dims = [128, 256]):
+    def __init__(self, in_channels, embedding_dim , hidden_dims = [128, 256], n_residual_layers = 6):
         super(VQEncoder, self).__init__()
         self.in_channels = in_channels
         self.hidden_dims = hidden_dims
@@ -27,7 +27,7 @@ class VQEncoder(nn.Module):
             )
         )
 
-        for _ in range(6):
+        for _ in range(n_residual_layers):
             modules.append(ResidualLayer(in_channels, in_channels))
         modules.append(nn.LeakyReLU())
 

@@ -6,7 +6,7 @@ class EncoderWithLatentLayer(nn.Module):
     def __init__(self, latent_dim):
         super(EncoderWithLatentLayer, self).__init__()
         self.latent_dim = latent_dim
-        self.encoder = VQEncoder(in_channels=1, embedding_dim=256)
+        self.encoder = VQEncoder(in_channels=1, embedding_dim=256, n_residual_layers=1)
         self.latent = LatentLayer(latent_dim)
 
     def forward(self, x):
