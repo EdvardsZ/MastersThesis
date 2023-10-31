@@ -13,4 +13,7 @@ class ToFeatureMap(nn.Module):
 
     def forward(self, z):
         return self.decoder_input(z)
+
+    def get_input_shape(self):
+        return self.decoder_input[0].weight.shape
     

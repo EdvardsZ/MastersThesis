@@ -14,3 +14,6 @@ class DecoderWithLatentLayer(nn.Module):
         feature_map = self.latentToFeatureMap(z)
         output = self.decoder(feature_map)
         return output
+    
+    def get_input_shape(self):
+        return self.latentToFeatureMap.get_input_shape()
