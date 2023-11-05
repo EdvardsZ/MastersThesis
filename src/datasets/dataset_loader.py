@@ -4,7 +4,7 @@ from .conditional_dataset import ConditionalDataset
 
 from typing import Tuple
 
-def load_dataset(data_config: dict) -> Tuple[torch.utils.data.DataLoader, torch.utils.data.DataLoader, torch.utils.data.DataLoader]:
+def load_dataset(data_config: dict) -> Tuple[torch.utils.data.DataLoader, torch.utils.data.DataLoader, torch.utils.data.DataLoader, Tuple[int, int, int]]:
     BATCH_SIZE = data_config['batch_size']
     dataset = data_config['dataset']
     conditioning_mode = data_config.get("conditioning_mode", "exact") # optional, default is exact
@@ -28,4 +28,4 @@ def load_dataset(data_config: dict) -> Tuple[torch.utils.data.DataLoader, torch.
     test_loader = torch.utils.data.DataLoader(test_set, batch_size=BATCH_SIZE, shuffle=False, num_workers=12, pin_memory=True)
     val_loader = torch.utils.data.DataLoader(val_set, batch_size=BATCH_SIZE, shuffle=False, num_workers=12, pin_memory=True)
 
-    return train_loader, val_loader, test_loader
+    return train_loader, val_loader, test_loader, train_set.get_image_shape()
