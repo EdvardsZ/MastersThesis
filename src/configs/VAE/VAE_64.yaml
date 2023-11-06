@@ -1,0 +1,8 @@
+model_name: VAE
+data_params:
+  dataset: MNIST
+  batch_size: 128
+model_params:
+  latent_dim: 64
+trainer_params:
+  max_epochs: 50

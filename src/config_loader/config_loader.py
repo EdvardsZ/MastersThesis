@@ -1,8 +1,8 @@
 import yaml
 import os
 
-def load_config(model_name: str) -> dict:
-    file_name = model_name + '.yaml'
+def load_config(file_name: str) -> dict:
+    file_name = file_name + '.yaml'
     
     for folder in os.listdir('configs'):
         if os.path.isfile('configs/' + folder + '/' + file_name):
