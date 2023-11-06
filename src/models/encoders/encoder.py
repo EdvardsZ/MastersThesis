@@ -16,7 +16,6 @@ class Encoder(nn.Module):
         stride_sizes = get_encoder_stride_sizes(image_size[1], len(hidden_dims))
 
         for i, h_dim in enumerate(hidden_dims):
-            print("stride_sizes[i]", stride_sizes[i])
             stride = stride_sizes[i]
 
             modules.append(

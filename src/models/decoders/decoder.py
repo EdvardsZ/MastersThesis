@@ -1,19 +1,17 @@
 import torch.nn as nn
+from models.helpers import get_decoder_stride_sizes, stride_size
     
 # Conventional Decoder
 class Decoder(nn.Module):
     def __init__(self, image_size = (1, 28, 28), hidden_dims = [256, 128, 64, 32]):
         super(Decoder, self).__init__()
-        self.image_size = image_size
-
-
-        count_div = count_div_by_2(image_size[1])
-        feature_size = len(hidden_dims) - count_div
 
         modules = []
 
+        stride_sizes = get_decoder_stride_sizes(image_size[1], len(hidden_dims))
+
         for i in range(len(hidden_dims)-1):
-            stride = 1 if feature_size > 0 else 2
+            stride = stride_sizes[i]
             modules.append(
                 nn.Sequential(
                     nn.ConvTranspose2d(hidden_dims[i], hidden_dims[i+1],
@@ -21,12 +19,11 @@ class Decoder(nn.Module):
                     nn.BatchNorm2d(hidden_dims[i+1]),
                     nn.LeakyReLU())
             )
-            feature_size -= 1
 
         modules.append(
             nn.Sequential(
                 nn.ConvTranspose2d(hidden_dims[-1], hidden_dims[-1], 
-                               kernel_size=3, stride = 2, padding=1, output_padding=1),
+                               kernel_size=3, stride = stride_sizes[-1], padding=1, output_padding=1),
                 nn.BatchNorm2d(hidden_dims[-1]),
                 nn.LeakyReLU(),
                 nn.Conv2d(hidden_dims[-1], out_channels= 1,
@@ -43,10 +40,3 @@ class Decoder(nn.Module):
 
         return output
     
-
-def count_div_by_2(num):
-    count = 0
-    while num % 2 == 0 and num > 0:
-        count += 1
-        num //= 2
-    return count

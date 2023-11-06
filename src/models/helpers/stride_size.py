@@ -11,6 +11,12 @@ def get_encoder_stride_sizes(image_size: int, len_hidden_dims: int):
         count_div_2 -= 1
 
     return stride_sizes
+
+def get_decoder_stride_sizes(image_size: int, len_hidden_dims: int):
+    # return the reverse of the encoder stride sizes
+    stride_sizes = get_encoder_stride_sizes(image_size, len_hidden_dims)
+    stride_sizes.reverse()
+    return stride_sizes
         
 
 
