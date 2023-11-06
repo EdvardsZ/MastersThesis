@@ -1,7 +1,8 @@
 import torch.nn as nn
+from models.helpers import get_encoder_stride_sizes
 
 class Encoder(nn.Module):
-    def __init__(self, image_size=(1, 28, 28), hidden_dims=[32, 64, 128, 256]):
+    def __init__(self, image_size=(1, 28, 28), hidden_dims =[32, 64, 128, 256]):
         super(Encoder, self).__init__()
 
         self.image_size = image_size
@@ -11,10 +12,12 @@ class Encoder(nn.Module):
 
         modules = []
 
-        # Build Encoder
-        feature_map_size = self.image_size[1:]
-        for h_dim in hidden_dims:
-            stride = 2 if any(map(lambda x: x % 2 == 0, feature_map_size)) else 1
+
+        stride_sizes = get_encoder_stride_sizes(image_size[1], len(hidden_dims))
+
+        for i, h_dim in enumerate(hidden_dims):
+            print("stride_sizes[i]", stride_sizes[i])
+            stride = stride_sizes[i]
 
             modules.append(
                 nn.Sequential(
@@ -24,8 +27,6 @@ class Encoder(nn.Module):
                     nn.LeakyReLU())
             )
             in_channels = h_dim
-            if stride == 2:
-                feature_map_size = tuple(map(lambda x: (x + 1) // 2, feature_map_size))
 
 
         self.encoder = nn.Sequential(*modules)
