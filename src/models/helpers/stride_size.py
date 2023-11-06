@@ -17,6 +17,16 @@ def get_decoder_stride_sizes(image_size: int, len_hidden_dims: int):
     stride_sizes = get_encoder_stride_sizes(image_size, len_hidden_dims)
     stride_sizes.reverse()
     return stride_sizes
+
+
+def get_feature_map_size(image_size: int, len_hidden_dims: int):
+    strides = get_encoder_stride_sizes(image_size, len_hidden_dims)
+    feature_map_size = image_size
+    for stride in strides:
+        if stride == 2:
+            feature_map_size //= 2
+
+    return feature_map_size
         
 
 

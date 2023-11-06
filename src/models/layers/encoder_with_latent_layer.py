@@ -2,12 +2,15 @@ import torch
 import torch.nn as nn
 from models.encoders import Encoder
 from models.layers.common import LatentLayer
+from typing import Tuple
+from typing import List
 
 class EncoderWithLatentLayer(nn.Module):
-    def __init__(self, latent_dim):
+    def __init__(self, latent_dim: int, image_size: Tuple[int, int, int] = (1, 28, 28), hidden_dims: List[int] = [32, 64, 128, 256]):
         super(EncoderWithLatentLayer, self).__init__()
         self.latent_dim = latent_dim
-        self.encoder = Encoder()
+
+        self.encoder = Encoder(image_size, hidden_dims)
         self.latent = LatentLayer(latent_dim)
 
     def forward(self, x):

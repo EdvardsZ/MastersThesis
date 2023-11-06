@@ -6,6 +6,8 @@ def plot_samples_with_reconstruction(model, data_loader, n=6, save_name=None):
     # plot n images and their reconstruction
 
     x, x_cond, y = next(iter(data_loader))
+
+    image_shape = x.shape[1:]
     model.eval()
 
     images_to_plot = []
@@ -34,7 +36,7 @@ def plot_samples_with_reconstruction(model, data_loader, n=6, save_name=None):
         axs = subfig.subplots(nrows=1, ncols=n)
         for col, ax in enumerate(axs):
             # plot images
-            ax.imshow(images_to_plot[row][col].detach().cpu().numpy().reshape(28, 28))
+            ax.imshow(images_to_plot[row][col].detach().cpu().numpy().reshape(image_shape).T)
             ax.axis('off')
             #ax.set_title(f'Plot title {col}')
 

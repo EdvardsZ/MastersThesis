@@ -1,9 +1,11 @@
+from email.mime import image
 import torch.nn as nn
 from models.helpers import get_decoder_stride_sizes, stride_size
+from typing import List, Tuple
     
 # Conventional Decoder
 class Decoder(nn.Module):
-    def __init__(self, image_size = (1, 28, 28), hidden_dims = [256, 128, 64, 32]):
+    def __init__(self, image_size: Tuple[int, int, int] = (1, 28, 28), hidden_dims : List[int] = [256, 128, 64, 32]):
         super(Decoder, self).__init__()
 
         modules = []
@@ -26,7 +28,7 @@ class Decoder(nn.Module):
                                kernel_size=3, stride = stride_sizes[-1], padding=1, output_padding=1),
                 nn.BatchNorm2d(hidden_dims[-1]),
                 nn.LeakyReLU(),
-                nn.Conv2d(hidden_dims[-1], out_channels= 1,
+                nn.Conv2d(hidden_dims[-1], out_channels= image_size[0],
                                       kernel_size= 3, padding= 1, stride=1),
             )
         )

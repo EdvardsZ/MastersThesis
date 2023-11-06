@@ -1,14 +1,17 @@
+from numpy import imag
 import torch
 import torch.nn as nn
 from models.decoders import Decoder
 from models.layers.common import ToFeatureMap
+from models.helpers import get_feature_map_size
 
 class DecoderWithLatentLayer(nn.Module):
-    def __init__(self):
+    def __init__(self, image_size=(1, 28, 28), hidden_dims=[256, 128, 64, 32]):
         super(DecoderWithLatentLayer, self).__init__()
-        
-        self.latentToFeatureMap = ToFeatureMap(feature_map_size=7, num_channels=256)
-        self.decoder = Decoder()
+
+        feature_map_size = get_feature_map_size(image_size[1], len(hidden_dims))
+        self.latentToFeatureMap = ToFeatureMap(feature_map_size=feature_map_size, num_channels=hidden_dims[0])
+        self.decoder = Decoder(image_size=image_size, hidden_dims=hidden_dims)
 
     def forward(self, z):
         feature_map = self.latentToFeatureMap(z)

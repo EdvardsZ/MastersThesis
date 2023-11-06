@@ -1,8 +1,10 @@
 import torch.nn as nn
 from models.helpers import get_encoder_stride_sizes
+from typing import List, Tuple
+
 
 class Encoder(nn.Module):
-    def __init__(self, image_size=(1, 28, 28), hidden_dims =[32, 64, 128, 256]):
+    def __init__(self, image_size : Tuple[int, int, int], hidden_dims : List[int] =[32, 64, 128, 256]):
         super(Encoder, self).__init__()
 
         self.image_size = image_size
