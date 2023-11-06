@@ -3,7 +3,7 @@ from lightning_extensions import BaseModule
 from models import get_model
 
 class VAEModule(BaseModule):
-    def __init__(self, model_params, image_shape,model_name):
+    def __init__(self, model_params, image_shape, model_name):
         model_class = get_model(model_name)
         model = model_class(**model_params, image_shape = image_shape)
         super(VAEModule, self).__init__(model)

@@ -1,2 +1,5 @@
 from .encoder_with_latent_layer import EncoderWithLatentLayer
 from .decoder_with_latent_layer import DecoderWithLatentLayer
+from .vector_quantizer import VectorQuantizer
+from .simple_vector_quantizer import SimpleVectorQuantizer
+from .new_vector_quantizer import NewVectorQuantizer

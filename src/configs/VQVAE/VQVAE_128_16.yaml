@@ -1,8 +1,9 @@
-model_name: SCVAE2D
+model_name: VQVAE
 data_params:
   dataset: MNIST
   batch_size: 128
 model_params:
-  latent_dim: 2
+  num_embeddings: 128
+  embedding_dim: 16
 trainer_params:
   max_epochs: 50
