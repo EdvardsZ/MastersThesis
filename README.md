@@ -13,8 +13,6 @@ Check if to train PixelCNN.
 
 6. Make a visualization for VQVAE
 
-7. Make sure all params are actually passed from config not hard coded
-
 8. Load the lowest loss model
 
 9. Different hyperparameters.

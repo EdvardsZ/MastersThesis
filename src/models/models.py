@@ -3,6 +3,9 @@ from .scvae1d import SCVAE1D
 from .scvae2d import SCVAE2D
 
 from .vqvae import VQVAE
+from .scvqvae1d import SCVQVAE1D
+from .scvqvae2d import SCVQVAE2D
+
 
 
 # maybe convert to enum
@@ -10,8 +13,10 @@ MODELS_LIST = [ VAE,
                 SCVAE1D,
                 SCVAE2D,
 
-                VQVAE
-                  ]
+                VQVAE,
+                SCVQVAE1D,
+                SCVQVAE2D
+            ]
 
 def get_model(model_name):
     for model in MODELS_LIST:

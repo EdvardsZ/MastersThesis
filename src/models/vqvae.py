@@ -9,7 +9,7 @@ from loss import VQLoss
 from typing import Tuple
 
 class VQVAE(nn.Module):
-    def __init__(self, num_embeddings, embedding_dim, image_shape: Tuple[int, int, int]):
+    def __init__(self, num_embeddings: int, embedding_dim: int, image_shape: Tuple[int, int, int]):
         super(VQVAE, self).__init__()
         
         self.in_channels = image_shape[0]

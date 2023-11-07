@@ -1,0 +1,9 @@
+model_name: VQVAE
+data_params:
+  dataset: CIFAR10
+  batch_size: 128
+model_params:
+  num_embeddings: 256
+  embedding_dim: 64
+trainer_params:
+  max_epochs: 50

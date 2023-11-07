@@ -1,0 +1,9 @@
+model_name: SCVQVAE1D
+data_params:
+  dataset: CIFAR10
+  batch_size: 128
+model_params:
+  num_embeddings: 128
+  embedding_dim: 32
+trainer_params:
+  max_epochs: 50
