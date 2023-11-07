@@ -32,10 +32,10 @@ class VQLoss(nn.Module):
         embeddding_loss = F.mse_loss(quantized, latent.detach())
         loss_dict['embeddding_loss'] = embeddding_loss
 
-        commitment_loss = F.mse_loss(quantized.detach(), latent)
-        loss_dict['commitment_loss'] = commitment_loss
+        commitment_loss = F.mse_loss(quantized.detach(), latent) * self.beta
+        loss_dict['commitment_loss'] = commitment_loss 
 
-        vq_loss = commitment_loss * self.beta + embeddding_loss
+        vq_loss = commitment_loss + embeddding_loss
 
         loss_dict['vq_loss'] = vq_loss
 
