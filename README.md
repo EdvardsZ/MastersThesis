@@ -26,3 +26,9 @@ Check if to train PixelCNN.
 Optional TODOS:
 1. Make validation for loading the configuration from file. Make sure to have correct types
     https://www.andrewvillazon.com/validate-yaml-python-schema/
+
+
+
+
+UPCOMING QUESTIONS:
+ 1. If sampling from random or gaussian with replacement or not.
