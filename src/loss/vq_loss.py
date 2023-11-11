@@ -13,7 +13,6 @@ class VQLoss(nn.Module):
 
         reconstructions, quantized, latent, embedding_indices = outputs
 
-
         loss = 0
         loss_dict = {}
 
