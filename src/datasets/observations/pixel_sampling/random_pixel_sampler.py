@@ -7,7 +7,7 @@ class RandomPixelSampler(PixelSampler):
 
     def sample(self, image: torch.Tensor, pixel_count: int) -> torch.Tensor:
         zeros = torch.zeros((pixel_count))
-        indices = torch.randint_like(zeros, 0, image.shape[1] * image.shape[2], dtype=torch.long)
+        indices = torch.randint_like(zeros, 0, image.shape[1] * image.shape[2], dtype=torch.long) # hmm this is not quite right because the same pixel can be sampled twice
 
         sampled_pixels = torch.zeros_like(image)
         sampled_pixels.view(-1)[indices] = image.view(-1)[indices]
