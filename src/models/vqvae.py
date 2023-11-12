@@ -3,7 +3,7 @@ import torch
 import torch.nn as nn
 from models.encoders import VQEncoder
 from models.decoders import VQDecoder
-from models.layers import SimpleVectorQuantizer, NewVectorQuantizer, new_vector_quantizer
+from models.layers import SimpleVectorQuantizer, NewVectorQuantizer
 from loss import VQLoss
 
 from typing import Tuple
@@ -19,7 +19,7 @@ class VQVAE(nn.Module):
 
         self.encoder = VQEncoder(self.in_channels, embedding_dim)
 
-        self.codebook = NewVectorQuantizer(num_embeddings, embedding_dim)
+        self.codebook = SimpleVectorQuantizer(num_embeddings, embedding_dim)
 
         self.decoder = VQDecoder(self.in_channels, embedding_dim)
 

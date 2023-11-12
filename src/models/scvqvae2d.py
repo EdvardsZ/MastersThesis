@@ -17,7 +17,7 @@ class SCVQVAE2D(nn.Module):
         self.num_embeddings = num_embeddings
 
         self.encoder = VQEncoder(self.in_channels, embedding_dim)
-        self.codebook = NewVectorQuantizer(num_embeddings, embedding_dim)
+        self.codebook = SimpleVectorQuantizer(num_embeddings, embedding_dim)
 
         self.decoder_input = ToFeatureMap(feature_map_size=image_shape[1] // 4, num_channels=embedding_dim)
 
