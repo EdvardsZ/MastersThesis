@@ -1,8 +1,8 @@
 import numpy as np
-from .image_count_sampler import ImageCountSampler
+from .count_sampler import CountSampler
 from typing import Tuple
 
-class ExponentialPixelCountSampler(ImageCountSampler):
+class ExponentialPixelCountSampler(CountSampler):
     def __init__(self, rate: float):
         self.rate = rate
     
@@ -10,8 +10,9 @@ class ExponentialPixelCountSampler(ImageCountSampler):
         return int(np.random.exponential(self.rate))
     
 
-class UniformPixelCountSampler(ImageCountSampler):
-    def __init__(self, low, high):
+class HalfExactPixelCountSampler(CountSampler):
+    # Half-exact sampling: 50% of the time exact, 50% of the time 0
+    def __init__(self, pixel_count: int):
         self.low = low
         self.high = high
     
