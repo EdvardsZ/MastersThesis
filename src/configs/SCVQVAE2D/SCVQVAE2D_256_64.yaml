@@ -1,10 +1,11 @@
-model_name: SCVAE1D
+model_name: SCVQVAE2D
 data_params:
-  dataset: MNIST
+  dataset: CIFAR10
   batch_size: 128
   count_sampling: EXACT
   pixel_sampling: EXACT
 model_params:
-  latent_dim: 16
+  num_embeddings: 256
+  embedding_dim: 64
 trainer_params:
   max_epochs: 50
