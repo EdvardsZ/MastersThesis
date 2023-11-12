@@ -13,7 +13,7 @@ def load_dataset(data_config: dict) -> Tuple[torch.utils.data.DataLoader, torch.
         transforms.ToTensor()
     ])
 
-    train_set = ConditionalDataset(train=True, download=True, transform=preprocess, dataset = dataset)
+    train_set = ConditionalDataset(train=True, transform=preprocess, dataset = dataset)
     test_val_set = ConditionalDataset(train=False, download=True, transform=preprocess, dataset = dataset)
     # split test and validation set
     test_size = 0.5
@@ -23,8 +23,8 @@ def load_dataset(data_config: dict) -> Tuple[torch.utils.data.DataLoader, torch.
     test_set, val_set = torch.utils.data.random_split(test_val_set, [test_set_size, val_set_size])
 
 
-    train_loader = torch.utils.data.DataLoader(train_set, batch_size=BATCH_SIZE, shuffle=True, num_workers=12, pin_memory=True)
-    test_loader = torch.utils.data.DataLoader(test_set, batch_size=BATCH_SIZE, shuffle=False, num_workers=12, pin_memory=True)
-    val_loader = torch.utils.data.DataLoader(val_set, batch_size=BATCH_SIZE, shuffle=False, num_workers=12, pin_memory=True)
+    train_loader = torch.utils.data.DataLoader(train_set, batch_size=BATCH_SIZE, shuffle=True, num_workers=256, pin_memory=True)
+    test_loader = torch.utils.data.DataLoader(test_set, batch_size=BATCH_SIZE, shuffle=False, num_workers=256, pin_memory=True)
+    val_loader = torch.utils.data.DataLoader(val_set, batch_size=BATCH_SIZE, shuffle=False, num_workers=256, pin_memory=True)
 
     return train_loader, val_loader, test_loader, train_set.get_image_shape()
