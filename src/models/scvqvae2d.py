@@ -12,6 +12,8 @@ from typing import Tuple
 class SCVQVAE2D(nn.Module):
     def __init__(self, num_embeddings: int, embedding_dim: int, image_shape: Tuple[int, int, int]):
         super(SCVQVAE2D, self).__init__()
+        self.image_shape = image_shape
+        
         self.in_channels = image_shape[0]
         self.embedding_dim = embedding_dim
         self.num_embeddings = num_embeddings
