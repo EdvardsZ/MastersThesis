@@ -1,6 +1,6 @@
 model_name: VAE
 data_params:
-  dataset: CelebA
+  dataset: CIFAR10
   batch_size: 128
 model_params:
   latent_dim: 16
