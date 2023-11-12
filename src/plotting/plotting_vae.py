@@ -46,10 +46,42 @@ def plot_samples_with_reconstruction(model, data_loader, n=6, save_name=None):
 
     plt.show()
 
+
+def plot_generated_samples(model, n=6, save_name=None):
+    # plot n*n generated images
+    if model is None or not hasattr(model.model, 'decode'):
+        print("Plot generated: Model is None or model has no decoder")
+        return
+    
+    model.eval()
+    latent_dim = model.model.latent_dim
+
+    full_image_width = 28 * n
+    full_image = np.zeros((full_image_width, full_image_width))
+
+    for i in range(n):
+        for j in range(n):
+            z = torch.randn(1, latent_dim)
+            image = model.model.decode(z).detach().cpu().numpy().reshape(28, 28)
+            full_image[i * 28: (i + 1) * 28, j * 28: (j + 1) * 28] = image
+
+    plt.imshow(full_image)
+    plt.axis('off')
+    if save_name is not None:
+        plt.savefig("assets/generated/" + save_name + ".png")
+
+    plt.show()
+
+
+
+
+
+
+
 def plot_latent_images(model, n=20, save_name=None):
     # plot n*n images in the latent space
     if model is None or model.model.latent_dim != 2 or not hasattr(model.model, 'decode'):
-        print("Model is None or latent dim is not 2 or model has no decoder")
+        print("Plot latent: Model is None or latent dim is not 2 or model has no decoder")
         return
     
     
