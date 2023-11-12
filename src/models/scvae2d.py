@@ -4,8 +4,9 @@ from models.layers import EncoderWithLatentLayer, DecoderWithLatentLayer
 from models.helpers import concat_latent_with_cond
 
 class SCVAE2D(nn.Module):
-    def __init__(self, latent_dim=2):
+    def __init__(self, latent_dim=2, image_shape=(1, 28, 28)):
         super(SCVAE2D, self).__init__()
+        self.image_shape = image_shape
         self.latent_dim = latent_dim
         self.encoder = EncoderWithLatentLayer(latent_dim=latent_dim)
         self.decoder = DecoderWithLatentLayer()
