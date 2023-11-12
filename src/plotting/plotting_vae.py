@@ -54,16 +54,19 @@ def plot_generated_samples(model, n=6, save_name=None):
         return
     
     model.eval()
+    shape = model.model.image_shape
+    print(shape)
     latent_dim = model.model.latent_dim
 
-    full_image_width = 28 * n
-    full_image = np.zeros((full_image_width, full_image_width))
+    full_image_width = shape[1] * n
+    full_image_height = shape[2] * n
+    full_image = np.zeros((shape[0], full_image_width, full_image_height))
 
     for i in range(n):
         for j in range(n):
             z = torch.randn(1, latent_dim)
-            image = model.model.decode(z).detach().cpu().numpy().reshape(28, 28)
-            full_image[i * 28: (i + 1) * 28, j * 28: (j + 1) * 28] = image
+            image = model.model.decode(z).detach().cpu().numpy().reshape(shape)
+            full_image[:, i * shape[1]: (i + 1) * shape[1], j * shape[2]: (j + 1) * shape[2]] = image
 
     plt.imshow(full_image)
     plt.axis('off')
