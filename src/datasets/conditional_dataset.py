@@ -37,6 +37,8 @@ class ConditionalDataset(Dataset):
         if dataset == "CIFAR10":
             return CIFAR10(root, train, transform, target_transform, download)
         if dataset == "CelebA":
+            # Adding the extra transformation
+            transform.transforms.insert(0, transforms.Resize((64, 64)))
             return CelebA(root, split='train' if train else 'test', transform=transform, download=download)
         else:
             raise ValueError("dataset must be MNIST or FashionMNIST")

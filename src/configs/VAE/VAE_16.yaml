@@ -1,6 +1,6 @@
 model_name: VAE
 data_params:
-  dataset: MNIST
+  dataset: CelebA
   batch_size: 128
 model_params:
   latent_dim: 16
