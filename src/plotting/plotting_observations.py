@@ -19,21 +19,22 @@ def plot_conditioned_example(example: torch.Tensor, count_sampling: CountSamplin
     fig = plt.figure(figsize=(6, 2))
     fig.suptitle(f"Count sampling: {count_sampling.name}, Pixel sampling: {pixel_sampling.name}")
 
+    shape = example.shape
     plt.subplot(1, 3, 1)
-    reshaped = example.detach().cpu().numpy().reshape(example.shape[1], example.shape[2])
+    reshaped = example.detach().cpu().reshape(shape).permute(1, 2, 0)
     plt.imshow(reshaped)
     plt.axis('off')
 
     x_cond = partial_observation.get_partial_observation(example)
 
     plt.subplot(1, 3, 2)
-    reshaped = x_cond[0].detach().cpu().numpy().reshape(example.shape[1], example.shape[2])
+    reshaped = x_cond[-1].detach().cpu().reshape((1, shape[1], shape[2])).permute(1, 2, 0)
     plt.imshow(reshaped)
     plt.axis('off')
 
     plt.subplot(1, 3, 3)
-    reshaped = x_cond[1].detach().cpu().numpy().reshape(example.shape[1], example.shape[2])
-    plt.imshow(reshaped)
+    reshaped = x_cond[:-1].detach().cpu().reshape(shape).permute(1, 2, 0)
+    plt.imshow(reshaped, cmap='gray')
     plt.axis('off')
 
     #save image
