@@ -5,11 +5,9 @@
 2. Make one runner for all,
 Check if to train PixelCNN. 
 
-3. Load the lowest loss model automatically
-
 4. ADAPTIVE LOSS
 
-5. Pixel count distribution
+5. Pixel count distribution.
 
 6. Gaussian pixel sampling.
 
@@ -23,6 +21,8 @@ Optional TODOS:
 2. Make a visualization for VQVAE
 
 3. Different hyperparameters, Data variance scaling
+
+4. Load the lowest loss model automatically
 ---------------------------------
 
 UPCOMING QUESTIONS:
