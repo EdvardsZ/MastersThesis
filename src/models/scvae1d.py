@@ -9,8 +9,8 @@ class SCVAE1D(nn.Module):
         super(SCVAE1D, self).__init__()
         self.image_shape = image_shape
         self.latent_dim = latent_dim
-        self.encoder = EncoderWithLatentLayer(latent_dim=latent_dim)
-        self.pixel_decoder = DecoderWithLatentLayer()
+        self.encoder = EncoderWithLatentLayer(latent_dim=latent_dim, image_size=image_shape)
+        self.pixel_decoder = DecoderWithLatentLayer(image_size=image_shape)
 
         self.loss = VAELoss(weight_kl=1.0)
 

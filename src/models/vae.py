@@ -7,6 +7,7 @@ class VAE(nn.Module):
     def __init__(self, latent_dim=2, image_shape=(1, 28, 28)):
         super(VAE, self).__init__()
         self.image_shape = image_shape
+        
         hidden_dims = [32, 64, 128, 256] #for now lets keep this hyperparam a constant
         self.latent_dim = latent_dim
         

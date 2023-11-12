@@ -4,9 +4,9 @@ import torch.nn as nn
 from models.decoders import Decoder
 from models.layers.common import ToFeatureMap
 from models.helpers import get_feature_map_size
-
+from typing import Tuple
 class DecoderWithLatentLayer(nn.Module):
-    def __init__(self, image_size=(1, 28, 28), hidden_dims=[256, 128, 64, 32]):
+    def __init__(self, image_size: Tuple[int, int, int], hidden_dims=[256, 128, 64, 32]):
         super(DecoderWithLatentLayer, self).__init__()
 
         feature_map_size = get_feature_map_size(image_size[1], len(hidden_dims))

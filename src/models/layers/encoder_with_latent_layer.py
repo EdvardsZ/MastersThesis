@@ -6,7 +6,7 @@ from typing import Tuple
 from typing import List
 
 class EncoderWithLatentLayer(nn.Module):
-    def __init__(self, latent_dim: int, image_size: Tuple[int, int, int] = (1, 28, 28), hidden_dims: List[int] = [32, 64, 128, 256]):
+    def __init__(self, latent_dim: int, image_size: Tuple[int, int, int], hidden_dims: List[int] = [32, 64, 128, 256]):
         super(EncoderWithLatentLayer, self).__init__()
         self.latent_dim = latent_dim
 
