@@ -7,7 +7,7 @@ class ExactPixelSampler(PixelSampler):
     def __init__(self, add_mask: bool = False):
         self.add_mask = add_mask
 
-    def sample(self, image: torch.Tensor) -> torch.Tensor:
+    def sample(self, image: torch.Tensor, pixel_count) -> torch.Tensor:
         self.image_shape = image.shape
 
         obs_x, obs_y = self.get_observation_exact_pixels(image)

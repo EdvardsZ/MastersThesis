@@ -7,15 +7,14 @@ from typing import Tuple
 def load_dataset(data_config: dict) -> Tuple[torch.utils.data.DataLoader, torch.utils.data.DataLoader, torch.utils.data.DataLoader, Tuple[int, int, int]]:
     BATCH_SIZE = data_config['batch_size']
     dataset = data_config['dataset']
-    conditioning_mode = data_config.get("conditioning_mode", "exact") # optional, default is exact
 
 
     preprocess = transforms.Compose([
         transforms.ToTensor()
     ])
 
-    train_set = ConditionalDataset(train=True, download=True, transform=preprocess, dataset = dataset, conditioning_mode = conditioning_mode)
-    test_val_set = ConditionalDataset(train=False, download=True, transform=preprocess, dataset = dataset, conditioning_mode = conditioning_mode)
+    train_set = ConditionalDataset(train=True, download=True, transform=preprocess, dataset = dataset)
+    test_val_set = ConditionalDataset(train=False, download=True, transform=preprocess, dataset = dataset)
     # split test and validation set
     test_size = 0.5
     test_set_size = int(len(test_val_set) * test_size)

@@ -3,19 +3,28 @@ from torch.utils.data import Dataset
 from torchvision.datasets import MNIST, FashionMNIST, CIFAR100, CIFAR10, CelebA
 from .observations import PartialObservation
 from torchvision import transforms
+from datasets.observations import CountSamplingMethod, PixelSamplingMethod
 
 from typing import Tuple
 
 
 class ConditionalDataset(Dataset):
-    def __init__(self, root: str ='data', train: bool =True, transform=None, target_transform=None, download: bool=False, dataset: str = "MNIST", conditioning_mode: str = "exact"):
+    def __init__(self, 
+                 root: str ='data', 
+                 train: bool =True, 
+                 transform=None, 
+                 target_transform=None, 
+                 download: bool=False, 
+                 dataset: str = "MNIST", 
+                 count_sampling: CountSamplingMethod = CountSamplingMethod.EXACT, 
+                 pixel_sampling: PixelSamplingMethod = PixelSamplingMethod.EXACT):
         if transform is None:
             transform = transforms.Compose([
                 transforms.ToTensor()
             ])
         
         self.dataset = self.get_dataset(dataset, root, train, transform, target_transform, download)
-        self.partial_observation = PartialObservation(conditioning_mode)
+        self.partial_observation = PartialObservation(count_sampling, pixel_sampling, add_mask = True)
 
 
     def get_dataset(self, dataset: str, root: str, train: bool, transform, target_transform, download: bool):
