@@ -34,7 +34,7 @@ def plot_conditioned_example(example: torch.Tensor, count_sampling: CountSamplin
 
     plt.subplot(1, 3, 3)
     reshaped = x_cond[:-1].detach().cpu().reshape(shape).permute(1, 2, 0)
-    plt.imshow(reshaped, cmap='gray')
+    plt.imshow(reshaped)
     plt.axis('off')
 
     #save image
