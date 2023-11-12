@@ -7,8 +7,7 @@ def plot_samples_with_reconstruction(model, data_loader, n=6, save_name=None):
 
     x, x_cond, y = next(iter(data_loader))
 
-    image_shape = x.shape
-    print(image_shape)
+    image_shape = model.model.image_shape
     model.eval()
 
     images_to_plot = []
@@ -37,7 +36,7 @@ def plot_samples_with_reconstruction(model, data_loader, n=6, save_name=None):
         axs = subfig.subplots(nrows=1, ncols=n)
         for col, ax in enumerate(axs):
             # plot images
-            ax.imshow(images_to_plot[row][col].detach().cpu().numpy().reshape(image_shape).permute(1, 2, 0))
+            ax.imshow(images_to_plot[row][col].detach().cpu().reshape(image_shape).permute(1, 2, 0))
             ax.axis('off')
             #ax.set_title(f'Plot title {col}')
 
@@ -53,9 +52,10 @@ def plot_generated_samples(model, n=6, save_name=None):
         print("Plot generated: Model is None or model has no decoder")
         return
     
+    title = "Generated"
+    
     model.eval()
     shape = model.model.image_shape
-    print(shape)
     latent_dim = model.model.latent_dim
 
     full_image_width = shape[1] * n
@@ -68,7 +68,13 @@ def plot_generated_samples(model, n=6, save_name=None):
             image = model.model.decode(z).detach().cpu().numpy().reshape(shape)
             full_image[:, i * shape[1]: (i + 1) * shape[1], j * shape[2]: (j + 1) * shape[2]] = image
 
+    
+    full_image = np.transpose(full_image, (1, 2, 0))
+    full_image = np.clip(full_image, 0, 1)
+    
+    plt.title(title)
     plt.imshow(full_image)
+
     plt.axis('off')
     if save_name is not None:
         plt.savefig("assets/generated/" + save_name + ".png")
@@ -84,7 +90,7 @@ def plot_generated_samples(model, n=6, save_name=None):
 def plot_latent_images(model, n=20, save_name=None):
     # plot n*n images in the latent space
     if model is None or model.model.latent_dim != 2 or not hasattr(model.model, 'decode'):
-        print("Plot latent: Model is None or latent dim is not 2 or model has no decoder")
+        #print("Plot latent: Model is None or latent dim is not 2 or model has no decoder")
         return
     
     
