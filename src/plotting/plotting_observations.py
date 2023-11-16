@@ -9,7 +9,7 @@ from datasets.observations import CountSamplingMethod, PixelSamplingMethod
 def plot_conditioned_examples(example: torch.Tensor):
     count_sampling = CountSamplingMethod.EXACT
     plot_conditioned_example(example, count_sampling, PixelSamplingMethod.EXACT)
-    plot_conditioned_example(example, count_sampling, PixelSamplingMethod.RANDOM)
+    plot_conditioned_example(example, count_sampling, PixelSamplingMethod.UNIFORM)
     plot_conditioned_example(example, count_sampling, PixelSamplingMethod.GAUSSIAN)
 
 

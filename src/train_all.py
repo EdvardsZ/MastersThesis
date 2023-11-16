@@ -7,7 +7,7 @@ all_configs = find_all_configs()
 for config_path in all_configs:
     for dataset in ["MNIST", "CIFAR10", "CelebA"]:
         for count_sampling in [CountSamplingMethod.EXACT, CountSamplingMethod.EXPONENTIAL, CountSamplingMethod.VARIABLE]:
-            for pixel_sampling in [PixelSamplingMethod.RANDOM, PixelSamplingMethod.EXACT, PixelSamplingMethod.GAUSSIAN]:
+            for pixel_sampling in [PixelSamplingMethod.UNIFORM, PixelSamplingMethod.EXACT, PixelSamplingMethod.GAUSSIAN]:
                 if pixel_sampling == PixelSamplingMethod.EXACT and (count_sampling == CountSamplingMethod.VARIABLE or count_sampling == CountSamplingMethod.EXPONENTIAL):
                     continue
                 # Pixel sampling does not matter for unconditional models

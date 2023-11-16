@@ -6,7 +6,7 @@ from PIL import Image
 import torchvision.transforms as transforms
 from .enums import CountSamplingMethod, PixelSamplingMethod
 from datasets.observations.count_sampling import VariablePixelCountSampler, ExactPixelCountSampler, ExponentialPixelCountSampler
-from datasets.observations.pixel_sampling import ExactPixelSampler, RandomPixelSampler, GaussianPixelSampler
+from datasets.observations.pixel_sampling import ExactPixelSampler, UniformPixelSampler, GaussianPixelSampler
 
 class PartialObservation:
     def __init__(self, 
@@ -36,8 +36,8 @@ class PartialObservation:
     def get_pixel_sampler(self, pixel_sampling: PixelSamplingMethod):
         if pixel_sampling == PixelSamplingMethod.EXACT:
             return ExactPixelSampler(self.add_mask)
-        elif pixel_sampling == PixelSamplingMethod.RANDOM:
-            return RandomPixelSampler(self.add_mask)
+        elif pixel_sampling == PixelSamplingMethod.UNIFORM:
+            return UniformPixelSampler(self.add_mask)
         elif pixel_sampling == PixelSamplingMethod.GAUSSIAN:
             return GaussianPixelSampler(self.add_mask)
         else:

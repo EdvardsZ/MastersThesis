@@ -2,7 +2,7 @@ from enum import Enum
 
 class PixelSamplingMethod(Enum):
     EXACT = "EXACT"
-    RANDOM = "RANDOM"
+    UNIFORM = "UNIFORM"
     GAUSSIAN = "GAUSSIAN"
 
 class CountSamplingMethod(Enum):

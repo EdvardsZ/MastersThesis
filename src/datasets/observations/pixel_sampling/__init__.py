@@ -1,3 +1,3 @@
-from .random_pixel_sampler import RandomPixelSampler
+from .uniform_pixel_sampler import UniformPixelSampler
 from .exact_pixel_sampler import ExactPixelSampler
 from .gaussian_pixel_sampler import GaussianPixelSampler
