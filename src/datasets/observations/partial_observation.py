@@ -13,36 +13,14 @@ class PartialObservation:
                 count_sampling: CountSamplingMethod = CountSamplingMethod.EXACT,
                 pixel_sampling: PixelSamplingMethod = PixelSamplingMethod.EXACT,
                 add_mask: bool = True):
-        
         self.add_mask = add_mask
-        self.count_sampler = self.get_count_sampler(count_sampling)
-        self.pixel_sampler = self.get_pixel_sampler(pixel_sampling)
+        self.count_sampler = count_sampling.get_sampler()
+        self.pixel_sampler = pixel_sampling.get_sampler(add_mask)
 
     def get_partial_observation(self, image: torch.Tensor) -> torch.Tensor:
         pixel_count = self.count_sampler.get_pixel_count(image)
         partial_observation = self.pixel_sampler.sample(image, pixel_count)
         return partial_observation
-        
-    def get_count_sampler(self, count_sampling: CountSamplingMethod):
-        if count_sampling == CountSamplingMethod.EXACT:
-            return ExactPixelCountSampler()
-        elif count_sampling == CountSamplingMethod.VARIABLE:
-            return VariablePixelCountSampler()
-        elif count_sampling == CountSamplingMethod.EXPONENTIAL:
-            return ExponentialPixelCountSampler()
-        else:
-            raise ValueError("Unknown count sampling method")
-        
-    def get_pixel_sampler(self, pixel_sampling: PixelSamplingMethod):
-        if pixel_sampling == PixelSamplingMethod.EXACT:
-            return ExactPixelSampler(self.add_mask)
-        elif pixel_sampling == PixelSamplingMethod.UNIFORM:
-            return UniformPixelSampler(self.add_mask)
-        elif pixel_sampling == PixelSamplingMethod.GAUSSIAN:
-            return GaussianPixelSampler(self.add_mask)
-        else:
-            raise ValueError("Unknown pixel sampling method")
-
     
 
 
