@@ -7,9 +7,10 @@ class NewVectorQuantizer(nn.Module):
         super(NewVectorQuantizer, self).__init__()
         self.num_embeddings = num_embeddings
         self.embedding_dim = embedding_dim
-
-        embed = torch.randn(embedding_dim, num_embeddings)
-        self.register_buffer("embed", embed)
+        
+        # Initialize the embeddings with a uniform distribution [-0.05, 0.05].
+        self.embed = nn.Parameter(torch.empty(embedding_dim, num_embeddings))
+        nn.init.uniform_(self.embed, a=-0.05, b=0.05)
 
     def forward(self, input):
         # input.shape = [B, E, H, W]
