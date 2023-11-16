@@ -23,7 +23,7 @@ class ExactPixelSampler(PixelSampler):
         
     def get_observation_exact_pixels(self, image: torch.Tensor) -> Tuple[List[int], List[int]]:
         image_size= image.shape[1]
-        observation_rows = image.shape[1] // 8
+        observation_rows = image.shape[1] // 7
         spacing = math.ceil(((image_size - observation_rows) / (observation_rows + 1)))
         without_sides = ((spacing * (observation_rows - 1)) + observation_rows)
         sides = (image_size - without_sides)
