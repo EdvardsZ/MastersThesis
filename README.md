@@ -21,6 +21,8 @@ Optional TODOS:
 3. Different hyperparameters, Data variance scaling
 
 4. Load the lowest loss model automatically
+
+5. Make other vector quantizer implementations to work
 ---------------------------------
 
 UPCOMING QUESTIONS:
