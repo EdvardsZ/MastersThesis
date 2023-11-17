@@ -1,8 +1,8 @@
 from email.mime import image
 import torch
 import torch.nn as nn
-from models.encoders import SimpleVQEncoder
-from models.decoders import SimpleVQDecoder
+from models.encoders import SimpleVQEncoder, VQEncoder
+from models.decoders import SimpleVQDecoder, VQDecoder
 from models.layers import SimpleVectorQuantizer, NewVectorQuantizer, VectorQuantizer
 from loss import VQLoss
 
@@ -17,11 +17,16 @@ class VQVAE(nn.Module):
         self.embedding_dim = embedding_dim
         self.num_embeddings = num_embeddings
 
-        self.encoder = SimpleVQEncoder(self.in_channels, embedding_dim)
+        hidden_dims = [32, 64]
+        n_residual_layers = 0 
+
+        self.encoder = VQEncoder(self.in_channels, embedding_dim, hidden_dims, n_residual_layers)
 
         self.codebook = NewVectorQuantizer(num_embeddings, embedding_dim)
 
-        self.decoder = SimpleVQDecoder(self.in_channels, embedding_dim)
+        hidden_dims.reverse()
+
+        self.decoder = VQDecoder(self.in_channels, embedding_dim, hidden_dims, n_residual_layers)
 
         self.loss = VQLoss()
 
