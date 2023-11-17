@@ -1,1 +1,1 @@
-from .pixel_count_samplers import ExponentialPixelCountSampler, VariablePixelCountSampler, ExactPixelCountSampler
+from .pixel_count_samplers import ExponentialPixelCountSampler, VariablePixelCountSampler, ExactPixelCountSampler, PowerLawPixelCountSampler

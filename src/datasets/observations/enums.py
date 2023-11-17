@@ -1,5 +1,5 @@
 from enum import Enum
-from datasets.observations.count_sampling import VariablePixelCountSampler, ExactPixelCountSampler, ExponentialPixelCountSampler
+from datasets.observations.count_sampling import VariablePixelCountSampler, ExactPixelCountSampler, ExponentialPixelCountSampler, PowerLawPixelCountSampler
 from datasets.observations.pixel_sampling import ExactPixelSampler, UniformPixelSampler, GaussianPixelSampler
 
 class PixelSamplingMethod(Enum):
@@ -21,6 +21,7 @@ class CountSamplingMethod(Enum):
     EXACT = "EXACT"
     VARIABLE = "VARIABLE"
     EXPONENTIAL = "EXPONENTIAL"
+    POWER_LAW = "POWER_LAW"
 
     def get_sampler(self):
         if self == CountSamplingMethod.EXACT:
@@ -29,6 +30,8 @@ class CountSamplingMethod(Enum):
             return VariablePixelCountSampler()
         elif self == CountSamplingMethod.EXPONENTIAL:
             return ExponentialPixelCountSampler()
+        elif self == CountSamplingMethod.POWER_LAW:
+            return PowerLawPixelCountSampler()
         else:
             raise ValueError("Unknown count sampling method")
 
