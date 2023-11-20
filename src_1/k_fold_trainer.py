@@ -69,15 +69,14 @@ class KFoldTrainer(L.Trainer):
             res = self.test(model=model, datamodule=datamodule, verbose=False)
             results.append(res)
             self.logger.finalize("success")
-            wandb.finish()
+            self.wandb.finalize("success")
+            wandb.finish(quiet=True)
 
         return results
 
 
     def save_model_checkpoint(self, model_name = None):
         model_name = self.get_fold_model_name() if model_name is None else model_name
-        self.wandb.finalize("success")
-        wandb.finish(quiet=True)
         super().save_checkpoint('checkpoints/' + model_name + '.ckpt')
 
 
