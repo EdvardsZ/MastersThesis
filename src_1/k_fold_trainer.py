@@ -59,21 +59,26 @@ class KFoldTrainer(L.Trainer):
         self.strategy._lightning_module = None
 
 
-
+        results = []
         for i in range(self.num_folds):
             data_module.fold_index = i
             self.fold = i
             self.logger = WandbLogger(project = self.project_name, name=self.get_fold_model_name(), log_model="all", group = self.model_name)
             self.fit(model, data_module, ckpt_path=path)
-            self.save_model_checkpoint()
+            self.save_model_checkpoint(self.get_fold_model_name())
+            res = self.test(model=model, datamodule=datamodule, verbose=False)
+            results.append(res)
             self.logger.finalize("success")
             wandb.finish()
 
+        return results
 
-    def save_model_checkpoint(self):
+
+    def save_model_checkpoint(self, model_name = None):
+        model_name = self.get_fold_model_name() if model_name is None else model_name
         self.wandb.finalize("success")
         wandb.finish(quiet=True)
-        super().save_checkpoint('checkpoints/' + self.model_name + '.ckpt')
+        super().save_checkpoint('checkpoints/' + model_name + '.ckpt')
 
 
     def get_fold_model_name(self):
