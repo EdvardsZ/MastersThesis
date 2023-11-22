@@ -54,7 +54,7 @@ class KFoldTrainer(L.Trainer):
         # checkpoint to restore from
         # this is a bit hacky because the model needs to be saved before the fit method
         self.strategy._lightning_module = model
-        path = osp.join(self.log_dir, "kfold_initial_weights.ckpt")
+        path = "checkpoints/k_initial_weights.ckpt"
         self.save_checkpoint(path)
         self.strategy._lightning_module = None
 
@@ -66,7 +66,7 @@ class KFoldTrainer(L.Trainer):
             self.logger = WandbLogger(project = self.project_name, name=self.get_fold_model_name(), log_model="all", group = self.model_name)
             self.fit(model, data_module, ckpt_path=path)
             self.save_model_checkpoint(self.get_fold_model_name())
-            res = self.test(model=model, datamodule=datamodule, verbose=False)
+            res = self.test(model=model, datamodule=data_module)
             results.append(res)
             self.logger.finalize("success")
             self.wandb.finalize("success")
