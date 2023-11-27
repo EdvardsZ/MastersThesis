@@ -1,15 +1,14 @@
 # MastersThesis
 
-2. Make one runner for all, - 12.11
+2. Make one runner for all, - 12.11 -- WIP 
 Check if to train PixelCNN. 
 
-3. Pixel count distribution. - 12.11
-
+3. Pixel count distribution. - 12.11 -- WIP
 4. ADAPTIVE LOSS - 13.11
 
-5. Gaussian pixel sampling. 13.11
+5. Nested Cross validation. 13.11 -- WIP
 
-6. Nested Cross validation. 13.11
+6. Different configurations! include hidden dims in configuration list.
 
 ---------------------
 Optional TODOS:
