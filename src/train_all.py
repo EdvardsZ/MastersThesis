@@ -13,8 +13,8 @@ def get_sampler_pairs():
     return sampler_pairs
 
 
-def get_training_configs_for_dataset(configs, dataset):
-
+def get_training_configs_for_dataset(dataset):
+    sampler_pairs = get_sampler_pairs()
     training_configs = []
     all_configs = find_all_configs()
     for config_path in all_configs:
@@ -36,14 +36,12 @@ def get_training_configs_for_dataset(configs, dataset):
 
     return training_configs
 
-all_configs = find_all_configs()
-sampler_pairs = get_sampler_pairs()
 
 
 for dataset in ["MNIST", "CIFAR10", "CelebA"]:
     print(f"Dataset: {dataset}")
     print("*"*20)
-    configs = get_training_configs_for_dataset(all_configs, dataset)
+    configs = get_training_configs_for_dataset(dataset)
     for config in configs:
         full_model_name = get_model_name(config)
         print(f"Training {full_model_name}")

@@ -5,7 +5,8 @@ from lightning_extensions import ExtendedTrainer
 from loss import VQLoss
 from plotting import plot_stage_one_results
 
-def train_and_evaluate(config: dict):
+
+def train_and_evaluate(config: dict, cross_validation = False):
     """Fully trains and evaluates a model for a given config"""
 
     print("***"*20)
@@ -21,7 +22,12 @@ def train_and_evaluate(config: dict):
     model = VAEModule(config['model_params'], model_name=config['model_name'], image_shape=image_shape)
 
     trainer = ExtendedTrainer(project_name="MTVAEs", **config['trainer_params'], model_name=model_name )
-    trainer.fit(model, train_loader, val_loader)
+
+    if cross_validation:
+        trainer.cross_validate(model, train_loader, val_loader)
+    else:
+        trainer.fit(model, train_loader, val_loader)
+
     #saves model checkpoint
     trainer.save_model_checkpoint()
 
