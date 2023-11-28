@@ -23,6 +23,12 @@ Optional TODOS:
 4. Load the lowest loss model automatically
 
 5. Make other vector quantizer implementations to work
+
+6. Make visualization about gaussian distribution for pixel picking
+
+7. Reduce Vector quantizer implementations( Make one)
+
+8. STRICT TYPING
 ---------------------------------
 
 UPCOMING QUESTIONS:

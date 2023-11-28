@@ -11,22 +11,20 @@ class VQLoss(nn.Module):
     def forward(self, inputs, outputs):
         x, x_cond, y = inputs
 
-        reconstructions, quantized, latent, embedding_indices = outputs
+        reconstructions, reconstructions_masked, quantized, latent, embedding_indices = outputs
 
         loss = 0
         loss_dict = {}
 
-        if isinstance(reconstructions, list):
-            recon_0 = F.mse_loss(reconstructions[0], x)
-            loss_dict['recon_loss'] = recon_0
-            loss += recon_0
-            recon_1 = F.mse_loss(reconstructions[1], x)
-            loss_dict['recon_loss_2'] = recon_1
-            loss += recon_1
-        else:
-            recon_0 = F.mse_loss(reconstructions, x)
-            loss_dict['recon_loss'] = recon_0
-            loss += recon_0
+        for i, recon in enumerate(reconstructions_masked):
+            if recon is not None:
+                recon = F.mse_loss(x, recon)
+                loss_dict[f'recon_loss_{i}(MASKED)'] = recon
+
+        for i, recon in enumerate(reconstructions):
+            recon = F.mse_loss(x, recon)
+            loss_dict[f'recon_loss_{i}'] = recon
+            loss += recon
 
         embeddding_loss = F.mse_loss(quantized, latent.detach())
         loss_dict['embeddding_loss'] = embeddding_loss

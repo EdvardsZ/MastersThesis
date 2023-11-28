@@ -6,19 +6,24 @@ from .vqvae import VQVAE
 from .scvqvae1d import SCVQVAE1D
 from .scvqvae2d import SCVQVAE2D
 
+from .base_vae import BaseVAE
+from .base_vqvae import BaseVQVAE
+from typing import List, Tuple, Type
 
 
+VAEType = Type[BaseVAE] | Type[BaseVQVAE]
 # maybe convert to enum
-MODELS_LIST = [ VAE,
-                SCVAE1D,
-                SCVAE2D,
+MODELS_LIST: List[VAEType]= [
+            VAE,
+            SCVAE1D,
+            SCVAE2D,
 
-                VQVAE,
-                SCVQVAE1D,
-                SCVQVAE2D
-            ]
+            VQVAE,
+            SCVQVAE1D,
+            SCVQVAE2D
+]
 
-def get_model(model_name):
+def get_model(model_name) -> VAEType:
     for model in MODELS_LIST:
         if model.__name__ == model_name:
             return model

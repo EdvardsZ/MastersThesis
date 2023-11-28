@@ -5,12 +5,14 @@ from models.layers import VectorQuantizer, SimpleVectorQuantizer, NewVectorQuant
 from models.layers.common import ToFeatureMap
 from loss import VQLoss
 from models.helpers import concat_latent_with_cond
+from .base_vqvae import BaseVQVAE
+from models.outputs import VAEModelOutput
 
 from typing import Tuple
 
-class SCVQVAE1D(nn.Module):
+class SCVQVAE1D(BaseVQVAE):
     def __init__(self, num_embeddings: int, embedding_dim: int, image_shape: Tuple[int, int, int]):
-        super(SCVQVAE1D, self).__init__()
+        super(SCVQVAE1D, self).__init__(num_embeddings, embedding_dim, image_shape)
         self.image_shape = image_shape
         
         self.in_channels = image_shape[0]
@@ -19,7 +21,7 @@ class SCVQVAE1D(nn.Module):
 
         self.encoder = VQEncoder(self.in_channels, embedding_dim)
 
-        self.codebook = SimpleVectorQuantizer(num_embeddings, embedding_dim)
+        self.codebook = NewVectorQuantizer(num_embeddings, embedding_dim)
 
         self.decoder_input = ToFeatureMap(feature_map_size=image_shape[1] // 4, num_channels=embedding_dim)
 
@@ -27,7 +29,7 @@ class SCVQVAE1D(nn.Module):
 
         self.loss = VQLoss()
 
-    def forward(self, x, x_cond, y):
+    def forward(self, x, x_cond, y) -> VAEModelOutput:
         # Input: (B, C, H, W)
         latent = self.encoder(x)
 
@@ -41,6 +43,6 @@ class SCVQVAE1D(nn.Module):
 
         x_hat = self.decoder(quantized_with_grad)
 
-        return x_hat, quantized, latent, embedding_indices
+        return [x_hat], [], quantized, latent, embedding_indices
 
     

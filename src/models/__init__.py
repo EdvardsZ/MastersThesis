@@ -9,3 +9,4 @@ from .scvqvae1d import SCVQVAE1D
 from .scvqvae2d import SCVQVAE2D
 
 from .base_vae import BaseVAE
+from .base_vqvae import BaseVQVAE

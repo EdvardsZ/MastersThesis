@@ -3,3 +3,6 @@ from .decoder_with_latent_layer import DecoderWithLatentLayer
 from .vector_quantizer import VectorQuantizer
 from .simple_vector_quantizer import SimpleVectorQuantizer
 from .new_vector_quantizer import NewVectorQuantizer
+from .vq_decoder_with_concat import VQDecoderWithConcat
+from .vq_encoder_with_quantizer import VQEncoderWithQuantizer
+from .concat_layer import ConcatLayer

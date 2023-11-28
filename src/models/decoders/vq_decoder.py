@@ -2,7 +2,7 @@ import torch.nn as nn
 from models.layers.common import ResidualLayer
 
 class VQDecoder(nn.Module):
-    def __init__(self, in_channels, embedding_dim, hidden_dims = [256, 128], n_residual_layers = 6):
+    def __init__(self, in_channels: int, embedding_dim: int, hidden_dims = [256, 128], n_residual_layers = 6):
         super(VQDecoder, self).__init__()
         # Build Decoder
         modules = []

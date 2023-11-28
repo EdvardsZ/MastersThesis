@@ -1,6 +1,8 @@
+from email.mime import image
 import matplotlib.pyplot as plt
 import torch
 import numpy as np
+from modules import VAEModule
 
 def plot_samples_with_reconstruction(model, data_loader, n=6, save_name=None):
     # plot n images and their reconstruction
@@ -10,29 +12,27 @@ def plot_samples_with_reconstruction(model, data_loader, n=6, save_name=None):
     image_shape = model.model.image_shape
     model.eval()
 
-    images_to_plot = []
+    images_to_plot = [x]
+    images_to_plot_titles = ["Original"]
 
-    outputs, z, z_mean, z_log_var = model(x, x_cond, y)
+    outputs, output_masked, z, z_mean, z_log_var = model.model(x, x_cond, y)
 
-    if isinstance(outputs, list):
-        images_to_plot.append(x)
-        images_to_plot.append(outputs[0])
-        images_to_plot.append(outputs[1])
-    else:
-        images_to_plot.append(x)
-        images_to_plot.append(outputs)
+    for i, output in enumerate(outputs):
+        images_to_plot.append(output)
+        images_to_plot_titles.append(f"Reconstruction {i}")
 
-    images_to_plot_titles = ["Original", "Reconstruction", "Reconstruction(Conditioned)"]
+    for i, output in enumerate(output_masked):
+        if output is not None:
+            images_to_plot.append(output)
+            images_to_plot_titles.append(f"Reconstruction Masked {i}")
 
     fig = plt.figure(figsize=(n, len(images_to_plot)))
     #fig.suptitle('Figure title')
 
-    # create 3x1 subfigs
     subfigs = fig.subfigures(nrows=len(images_to_plot), ncols=1)
     for row, subfig in enumerate(subfigs):
         subfig.suptitle(images_to_plot_titles[row])
 
-        # create 1x3 subplots per subfig
         axs = subfig.subplots(nrows=1, ncols=n)
         for col, ax in enumerate(axs):
             # plot images
