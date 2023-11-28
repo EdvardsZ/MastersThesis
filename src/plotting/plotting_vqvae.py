@@ -1,4 +1,6 @@
 from matplotlib import pyplot as plt
+from sympy import plot
+from .plotting import plot_sample_images
 
 def plot_samples_with_reconstruction_and_indices(model, data_loader, n=6, save_name=None):
     # plot n images and their reconstruction
@@ -7,30 +9,21 @@ def plot_samples_with_reconstruction_and_indices(model, data_loader, n=6, save_n
     image_shape = model.model.image_shape
 
     output = model(x, x_cond, y)
-    print(output[0].shape)
-    indices = output[3].reshape(-1, 1, image_shape[1] // 4, image_shape[2] // 4)
 
-    #make the plot smaller
-    plt.figure(figsize=(n, 3))
+    reconstructions = output[0]
+    reconstruction_masked = output[1]
+    indices = output[-1].reshape(-1, 1, image_shape[1] // 4, image_shape[2] // 4) ## This is assumpution that downsample that there are 2 downsample layers
 
-    for i in range(n):
-        image = x[i].detach().cpu().reshape(image_shape).permute(1, 2, 0)
-        indice_image = indices[i][0].detach().cpu().reshape((image_shape[1] // 4, image_shape[2] // 4))
-        reconstruction = output[0][i].detach().cpu().reshape(image_shape).permute(1, 2, 0)
+    images_to_plot = [x, indices]
+    images_to_plot_titles = ["Original", "Indices"]
 
-        # axis off
-        plt.subplot(3, n, i + 1)
-        plt.imshow(image)
-        plt.axis('off')
-        plt.subplot(3, n, i + 1 + n)
-        plt.imshow(indice_image)
-        plt.axis('off')
-        plt.subplot(3, n, i + 1 + 2 *n)
-        plt.imshow(reconstruction)
-        plt.axis('off')
+    for i, reconstruction in enumerate(reconstructions):
+        images_to_plot.append(reconstruction)
+        images_to_plot_titles.append(f"Reconstruction {i}")
 
-    if save_name is not None:
-        plt.savefig("assets/reconstructions/" + save_name + ".png")
+    for i, reconstruction in enumerate(reconstruction_masked):
+        if reconstruction is not None:
+            images_to_plot.append(reconstruction)
+            images_to_plot_titles.append(f"Reconstruction Masked {i}")
 
-
-    plt.show()
+    plot_sample_images(images_to_plot, images_to_plot_titles, save_name=save_name, n=n)
