@@ -18,14 +18,13 @@ class VAELoss(nn.Module):
         ### adding reconstructions_masked to loss_dict for logging purposes
         for i, recon in enumerate(reconstructions_masked):
             if recon is not None:
+                recon = recon_loss(inputs[0], recon)
                 loss_dict[f'recon_loss_{i}(MASKED)'] = recon
 
         loss = 0
 
-        x, x_cond, y = inputs
-
         for i, recon in enumerate(reconstructions_unmasked):
-            recon = recon_loss(x, recon)
+            recon = recon_loss(inputs[0], recon)
             loss_dict[f'recon_loss_{i}'] = recon
             loss += recon
         
