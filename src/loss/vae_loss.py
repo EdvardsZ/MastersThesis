@@ -1,6 +1,8 @@
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
+from models.outputs import VAEModelOutput
+from typing import Tuple
 
 class VAELoss(nn.Module):
     def __init__(self, weight_kl=1.0, loss_type = 'single'):
@@ -8,25 +10,24 @@ class VAELoss(nn.Module):
         self.weight_kl = weight_kl
         self.loss_type = loss_type
 
-    def forward(self, inputs, outputs):
-        reconstructions, z, z_mean, z_log_var = outputs
+    def forward(self, inputs: Tuple[torch.Tensor, torch.Tensor, torch.Tensor], outputs: VAEModelOutput):
+        reconstructions_unmasked, reconstructions_masked,  z, z_mean, z_log_var = outputs
 
         loss_dict = {}
+
+        ### adding reconstructions_masked to loss_dict for logging purposes
+        for i, recon in enumerate(reconstructions_masked):
+            if recon is not None:
+                loss_dict[f'recon_loss_{i}(MASKED)'] = recon
+
         loss = 0
 
         x, x_cond, y = inputs
 
-        if isinstance(reconstructions, list):
-            recon_0 = recon_loss(x, reconstructions[0])
-            loss_dict['recon_loss'] = recon_0
-            loss += recon_0
-            recon_1 = recon_loss(x, reconstructions[1])
-            loss_dict['recon_loss_2'] = recon_1
-            loss += recon_1
-        else:
-            recon_0 = recon_loss(x, reconstructions)
-            loss_dict['recon_loss'] = recon_0
-            loss += recon_0
+        for i, recon in enumerate(reconstructions_unmasked):
+            recon = recon_loss(x, recon)
+            loss_dict[f'recon_loss_{i}'] = recon
+            loss += recon
         
         kl = kl_loss(z_mean, z_log_var)
         loss_dict['kl_loss'] = kl
