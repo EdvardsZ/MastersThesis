@@ -30,7 +30,7 @@ class SCVAE2D(BaseVAE):
 
         output_2_masked = self.pixel_decoder(x_cat_masked)
 
-        return [output_1, output_2_masked], [None, output_2], z, z_mean, z_log_var
+        return [output_1, output_2], [None, output_2_masked], z, z_mean, z_log_var
 
     def decode(self, z):
         return self.decoder(z)
