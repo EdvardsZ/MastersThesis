@@ -4,9 +4,10 @@
 Check if to train PixelCNN. 
 
 3. Pixel count distribution. - 12.11 -- WIP
+
 4. ADAPTIVE LOSS - 13.11
 
-5. Nested Cross validation. 13.11 -- WIP
+5. Add variance logging to summary
 
 6. Different configurations! include hidden dims in configuration list.
 
