@@ -7,5 +7,7 @@ data_params:
 model_params:
   num_embeddings: 128
   embedding_dim: 32
+  hidden_dims : [128, 256]
+  n_residual_layers: 2
 trainer_params:
   max_epochs: 50
