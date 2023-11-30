@@ -8,11 +8,12 @@ from loss import VQLoss
 from models.helpers import concat_latent_with_cond
 from .base_vqvae import BaseVQVAE
 from models.outputs import VAEModelOutput
+import torch
 
-from typing import Tuple
+from typing import Tuple, List
 
 class SCVQVAE1D(BaseVQVAE):
-    def __init__(self, num_embeddings: int, embedding_dim: int, image_shape: Tuple[int, int, int]):
+    def __init__(self, num_embeddings: int, embedding_dim: int, hidden_dims: List[int], n_residual_layers: int, image_shape: Tuple[int, int, int]):
         super(SCVQVAE1D, self).__init__(num_embeddings, embedding_dim, image_shape)
         self.image_shape = image_shape
         
@@ -20,9 +21,11 @@ class SCVQVAE1D(BaseVQVAE):
         self.embedding_dim = embedding_dim
         self.num_embeddings = num_embeddings
 
-        self.encoderWithQuantizer = VQEncoderWithQuantizer(self.in_channels, num_embeddings, embedding_dim)
+        self.encoderWithQuantizer = VQEncoderWithQuantizer(self.in_channels, num_embeddings, embedding_dim, hidden_dims, n_residual_layers)
 
-        self.decoder_with_concat = VQDecoderWithConcat(self.in_channels, embedding_dim, image_shape)
+        hidden_dims.reverse()
+
+        self.decoder_with_concat = VQDecoderWithConcat(self.in_channels, embedding_dim, hidden_dims, n_residual_layers, image_shape)
 
         self.loss = VQLoss()
 
@@ -32,6 +35,10 @@ class SCVQVAE1D(BaseVQVAE):
 
         x_hat = self.decoder_with_concat(quantized_with_grad, x_cond)
 
-        return [x_hat], [], quantized, latent, embedding_indices
+        x_cond_masked = torch.zeros_like(x_cond, requires_grad=False)
+
+        x_hat_masked = self.decoder_with_concat(quantized_with_grad, x_cond_masked)
+
+        return [x_hat], [x_hat_masked], quantized, latent, embedding_indices
 
     

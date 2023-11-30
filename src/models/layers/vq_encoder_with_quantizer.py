@@ -1,13 +1,12 @@
 import torch.nn as nn
-from models.encoders import VQEncoder
+from models.encoders import VQEncoder, SimpleVQEncoder
 from models.layers import NewVectorQuantizer, VectorQuantizer, SimpleVectorQuantizer
+from typing import List
 
 class VQEncoderWithQuantizer(nn.Module):
-    def __init__(self, in_channels: int, num_embeddings: int, embedding_dim: int):
+    def __init__(self, in_channels: int, num_embeddings: int, embedding_dim: int, hidden_dims: List[int], n_residual_layers: int):
         super(VQEncoderWithQuantizer, self).__init__()
 
-        hidden_dims = [32, 64]
-        n_residual_layers = 0
         self.encoder = VQEncoder(in_channels, embedding_dim, hidden_dims, n_residual_layers)
         self.codebook = NewVectorQuantizer(num_embeddings, embedding_dim)
 

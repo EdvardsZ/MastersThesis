@@ -9,10 +9,10 @@ from loss import VQLoss
 from .base_vqvae import BaseVQVAE
 from models.outputs import VAEModelOutput
 
-from typing import Tuple
+from typing import Tuple, List
 
 class VQVAE(BaseVQVAE):
-    def __init__(self, num_embeddings: int, embedding_dim: int, image_shape: Tuple[int, int, int]):
+    def __init__(self, num_embeddings: int, embedding_dim: int,  hidden_dims: List[int], n_residual_layers: int,  image_shape: Tuple[int, int, int]):
         super(VQVAE, self).__init__(num_embeddings, embedding_dim, image_shape)
         
         self.image_shape = image_shape
@@ -20,8 +20,8 @@ class VQVAE(BaseVQVAE):
         self.embedding_dim = embedding_dim
         self.num_embeddings = num_embeddings
 
-        self.encoderWithQuantizer = VQEncoderWithQuantizer(self.in_channels, num_embeddings, embedding_dim)
-        self.decoderWithConcat = VQDecoderWithConcat(self.in_channels, embedding_dim, image_shape)
+        self.encoderWithQuantizer = VQEncoderWithQuantizer(self.in_channels, num_embeddings, embedding_dim, hidden_dims, n_residual_layers)
+        self.decoderWithConcat = VQDecoderWithConcat(self.in_channels, embedding_dim, hidden_dims, n_residual_layers, image_shape)
 
         self.loss = VQLoss()
 

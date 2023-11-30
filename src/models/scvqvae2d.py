@@ -11,10 +11,10 @@ from models.helpers import concat_latent_with_cond
 from .base_vqvae import BaseVQVAE
 from models.outputs import VAEModelOutput
 
-from typing import Tuple
+from typing import Tuple, List
 
 class SCVQVAE2D(BaseVQVAE):
-    def __init__(self, num_embeddings: int, embedding_dim: int, image_shape: Tuple[int, int, int]):
+    def __init__(self, num_embeddings: int, embedding_dim: int, hidden_dims: List[int], n_residual_layers: int, image_shape: Tuple[int, int, int]):
         super(SCVQVAE2D, self).__init__(num_embeddings, embedding_dim, image_shape)
         self.image_shape = image_shape
         
@@ -22,11 +22,13 @@ class SCVQVAE2D(BaseVQVAE):
         self.embedding_dim = embedding_dim
         self.num_embeddings = num_embeddings
 
-        self.encoderWithQuantizer = VQEncoderWithQuantizer(self.in_channels, num_embeddings, embedding_dim)
+        self.encoderWithQuantizer = VQEncoderWithQuantizer(self.in_channels, num_embeddings, embedding_dim, hidden_dims, n_residual_layers)
 
-        self.decoder_with_concat = VQDecoderWithConcat(self.in_channels, embedding_dim, image_shape)
+        hidden_dims.reverse()
 
-        self.decoder = VQDecoderWithConcat(self.in_channels, embedding_dim, image_shape)
+        self.decoder_with_concat = VQDecoderWithConcat(self.in_channels, embedding_dim, hidden_dims, n_residual_layers, image_shape)
+
+        self.decoder = VQDecoderWithConcat(self.in_channels, embedding_dim, hidden_dims, n_residual_layers, image_shape)
 
         self.loss = VQLoss(loss_type='double')
 
@@ -38,7 +40,11 @@ class SCVQVAE2D(BaseVQVAE):
 
         output_2 = self.decoder_with_concat(quantized_with_grad, x_cond)
 
-        return [output_1, output_2], [], quantized, latent, embedding_indices
+        x_cond_masked = torch.zeros_like(x_cond, requires_grad=False)
+
+        output_2_masked = self.decoder_with_concat(quantized_with_grad, x_cond_masked)
+
+        return [output_1, output_2], [None, output_2_masked], quantized, latent, embedding_indices
     
     def reconstruct_from_indices(self, indices, batch_size):
         quantized = self.codebook.quantize_from_indices(indices, batch_size)
