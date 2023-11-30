@@ -21,7 +21,7 @@ class VQVAE(BaseVQVAE):
         self.num_embeddings = num_embeddings
 
         self.encoderWithQuantizer = VQEncoderWithQuantizer(self.in_channels, num_embeddings, embedding_dim)
-        self.decoderWithConcat = VQDecoderWithConcat(self.in_channels, embedding_dim)
+        self.decoderWithConcat = VQDecoderWithConcat(self.in_channels, embedding_dim, image_shape)
 
         self.loss = VQLoss()
 

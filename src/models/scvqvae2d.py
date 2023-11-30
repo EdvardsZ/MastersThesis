@@ -5,6 +5,7 @@ from models.encoders import VQEncoder
 from models.decoders import VQDecoder
 from models.layers import VectorQuantizer, SimpleVectorQuantizer, NewVectorQuantizer
 from models.layers.common import ToFeatureMap
+from models.layers import VQEncoderWithQuantizer, VQDecoderWithConcat
 from loss import VQLoss
 from models.helpers import concat_latent_with_cond
 from .base_vqvae import BaseVQVAE
@@ -21,30 +22,21 @@ class SCVQVAE2D(BaseVQVAE):
         self.embedding_dim = embedding_dim
         self.num_embeddings = num_embeddings
 
-        self.encoder = VQEncoder(self.in_channels, embedding_dim)
-        self.codebook = NewVectorQuantizer(num_embeddings, embedding_dim)
+        self.encoderWithQuantizer = VQEncoderWithQuantizer(self.in_channels, num_embeddings, embedding_dim)
 
-        self.decoder_input = ToFeatureMap(feature_map_size=image_shape[1] // 4, num_channels=embedding_dim)
+        self.decoder_with_concat = VQDecoderWithConcat(self.in_channels, embedding_dim, image_shape)
 
-        self.pixel_decoder = VQDecoder(self.in_channels, embedding_dim)
-        self.decoder = VQDecoder(self.in_channels, embedding_dim)
+        self.decoder = VQDecoderWithConcat(self.in_channels, embedding_dim, image_shape)
 
         self.loss = VQLoss(loss_type='double')
 
     def forward(self, x, x_cond, y) -> VAEModelOutput:
-        # Input: (B, C, H, W)
-        latent = self.encoder(x)
 
-        quantized_with_grad, quantized, embedding_indices = self.codebook(latent)
+        latent, quantized_with_grad, quantized, embedding_indices = self.encoderWithQuantizer(x)
 
-        quantized_with_grad_concat = nn.Flatten()(quantized_with_grad) # TODO: make a module for this
+        output_1 = self.decoder_with_concat(quantized_with_grad)
 
-        quantized_with_grad_concat = concat_latent_with_cond(quantized_with_grad_concat, x_cond)
-
-        quantized_with_grad_concat = self.decoder_input(quantized_with_grad_concat)
-
-        output_1 = self.pixel_decoder(quantized_with_grad)
-        output_2 = self.pixel_decoder(quantized_with_grad_concat)
+        output_2 = self.decoder_with_concat(quantized_with_grad, x_cond)
 
         return [output_1, output_2], [], quantized, latent, embedding_indices
     

@@ -4,9 +4,10 @@ from typing import Tuple
 from models.decoders import VQDecoder
 from torch import Tensor
 from .concat_layer import ConcatLayer
+from models.layers.common import ToFeatureMap, to_feature_map
 
 class VQDecoderWithConcat(nn.Module):
-    def __init__(self, in_channels: int, embedding_dim: int):
+    def __init__(self, in_channels: int, embedding_dim: int, image_shape: Tuple[int, int, int]):
         super(VQDecoderWithConcat, self).__init__()
         self.embedding_dim = embedding_dim
 
@@ -14,13 +15,16 @@ class VQDecoderWithConcat(nn.Module):
         hidden_dims.reverse()
         n_residual_layers = 0
 
-        self.decoder = VQDecoder(in_channels, embedding_dim, hidden_dims, n_residual_layers)
         self.concat = ConcatLayer()
+        self.decoder_input = ToFeatureMap(feature_map_size= image_shape[1] // 4, num_channels=embedding_dim)
+
+        self.decoder = VQDecoder(in_channels, embedding_dim, hidden_dims, n_residual_layers)
 
     def forward(self, quantized: Tensor, x_cond: Tensor | None = None):
         if x_cond is None:
             return self.decoder(quantized)
         
         quantized = self.concat(quantized, x_cond)
+        to_feature_map = self.decoder_input(quantized)
 
-        return self.decoder(quantized)
+        return self.decoder(to_feature_map)
