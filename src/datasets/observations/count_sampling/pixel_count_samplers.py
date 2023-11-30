@@ -15,7 +15,7 @@ class ExponentialPixelCountSampler(CountSampler):
 
 class PowerLawPixelCountSampler(CountSampler):
     def __init__(self):
-        self.exponent = 10.0
+        self.exponent = 12
         return
     def get_pixel_count(self, image: torch.Tensor) -> int:
         total_pixels = image.shape[1] * image.shape[2]
