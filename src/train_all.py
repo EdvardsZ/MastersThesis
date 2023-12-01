@@ -31,7 +31,6 @@ def get_training_configs_for_dataset(dataset):
                 config_copy = deepcopy(config)
                 config_copy["data_params"]["count_sampling"] = count_sampling.value
                 config_copy["data_params"]["pixel_sampling"] = pixel_sampling.value
-                config_copy["trainer_params"]["max_epochs"] = 1
 
                 full_model_name = get_model_name(config_copy)
 
@@ -41,7 +40,6 @@ def get_training_configs_for_dataset(dataset):
 
         else:
             config_copy = deepcopy(config)
-            config_copy["trainer_params"]["max_epochs"] = 1
             training_configs.append(config_copy)
 
 
