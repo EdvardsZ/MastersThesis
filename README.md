@@ -33,3 +33,9 @@ Optional TODOS:
 
 UPCOMING QUESTIONS:
  1. If sampling from random or gaussian with replacement or not.
+
+
+
+
+ dec 15th 11am
+ jan 16th 10am
