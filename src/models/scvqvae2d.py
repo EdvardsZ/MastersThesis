@@ -40,9 +40,10 @@ class SCVQVAE2D(BaseVQVAE):
 
         output_2 = self.decoder_with_concat(quantized_with_grad, x_cond)
 
-        x_cond_masked = torch.zeros_like(x_cond, requires_grad=False)
-
-        output_2_masked = self.decoder_with_concat(quantized_with_grad, x_cond_masked)
+        with torch.no_grad():
+            self.decoder_with_concat.eval()
+            x_cond_masked = torch.zeros_like(x_cond, requires_grad=False)
+            output_2_masked = self.decoder_with_concat(quantized_with_grad, x_cond_masked)
 
         return [output_1, output_2], [None, output_2_masked], quantized, latent, embedding_indices
     

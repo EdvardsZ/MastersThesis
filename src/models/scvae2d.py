@@ -26,9 +26,11 @@ class SCVAE2D(BaseVAE):
 
         output_2 = self.pixel_decoder(x_cat)
 
-        x_cat_masked = torch.zeros_like(x_cat, requires_grad=False)
-
-        output_2_masked = self.pixel_decoder(x_cat_masked)
+        with torch.no_grad():
+            self.pixel_decoder.eval()
+            x_cat_masked = torch.zeros_like(x_cat, requires_grad=False)
+            output_2_masked = self.pixel_decoder(x_cat_masked)
+            self.pixel_decoder.train()
 
         return [output_1, output_2], [None, output_2_masked], z, z_mean, z_log_var
 

@@ -35,9 +35,12 @@ class SCVQVAE1D(BaseVQVAE):
 
         x_hat = self.decoder_with_concat(quantized_with_grad, x_cond)
 
-        x_cond_masked = torch.zeros_like(x_cond, requires_grad=False)
+        with torch.no_grad():
+            self.decoder_with_concat.eval()
+            x_cond_masked = torch.zeros_like(x_cond, requires_grad=False)
+            x_hat_masked = self.decoder_with_concat(quantized_with_grad, x_cond_masked)
+            self.decoder_with_concat.train()
 
-        x_hat_masked = self.decoder_with_concat(quantized_with_grad, x_cond_masked)
 
         return [x_hat], [x_hat_masked], quantized, latent, embedding_indices
 

@@ -23,11 +23,13 @@ class SCVAE1D(BaseVAE):
 
         output = self.pixel_decoder(x_cat)
 
-        x_cat_masked = torch.zeros_like(x_cat, requires_grad=False)
+        with torch.no_grad():
+            self.pixel_decoder.eval()
+            x_cat_masked = torch.zeros_like(x_cat, requires_grad=False)
+            output_masked = self.pixel_decoder(x_cat_masked)
+            self.pixel_decoder.train()
 
-        output_masked = self.pixel_decoder(x_cat_masked)
-
-        return [output],[output_masked], z, z_mean, z_log_var
+        return [output], [output_masked], z, z_mean, z_log_var
 
     def decode(self, z):
         input_shape = self.pixel_decoder.get_input_shape()
