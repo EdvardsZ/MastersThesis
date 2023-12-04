@@ -28,7 +28,7 @@ class SCVAE2D(BaseVAE):
 
         with torch.no_grad():
             self.pixel_decoder.eval()
-            x_cat_masked = torch.zeros_like(x_cat, requires_grad=False)
+            x_cat_masked = concat_latent_with_cond(z, torch.zeros_like(x_cond, requires_grad=False))
             output_2_masked = self.pixel_decoder(x_cat_masked)
             self.pixel_decoder.train()
 
