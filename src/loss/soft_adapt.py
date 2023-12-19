@@ -8,12 +8,15 @@ class SoftAdaptModule(nn.Module):
     def __init__(self):
         super(SoftAdaptModule, self).__init__()
 
-        self.adapt_weights = torch.tensor([1,1])
+        self.adapt_weights : torch.Tensor | None = None
         self.values_of_components = {}
 
         self.softadapt_object = LossWeightedSoftAdapt(beta=0.001)
 
     def forward(self, losses: List[torch.Tensor], training: bool) -> torch.Tensor:
+
+        if self.adapt_weights is None:
+            self.adapt_weights = torch.ones(len(losses), dtype=torch.float64)
         
         if training:
             for i, loss in enumerate(losses):
