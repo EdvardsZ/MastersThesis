@@ -14,7 +14,7 @@ class SCVAE1D(BaseVAE):
         self.encoder = EncoderWithLatentLayer(latent_dim=latent_dim, image_size=image_shape)
         self.pixel_decoder = DecoderWithLatentLayer(image_size=image_shape)
 
-        self.loss = VAELoss(weight_kl=1.0)
+        self.loss = VAELoss()
 
     def forward(self, x, x_cond, y) -> VAEModelOutput:
         z, z_mean, z_log_var = self.encoder(x)

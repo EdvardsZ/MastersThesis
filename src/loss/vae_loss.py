@@ -3,14 +3,15 @@ import torch.nn as nn
 import torch.nn.functional as F
 from models.outputs import VAEModelOutput
 from typing import Tuple
+from .soft_adapt import SoftAdaptModule
+from loss import soft_adapt
 
 class VAELoss(nn.Module):
-    def __init__(self, weight_kl=1.0, loss_type = 'single'):
+    def __init__(self):
         super(VAELoss, self).__init__()
-        self.weight_kl = weight_kl
-        self.loss_type = loss_type
+        self.soft_adapt = SoftAdaptModule()
 
-    def forward(self, inputs: Tuple[torch.Tensor, torch.Tensor, torch.Tensor], outputs: VAEModelOutput):
+    def forward(self, inputs: Tuple[torch.Tensor, torch.Tensor, torch.Tensor], outputs: VAEModelOutput, training = False):
         reconstructions_unmasked, reconstructions_masked,  z, z_mean, z_log_var = outputs
 
         loss_dict = {}
@@ -21,19 +22,17 @@ class VAELoss(nn.Module):
                 recon = recon_loss(inputs[0], recon)
                 loss_dict[f'recon_loss_{i}(MASKED)'] = recon
 
-        loss = 0
+        losses = []
 
         for i, recon in enumerate(reconstructions_unmasked):
-            recon = recon_loss(inputs[0], recon)
-            loss_dict[f'recon_loss_{i}'] = recon
-            loss += recon
+            loss_dict[f'recon_loss_{i}'] = recon_loss(inputs[0], recon)
+            losses.append(loss_dict[f'recon_loss_{i}'])
         
         kl = kl_loss(z_mean, z_log_var)
-        loss_dict['kl_loss'] = kl
-        loss += kl
+        loss_dict['kl_loss'] = kl_loss(z_mean, z_log_var)
+        losses.append(kl)
 
-        loss_dict['loss'] = loss
-
+        loss_dict['loss'] = self.soft_adapt(losses, training)
         return loss_dict
     
 def kl_loss(z_mean, z_log_var):
