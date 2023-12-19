@@ -8,27 +8,22 @@ class SoftAdaptModule(nn.Module):
     def __init__(self):
         super(SoftAdaptModule, self).__init__()
 
-        self.adapt_weights : None | torch.Tensor = None
+        self.adapt_weights = torch.tensor([1,1])
         self.values_of_components = {}
-        self.counter = 0
-        self.softadapt_object  = LossWeightedSoftAdapt(beta=0.05)
+
+        self.softadapt_object = LossWeightedSoftAdapt(beta=0.001)
 
     def forward(self, losses: List[torch.Tensor], training: bool) -> torch.Tensor:
-
-        if self.adapt_weights is None:
-            self.adapt_weights = torch.ones(len(losses), dtype=torch.float32, device=losses[0].device)
-
         
         if training:
             for i, loss in enumerate(losses):
                 if self.values_of_components.get(i) is None:
-                    self.values_of_components[i] = [ loss.item() ]
+                    self.values_of_components[i] = [ loss ]
                 else:
-                    self.values_of_components[i].append(loss.item())
-            self.counter += 1
-            if self.counter % 101 == 0:
+                    self.values_of_components[i].append(loss)
+
+            if len(self.values_of_components[0]) > 100:
                 self.update_weights()
-                self.counter = 0
 
         loss = sum([self.adapt_weights[i] * loss for i, loss in enumerate(losses)])
 
@@ -39,7 +34,5 @@ class SoftAdaptModule(nn.Module):
         print(self.adapt_weights)
         values = tuple(self.values_of_components.values())
         values = tuple(torch.tensor(x, dtype=torch.float64) for x in values)
-
         self.adapt_weights = self.softadapt_object.get_component_weights(*values, verbose=False)
-
         self.values_of_components = {}
