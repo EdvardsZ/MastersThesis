@@ -30,8 +30,6 @@ class SoftAdaptModule(nn.Module):
         return loss
     
     def update_weights(self):
-        print("UPDATING WEIGHTS")
-        print(self.adapt_weights)
         values = tuple(self.values_of_components.values())
         values = tuple(torch.tensor(x, dtype=torch.float64) for x in values)
         self.adapt_weights = self.softadapt_object.get_component_weights(*values, verbose=False)
