@@ -2,7 +2,6 @@
 from lightning_extensions import BaseModule
 from models import get_model
 from typing import Tuple
-
 class VAEModule(BaseModule):
     def __init__(self, model_params: dict, image_shape: Tuple[int, int, int], model_name: str):
         model_class = get_model(model_name)
@@ -17,9 +16,9 @@ class VAEModule(BaseModule):
     def step(self, batch, batch_idx, mode = 'train'):
         x, x_cond, y = batch
         outputs = self(x, x_cond, y)
-        loss = self.model.loss(batch, outputs)
-        self.log_dict({f"{mode}_{key}": val.item() for key, val in loss.items()}, sync_dist=True, prog_bar=True)
-        return loss['loss']
+        loss_dict = self.model.loss(batch, outputs, mode == 'train')
+        self.log_dict({f"{mode}_{key}": val.item() for key, val in loss_dict.items()}, sync_dist=True, prog_bar=True)
+        return loss_dict['loss']
     
     def decode(self, z):
         return self.model.decode(z)
