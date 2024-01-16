@@ -32,6 +32,7 @@ class VAELoss(nn.Module):
         loss_dict['kl_loss'] = kl_loss(z_mean, z_log_var)
         losses.append(kl)
 
+        loss_dict['loss_sum'] = sum(losses)
         loss_dict['loss'] = self.soft_adapt(losses, training)
         return loss_dict
     
