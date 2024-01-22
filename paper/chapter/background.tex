@@ -1,6 +1,18 @@
 \chapter{Background}
-Variational Autoencoders (VAEs), first introduced in 2013 by Kingma and Welling\cite{kingma2022autoencoding}, have become a prominent class of generative models in the field of machine learning.  At their core, VAEs consist of an encoder network that maps data points into a latent space and a decoder network that generates data from latent representations
 
-\section{VAES}
+In this chapter I am going to introduce the reader to the concepts that are necessary to understand the research presented in this thesis. The chapter is divided into three sections. The first section provides an overview of Variational Autoencoders (VAEs) and their applications. The second section introduces Vector Quantized VAEs (VQ-VAEs). The third section introduces Multitask VAEs (MT-VAEs), which are the main focus of this thesis.
+
+\section{VAEs}
+
+Variational Autoencoders (VAEs), first introduced in 2013 by Kingma and Welling\cite{kingma2022autoencoding}, have become a prominent class of generative models in the field of machine learning.  At their core, VAEs consist of an encoder network that maps data points $x$ into a latent space $z$ and a decoder network that generates data $\hat{x}$ from latent representations\cite{Kingma_2019}. 
+
+The key innovation that makes VAEs work is the introduction of a probabilistic interpretation of the latent space. More specifically, VAEs assume that the latent space $z$ is a random variable that follows a certain prior distribution $p(z)$, which is typically a Gaussian distribution and that the mapping from the latent space to the data space is also probabilistic\cite{kingma2022autoencoding}.
+
+The training process involves maximizing the evidence lower bound, which is a kind of a tradoff between the reconstruction accuracy and the latent space regularization. The evidence lower bound is defined as follows: \[ L_{ELBO} = \mathbb{E}_{q(z|x)}[\log p(x|z)] - D_{KL}(q(z|x)||p(z)) \] where $q(z|x)$ is the encoder distribution, $p(x|z)$ is the decoder distribution, and $D_{KL}$ is the Kullback-Leibler divergence\cite{kingma2022autoencoding}. The first term is responsible for maximizing the reconstruction accuracy, while the second term is responsible for regularizing the latent space according to the prior distribution $p(z)$.
+
+A crucial aspect of VAEs is the reparametrization trick, which is introduced to enable the backpropagation of gradients through the sampling operation. In a standard VAE, the encoder network learns to parameterize a distribution in the latent space, which is usually a assumed to be a Gaussian distribution with a mean $\mu$ and a standard deviation $\sigma$. The reparametrization trick involves sampling from a standard Gaussian distribution $\epsilon \sim \mathcal{N}(0,1)$ and then transforming the samples into samples from the learned distribution using the following equation: \[ z = \mu + \sigma \odot \epsilon \] where $\odot$ denotes the element-wise multiplication\cite{kingma2022autoencoding}.This differentiable transformation enables for the stochasticity to be decoupled from the network parameters, allowing for the gradients to flow through the entire network.
+
+The probabilistic nature of VAE's make them not only suitable for generative tasks, but also facilitates the generation of diverse samples. This property makes VAEs particularly useful for tasks such as image synthesis, where it excels at capturing the underlying structure and variability of the data\cite{Kingma_2019}.
+
 \section{Vector Quantized VAEs}
 \section{Multitask VAEs}
