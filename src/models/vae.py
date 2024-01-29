@@ -7,7 +7,7 @@ from models.outputs import VAEModelOutput
 import torch
 
 class VAE(BaseVAE):
-    def __init__(self, latent_dim=2, image_shape=(1, 28, 28)):
+    def __init__(self, latent_dim=2, image_shape=(1, 28, 28), soft_adapt_beta=None):
         super(VAE, self).__init__(latent_dim, image_shape)
         self.image_shape = image_shape
         
@@ -18,7 +18,7 @@ class VAE(BaseVAE):
         hidden_dims.reverse()
         self.decoder = DecoderWithLatentLayer(image_size=image_shape, hidden_dims=hidden_dims)
 
-        self.loss = VAELoss()
+        self.loss = VAELoss(soft_adapt_beta)
         
     def forward(self, x, x_cond, y) -> VAEModelOutput:
 

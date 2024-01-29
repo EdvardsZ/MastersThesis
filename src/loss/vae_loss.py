@@ -7,9 +7,11 @@ from .soft_adapt import SoftAdaptModule
 from loss import soft_adapt
 
 class VAELoss(nn.Module):
-    def __init__(self):
+    def __init__(self, beta : int | None = None):
         super(VAELoss, self).__init__()
-        self.soft_adapt = SoftAdaptModule()
+        self.beta = beta
+        if beta is not None:
+            self.soft_adapt = SoftAdaptModule(beta = beta)
 
     def forward(self, inputs: Tuple[torch.Tensor, torch.Tensor, torch.Tensor], outputs: VAEModelOutput, training = False):
         reconstructions_unmasked, reconstructions_masked,  z, z_mean, z_log_var = outputs
@@ -33,8 +35,16 @@ class VAELoss(nn.Module):
         losses.append(kl)
 
         loss_dict['loss_sum'] = sum(losses)
-        loss_dict['loss'] = self.soft_adapt(losses, training)
+        loss_dict['loss'] = self.adaptive_sum(losses, training)
         return loss_dict
+
+
+    def adaptive_sum(self, losses, training):
+         if self.beta is None:
+            return sum(losses)
+         else:
+            return self.soft_adapt(losses, training)
+         
     
 def kl_loss(z_mean, z_log_var):
         return -0.5 * torch.sum(1 + z_log_var - z_mean.pow(2) - z_log_var.exp())
