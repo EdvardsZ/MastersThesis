@@ -39,3 +39,5 @@ UPCOMING QUESTIONS:
 
  dec 15th 11am
  jan 16th 10am
+
+ jan 30th 1pm -- Background information. (Monday noon). Preliminary results MNIST
