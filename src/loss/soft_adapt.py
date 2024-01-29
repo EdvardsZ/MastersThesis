@@ -5,16 +5,16 @@ from softadapt import SoftAdapt, NormalizedSoftAdapt, LossWeightedSoftAdapt
 from typing import List
 
 class SoftAdaptModule(nn.Module):
-    def __init__(self):
+    def __init__(self, beta: float):
         super(SoftAdaptModule, self).__init__()
 
         self.adapt_weights : torch.Tensor | None = None
         self.values_of_components = {}
+        self.beta = beta
 
-        self.softadapt_object = LossWeightedSoftAdapt(beta=0.001)
+        self.softadapt_object = LossWeightedSoftAdapt(beta=beta)
 
-    def forward(self, losses: List[torch.Tensor], training: bool) -> torch.Tensor:
-
+    def forward(self, losses: List[torch.Tensor], training: bool) -> torch.Tensor:      
         if self.adapt_weights is None:
             self.adapt_weights = torch.ones(len(losses), dtype=torch.float64)
         
