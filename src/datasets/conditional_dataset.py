@@ -41,7 +41,7 @@ class ConditionalDataset(Dataset):
             transform.transforms.insert(0, transforms.Resize((64, 64)))
             return CelebA(root, split='train' if train else 'test', transform=transform, download=download)
         else:
-            raise ValueError("dataset must be MNIST or FashionMNIST")
+            raise ValueError("dataset must be MNIST or FashionMNIST or CIFAR100 or CIFAR10 or CelebA")
 
 
     def __getitem__(self, index) -> Tuple[torch.Tensor, torch.Tensor, torch.Tensor]:
