@@ -2,11 +2,21 @@
 
 Over the past 10 years, Variational Autoencoders (VAEs) have become valuable assets in the field of deep learning and generative modeling. At the most basic level, they are used as tools for data generation and compression by learning the underlying patterns and structures present in a given dataset. VAEs have shown their versatility and have found applications in multiple domains, including image generation, anomaly detection, natural language processing, and speech synthesis. However, VAEs, given a limited set of data and compute power, have limitations and challenges.\cite{kingma2013autoencoding,Kingma_2019, vqvae, dalle}
 
-One of the key challenges in training VAEs is achieving a balance between the reconstruction accuracy and the effectiveness of the learned latent representations. Traditional VAEs are typically trained to optimize a single objective, which often results in suboptimal performance on complex datasets with multiple sources of variation. In real-world scenarios, data often exhibits multiple underlying structures and tasks, and capturing these structures with a single VAE can be a challenging endeavor.
+One of the key challenges traditional VAE's face is that they tend to produce blurry, over-smoothed samples. More recently Vector Quantized Variational Autoencoders (VQ-VAEs) have been introduced to address VAE's limitation, which combines the strenghts of VAEs and discrete vector quantization.\cite{dalle} The VQ-VAE architecture solves the problem of capturing fine-grained details in the data, whilst maintaning interpretability of latent representations and generational properties of VAEs. However, both VAEs and VQ-VAEs have the same challange of striking a balance between the reconstruction accuracy and the effectiveness of the learned latent representations and when the data has multiple sources of variation it can be difficult to capture all of that in a single model.\cite{Kingma_2019,betavae, vqvae}
+
+Multitask learning, on the other hand, is a paradigm that aims to improve model generalization and performance by simultaneously learning multiple related tasks. The idea of combing VAEs with multitask learning has previously gained attention in the machine learning community. Multitas Variational Autencoders have the potential to not only improve the reconstruction accuracy of VAEs but also enhance their generational capabilities.
 
 Multitask learning, on the other hand, is a paradigm that aims to improve model generalization and performance by simultaneously learning multiple related tasks. The idea of combining VAEs with multitask learning has recently gained attention in the machine learning community. Multitask Variational Autoencoders (MT-VAEs) extend the VAE framework to enable the joint learning of multiple latent variable spaces, each dedicated to a specific task or source of variation. This approach holds the promise of not only improving the reconstruction accuracy of VAEs but also enhancing their interpretability and generalization capabilities.
 
-This research endeavors to investigate the effectiveness of MT-VAEs and their potential to outperform traditional VAEs in terms of data generation, representation learning, and task-specific performance. By conducting a comprehensive analysis and experimentation, we aim to shed light on the advantages and limitations of MT-VAEs and provide insights into the conditions under which they excel.
+This research aims to investigate the effectiveness and potential of 4 different types of MT-VAEs:
+\begin{itemize}
+    \item Gaussian VAEs with a semi-conditioned decoder (SCVAE1D).
+    \item Gaussian VAEs with a conditioned decoder and second non-conditional decoder (SCVAE2D).
+    \item Vector Quantized VAEs a with semi-conditioned decoder (SCVQVAE1D).
+    \item Multitask VAEs with a semi-conditioned decoder (SCVQVAE2D).
+\end{itemize}
+
+This research aims to dvelve into these MT-VAE variants and investigate their potential to outperform traditional VAEs in terms of reconstruction accuracy, data generation. By conducting a comprehensive analysis and experimentation, we aim to shed light on the advantages and limitations of MT-VAEs and provide insights into the conditions under which they excel.
 
 \section{Research Question}
 
