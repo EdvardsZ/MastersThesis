@@ -4,9 +4,9 @@ In this chapter I am going to introduce the reader to the concepts that are nece
 
 \section{VAEs}
 
-Variational Autoencoders (VAEs), first introduced in 2013 by Kingma and Welling\cite{kingma2022autoencoding}, have become a prominent class of generative models in the field of machine learning.  At their core, VAEs consist of an encoder network with parameters $\phi$ that maps data points $x$ into a latent space $z$ and a decoder network with parameters $\theta$ that generates data $\hat{x}$ from latent representations\cite{Kingma_2019}. 
+Variational Autoencoders (VAEs), first introduced in 2013 by Kingma and Welling\cite{kingma2013autoencoding}, have become a prominent class of generative models in the field of machine learning.  At their core, VAEs consist of an encoder network with parameters $\phi$ that maps data points $x$ into a latent space $z$ and a decoder network with parameters $\theta$ that generates data $\hat{x}$ from latent representations\cite{Kingma_2019}. 
 
-The key innovation that makes VAEs work is the introduction of a probabilistic interpretation of the latent space. More specifically, VAEs assume that the latent space $z$ is a random variable that follows a certain prior distribution $p(z)$, which is typically a Gaussian distribution and that the mapping from the latent space to the data space is also probabilistic\cite{kingma2022autoencoding}.
+The key innovation that makes VAEs work is the introduction of a probabilistic interpretation of the latent space. More specifically, VAEs assume that the latent space $z$ is a random variable that follows a certain prior distribution $p(z)$, which is typically a Gaussian distribution and that the mapping from the latent space to the data space is also probabilistic\cite{kingma2013autoencoding}.
 
 The optimization target for VAEs is the evidence lower bound (ELBO) which is: \[ L_{\theta, \phi}(x) = \mathbb{E}_{q_{\phi}(z|x)} [\log p_{\theta}(x, z) - \log q_{\phi}(z|x)] \] where $q_{\phi}(z|x)$ is the encoder distribution, $p_{\theta}(z, x)$ is the decoder distribution and $p(z)$ is the prior distribution. 
 
@@ -86,5 +86,6 @@ The discrete latent variables $z$ are then calculated by nearest neighbour looku
   	\medskip 
 	\hspace*{15pt}\hbox{\scriptsize Credit: Aäron van den Oord et al.}
     \label{VQVAEFigure}
-
 \end{figure}
+
+
