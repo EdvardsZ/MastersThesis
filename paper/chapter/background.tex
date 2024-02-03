@@ -1,6 +1,6 @@
 \chapter{Background}
 
-In this chapter I am going to introduce the reader to the concepts that are necessary to understand the research presented in this thesis. The chapter is divided into three sections. The first section provides an overview of Variational Autoencoders (VAEs) and their applications. The second section introduces Vector Quantized VAEs (VQ-VAEs). The third section introduces the concept of Multitask learning. 
+In this chapter I am going to introduce the reader to the concepts that are necessary to understand the research presented in this thesis. The chapter is divided into three sections. The first section provides an overview of Variational Autoencoders (VAEs) and their applications. The second section introduces Vector Quantized VAEs (VQ-VAEs). The third section introduces the concept of semi-conditioned VAEs. The chapter is concluded with a section that introduces the concept of multitask learning. 
 
 \section{VAEs}
 
@@ -8,12 +8,20 @@ Variational Autoencoders (VAEs), first introduced in 2013 by Kingma and Welling\
 
 The key innovation that makes VAEs work is the introduction of a probabilistic interpretation of the latent space. More specifically, VAEs assume that the latent space $z$ is a random variable that follows a certain prior distribution $p(z)$, which is typically a Gaussian distribution and that the mapping from the latent space to the data space is also probabilistic\cite{kingma2013autoencoding}.
 
-The optimization target for VAEs is the evidence lower bound (ELBO) which is: \[ L_{\theta, \phi}(x) = \mathbb{E}_{q_{\phi}(z|x)} [\log p_{\theta}(x, z) - \log q_{\phi}(z|x)] \] where $q_{\phi}(z|x)$ is the encoder distribution, $p_{\theta}(z, x)$ is the decoder distribution and $p(z)$ is the prior distribution. 
+The optimization target for VAEs is the evidence lower bound (ELBO), which is
+ \[ L_{\theta, \phi}(x) = \mathbb{E}_{q_{\phi}(z|x)} [\log p_{\theta}(x, z) - \log q_{\phi}(z|x)], \]
+where $q_{\phi}(z|x)$ is the encoder distribution, $p_{\theta}(x, z)$ is the decoder distribution. 
 
-The ELBO can be also written as a sum of two terms: \[ L_{\theta, \phi}(x) = - D_{KL}(q_{\phi}(z|x) || p(z)) + \mathbb{E}_{q_{\phi}(z|x)} [\log p_{\theta}(x|z)] \]
-And if we look at the Monte Carlo estimate of the ELBO, we can see that the first term is the regularization term and the second term is the reconstruction term:
-\[ L_{\theta, \phi}(x) = - D_{KL}(q_{\phi}(z|x) || p(z)) + \frac{1}{L} \sum_{l=1}^{L} \log p_{\theta}(x|z^{(l)}) \]
-where $z^{(l)} \sim q_{\phi}(z|x)$. The regularization term is the Kullback-Leibler divergence between the encoder distribution and the prior distribution. The regularization term encourages the encoder distribution to be close to the prior distribution. The reconstruction term is the reconstruction error of the decoder. The reconstruction term encourages the decoder to reconstruct the input data as accurately as possible.
+The ELBO can be also written as a sum of two terms,
+ \[ L_{\theta, \phi}(x) = - D_{KL}(q_{\phi}(z|x) || p(z)) + \mathbb{E}_{q_{\phi}(z|x)} [\log p_{\theta}(x|z)], \]
+ where $D_{KL}(q_{\phi}(z|x) || p(z))$ is the Kullback-Leibler divergence between the encoder distribution $q_{\phi}(z|x)$ and the prior distribution $p(z)$ and $\mathbb{E}_{q_{\phi}(z|x)} [\log p_{\theta}(x|z)]$ is the reconstruction term. The Kullback-Leibler divergence term encourages the encoder distribution to be close to the prior distribution, while the reconstruction term encourages the reconstruction to be as accurate as possible\cite{Kingma_2019}.
+
+
+Taking random samples from from $q_{\phi}(z|x)$, Monte Carlo estimate of ELBO can be written of this as
+\[ L_{\theta, \phi}(x) = - D_{KL}(q_{\phi}(z|x) || p(z)) + \frac{1}{L} \sum_{l=1}^{L} \log p_{\theta}(x|z^{(l)}) ,\]
+where $z^{(l)} \sim q_{\phi}(z|x)$ and $L$ is the number of samples and first term is the regularization term and the second term is the reconstruction term\cite{Kingma_2019}. 
+
+The regularization term is the Kullback-Leibler divergence between the encoder distribution and the prior distribution. The regularization term encourages the encoder distribution to be close to the prior distribution. The reconstruction term is the reconstruction error of the decoder. The reconstruction term encourages the decoder to reconstruct the input data as accurately as possible.
 
 The individual datapoint ELBO and it's gradient in general is intractable to compute. However, unbiased estimates of the ELBO and its gradients can be obtained using the reparametrization trick, which is described in the next section\cite{Kingma_2019}.
 
