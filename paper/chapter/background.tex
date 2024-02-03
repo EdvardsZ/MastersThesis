@@ -28,9 +28,97 @@ The individual datapoint ELBO and it's gradient in general is intractable to com
 
 \subsection{Reparametrization Trick}
 
-The Reparametrization trick also  is a crucial component of VAEs. It is used to make the ELBO differentiable w.r.t the parameters of the encoder $\phi$ and decoder $\theta$. The notion is based on the fact we can define a random variable $z \sim q_{\phi}(z|x)$ as a deterministic, differentiable function of a random variable $\epsilon$ and the parameters $\phi$ such that $z = g_{\phi}(\epsilon, x)$, where the distribution of $\epsilon$ is independent of $\phi$ and $x$: $\epsilon \sim p(\epsilon)$. With this parameterization, the expectation w.r.t $q_{\phi}(z|x)$ can be rewritten as an expectation w.r.t. $p(\epsilon)$: \[ L_{\theta, \phi}(x) = \mathbb{E}_{q_{\phi}(z|x)} [\log p_{\theta}(x, z) - \log q_{\phi}(z|x)] \]
-\[ = \mathbb{E}_{p(\epsilon)} [\log p_{\theta}(x, g_{\phi}(\epsilon, x)) - \log q_{\phi}(g_{\phi}(\epsilon, x)|x)] \] which is differentiable w.r.t $\phi$ and $\theta$.
+The Reparametrization trick also  is a crucial component of VAEs. It is used to make the ELBO differentiable with respect to the parameters of the encoder $\phi$ and decoder $\theta$. The notion is based on the fact we can define a random variable $z \sim q_{\phi}(z|x)$ as a deterministic, differentiable function of a random variable $\epsilon$ and the parameters $\phi$ such that $z = g_{\phi}(\epsilon, x)$, where the distribution of $\epsilon$ is independent of $\phi$ and $x$ where, $\epsilon \sim p(\epsilon)$. With this parameterization, the expectation with respect to $q_{\phi}(z|x)$ can be rewritten as an expectation with respect to $p(\epsilon)$: 
+\[ L_{\theta, \phi}(x) = \mathbb{E}_{q_{\phi}(z|x)} [\log p_{\theta}(x, z) - \log q_{\phi}(z|x)] \]
+\[ = \mathbb{E}_{p(\epsilon)} [\log p_{\theta}(x, g_{\phi}(\epsilon, x)) - \log q_{\phi}(g_{\phi}(\epsilon, x)|x)], \]
+ which is differentiable with respect to both $\phi$ and $\theta$. 
 
+ 
+\begin{center}
+    \begin{tikzpicture}[
+        roundnode/.style={circle, draw=red!60, fill=red!5, very thick, minimum size=7mm},
+        squarednode/.style={rectangle, draw=gray!60, fill=gray!5, very thick, minimum size=5mm},
+        redarrow/.style={->, red, >=stealth, thick},
+        redtext/.style={red}
+        ] \label{reparametrization}
+
+        % Two boxes with widht of full text
+        \draw (0,0) rectangle (6, 6);
+        \draw (7,0) rectangle (13, 6);
+
+        % Headlines
+        \node[align=center] at (3,5.5) {Original Form};
+        \node[align=center] at (10,5.5) {Reparametrized Form};
+
+
+        % --- First box ---
+        %Nodes
+        \node[squarednode]      (function)      at(3, 4.5)                    {$f$};
+        \node[roundnode]        (z)             [below= of function]          {$z$};
+        \node[squarednode]      (x)             [below= of z]                 {$x$};
+        \node[squarednode]      (theta)         [left= of x]        {$\theta$};
+        %Lines
+        \draw [->] (z) -- (function);
+        \draw [->] (x) -- (z);
+        \draw [->] (theta) -- (z);
+
+        % --- Second box ---
+        %Nodes
+        \node[squarednode]      (function2)      at(10, 4.5)                    {$f$};
+        \node[squarednode]        (z2)             [below= of function2]          {$z$};
+        \node[squarednode]      (x2)             [below= of z2]                 {$x$};
+        \node[squarednode]      (theta2)         [left= of x2]        {$\theta$};
+        \node[roundnode]        (epsilon)        [right= of x2]        {$\epsilon$};
+        %Lines
+        \draw [->] (z2) -- (function2);
+        \draw [->] (x2) -- (z2);
+        \draw [->] (theta2) -- (z2);
+        \draw [->] (epsilon) -- (z2);
+
+        % draw back propagation with red line draw to the left
+        \draw [redarrow] (9.5, 4.5) -- (9.5, 3.3);
+
+        \node [redtext, above left= -0.3 and 0.3 of z2] { $\nabla_{z} f$};
+
+        \draw [redarrow] (9.5, 3) -- (8.5, 2);
+
+        % redtext
+        \node [redtext, above left= -0.1 and -0.1 of theta2] { $\nabla_{\phi} f$};
+
+
+
+
+
+
+        % One box below to show the meaning of nodes and lines
+        \draw (0,-3) rectangle (13, -0.5);
+
+        %show the meaning of nodes 
+        \node[squarednode]    (square_explanation_node)    at(1, -1)    {};
+        % show meaning text with : before the text. (text is left of the node)
+        \node [right= 0.5 of square_explanation_node] {: Deterministic node};
+
+        \node[roundnode]    (round_explanation_node)    at(1, -2)    {};
+        \node [right= 0.5 of round_explanation_node] {: Random node} ;
+        %\draw (5.5, -2)    node    {: Random node};
+
+        %show the meaning of lines( with name of the line)
+        % lets name the line variable line_example
+        \draw [->] (7, -1) -- (8, -1) node [right = 0.5,] { : Calculation of f};
+
+        %red line
+        \draw [redarrow] (7, -2) -- (8, -2) node [right = 0.5,] { : Differentiation of f};
+
+        
+
+
+
+        
+
+
+
+    \end{tikzpicture}
+\end{center}
 
 
 \subsection{Gaussian VAEs}
