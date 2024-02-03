@@ -33,8 +33,8 @@ The Reparametrization trick also  is a crucial component of VAEs. It is used to 
 \[ = \mathbb{E}_{p(\epsilon)} [\log p_{\theta}(x, g_{\phi}(\epsilon, x)) - \log q_{\phi}(g_{\phi}(\epsilon, x)|x)], \]
  which is differentiable with respect to both $\phi$ and $\theta$. 
 
- 
-\begin{center}
+\begin{figure}
+    \centering
     \begin{tikzpicture}[
         roundnode/.style={circle, draw=red!60, fill=red!5, very thick, minimum size=7mm},
         squarednode/.style={rectangle, draw=gray!60, fill=gray!5, very thick, minimum size=5mm},
@@ -45,80 +45,57 @@ The Reparametrization trick also  is a crucial component of VAEs. It is used to 
         % Two boxes with widht of full text
         \draw (0,0) rectangle (6, 6);
         \draw (7,0) rectangle (13, 6);
-
         % Headlines
         \node[align=center] at (3,5.5) {Original Form};
         \node[align=center] at (10,5.5) {Reparametrized Form};
-
 
         % --- First box ---
         %Nodes
         \node[squarednode]      (function)      at(3, 4.5)                    {$f$};
         \node[roundnode]        (z)             [below= of function]          {$z$};
         \node[squarednode]      (x)             [below= of z]                 {$x$};
-        \node[squarednode]      (theta)         [left= of x]        {$\theta$};
+        \node[squarednode]      (phi)         [left= of x]        {$\phi$};
         %Lines
         \draw [->] (z) -- (function);
         \draw [->] (x) -- (z);
-        \draw [->] (theta) -- (z);
+        \draw [->] (phi) -- (z);
 
         % --- Second box ---
         %Nodes
         \node[squarednode]      (function2)      at(10, 4.5)                    {$f$};
         \node[squarednode]        (z2)             [below= of function2]          {$z$};
         \node[squarednode]      (x2)             [below= of z2]                 {$x$};
-        \node[squarednode]      (theta2)         [left= of x2]        {$\theta$};
+        \node[squarednode]      (phi2)         [left= of x2]        {$\phi$};
         \node[roundnode]        (epsilon)        [right= of x2]        {$\epsilon$};
         %Lines
         \draw [->] (z2) -- (function2);
         \draw [->] (x2) -- (z2);
-        \draw [->] (theta2) -- (z2);
+        \draw [->] (phi2) -- (z2);
         \draw [->] (epsilon) -- (z2);
 
         % draw back propagation with red line draw to the left
         \draw [redarrow] (9.5, 4.5) -- (9.5, 3.3);
-
         \node [redtext, above left= -0.3 and 0.3 of z2] { $\nabla_{z} f$};
-
         \draw [redarrow] (9.5, 3) -- (8.5, 2);
-
-        % redtext
-        \node [redtext, above left= -0.1 and -0.1 of theta2] { $\nabla_{\phi} f$};
-
-
-
-
-
-
+        \node [redtext, above left= -0.1 and -0.1 of phi2] { $\nabla_{\phi} f$};
         % One box below to show the meaning of nodes and lines
         \draw (0,-3) rectangle (13, -0.5);
-
         %show the meaning of nodes 
         \node[squarednode]    (square_explanation_node)    at(1, -1)    {};
-        % show meaning text with : before the text. (text is left of the node)
         \node [right= 0.5 of square_explanation_node] {: Deterministic node};
-
         \node[roundnode]    (round_explanation_node)    at(1, -2)    {};
         \node [right= 0.5 of round_explanation_node] {: Random node} ;
         %\draw (5.5, -2)    node    {: Random node};
-
         %show the meaning of lines( with name of the line)
-        % lets name the line variable line_example
         \draw [->] (7, -1) -- (8, -1) node [right = 0.5,] { : Calculation of f};
-
-        %red line
         \draw [redarrow] (7, -2) -- (8, -2) node [right = 0.5,] { : Differentiation of f};
-
-        
-
-
-
-        
-
-
-
     \end{tikzpicture}
-\end{center}
+
+    \caption{The illustration diagram of the reparametrization trick. The input of a function $f$ is $x$. The parameters $\theta$ affect the objective of the function $f$ through a random variable $z$. In the original form we can not compute the gradients $\nabla_{\phi} f$, because a direct backpropagation is not possible through a random variable. In the reparameterized form, the randomness is seperated from the parameters $\phi$, which enables the gradients to be computed. This is done by reparameterizing the random variable $z$ as a deterministic function and differentiable function  of $\phi$, $x$ and a new random variable $\epsilon$.\cite{Kingma_2019}}
+
+    \hspace*{15pt}\hbox{\scriptsize Credit: Adapted from Kingma and Welling\cite{Kingma_2019}  }
+
+\end{figure}
 
 
 \subsection{Gaussian VAEs}
