@@ -28,10 +28,21 @@ The individual datapoint ELBO and it's gradient in general is intractable to com
 
 \subsection{Reparametrization Trick}
 
-The Reparametrization trick also  is a crucial component of VAEs. It is used to make the ELBO differentiable with respect to the parameters of the encoder $\phi$ and decoder $\theta$. The notion is based on the fact we can define a random variable $z \sim q_{\phi}(z|x)$ as a deterministic, differentiable function of a random variable $\epsilon$ and the parameters $\phi$ such that $z = g_{\phi}(\epsilon, x)$, where the distribution of $\epsilon$ is independent of $\phi$ and $x$ where, $\epsilon \sim p(\epsilon)$. With this parameterization, the expectation with respect to $q_{\phi}(z|x)$ can be rewritten as an expectation with respect to $p(\epsilon)$: 
+The Reparametrization trick also  is a crucial component of VAEs. It is used to make the ELBO differentiable with respect to the parameters of the encoder $\phi$ and decoder $\theta$ through a change of variables.\cite{Kingma_2019}
+
+\subsubsection{Change of variables}
+
+It is possible to define a random variable $z \sim q_{\phi}(z,x)$ as a deterministic, differentiable function of a random variable $\epsilon$ and the parameters $\phi$ such that $z = g_{\phi}(\epsilon, x)$, where the distribution of $\epsilon$ is independent of $\phi$ and $x$ and $\epsilon \sim p(\epsilon)$. Given this change of variables, the expection with respect to $q_{\phi}(z|x)$ can be rewritten as an expectation with respect to $p(\epsilon)$:
+\[ L_{\theta, \phi}(x) = \mathbb{E}_{q_{\phi}(z|x)} [\log p_{\theta}(x, z) - \log q_{\phi}(z|x)] \]
+
+
+The notion is based on the fact we can define a random variable $z \sim q_{\phi}(z|x)$ as a deterministic, differentiable function of a random variable $\epsilon$ and the parameters $\phi$ such that $z = g_{\phi}(\epsilon, x)$, where the distribution of $\epsilon$ is independent of $\phi$ and $x$ where, $\epsilon \sim p(\epsilon)$. With this reparameterization, the expectation with respect to $q_{\phi}(z|x)$ can be rewritten as an expectation with respect to $p(\epsilon)$: 
 \[ L_{\theta, \phi}(x) = \mathbb{E}_{q_{\phi}(z|x)} [\log p_{\theta}(x, z) - \log q_{\phi}(z|x)] \]
 \[ = \mathbb{E}_{p(\epsilon)} [\log p_{\theta}(x, g_{\phi}(\epsilon, x)) - \log q_{\phi}(g_{\phi}(\epsilon, x)|x)], \]
  which is differentiable with respect to both $\phi$ and $\theta$. 
+
+With this reparametrizations the expectations can be rewritten in terms of $p(\epsilon)$
+\[ \mathbb{E}_{q(z|x)}\] 
 
 \begin{figure}
     \centering
@@ -139,8 +150,6 @@ In the figure belowe \ref{VAEFigure} there is a visualization of the architectur
 	\hspace*{15pt}\hbox{\scriptsize Credit: Aäron van den Oord et al.}
     \label{VAEFigure}
 \end{figure}
-
-\pagebreak
 
 \section{Vector Quantized VAEs}
 
