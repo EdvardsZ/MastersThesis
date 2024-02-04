@@ -32,23 +32,24 @@ The Reparametrization trick also  is a crucial component of VAEs. It is used to 
 
 \subsubsection{Change of variables}
 
-It is possible to define a random variable $z \sim q_{\phi}(z,x)$ as a deterministic, differentiable function of a random variable $\epsilon$ and the parameters $\phi$ such that $z = g_{\phi}(\epsilon, x)$, where the distribution of $\epsilon$ is independent of $\phi$ and $x$ and $\epsilon \sim p(\epsilon)$. Given this change of variables, the expection with respect to $q_{\phi}(z|x)$ can be rewritten as an expectation with respect to $p(\epsilon)$
+The notion is based on the fact that it is possible to express the random variable $z \sim q_{\phi}(z|x)$ as a differentiable function of a random variable $\epsilon$ and the parameters $\phi$ such that $z = g_{\phi}(\epsilon, x)$, where epsilon is a random variable that is independent of $\phi$ and $x$ and $\epsilon \sim p(\epsilon)$. Given this change of variables, the expection with respect to $q_{\phi}(z|x)$ can be rewritten as an expectation with respect to $p(\epsilon)$
 \[ E_{q_{\phi}(z|x)}[f(z)] = E_{p(\epsilon)}[f(g_{\phi}(\epsilon, x))], \]
 where $f$ is an arbitrary function.\cite{Kingma_2019}
 As a result, the gradients the expectation and gradient operators become cummutive, and there can be formed a Monte Carlo estimate of the gradients
-\[ \nabla_{\phi} E_{q_{\phi}(z|x)}[f(z)] = E_{p(\epsilon)}[\nabla_{\phi} f(z)]. \]
+\[ \nabla_{\phi} E_{q_{\phi}(z|x)}[f(z)] = \nabla_{\phi} E_{p(\epsilon)}[ f(g_{\phi}(\epsilon, x))] \]
+\[ = E_{p(\epsilon)}[\nabla_{\phi} f(g_{\phi}(\epsilon, x))] \]
+\[  \simeq \frac{1}{L} \sum_{l=1}^{L} \nabla_{\phi} f(g_{\phi}(\epsilon^{(l)}, x)) \]
+where $\epsilon^{(l)} \sim p(\epsilon)$ and $L$ is the number of samples.
+This is the reparametrization trick, which is further explained and illustrated in the figure \ref{reparametrization}.
 
-
-
-
-\begin{figure}[H]
+\begin{figure}
     \centering
     \begin{tikzpicture}[
         roundnode/.style={circle, draw=red!60, fill=red!5, very thick, minimum size=7mm},
         squarednode/.style={rectangle, draw=gray!60, fill=gray!5, very thick, minimum size=5mm},
         redarrow/.style={->, red, >=stealth, thick},
         redtext/.style={red}
-        ] \label{reparametrization}
+        ]
 
         % Two boxes with widht of full text
         \draw (0,0) rectangle (6, 6);
@@ -99,53 +100,54 @@ As a result, the gradients the expectation and gradient operators become cummuti
         \draw [redarrow] (7, -2) -- (8, -2) node [right = 0.5,] { : Differentiation of f};
     \end{tikzpicture}
 
-    \caption{The illustration diagram of the reparametrization trick. The input of a function $f$ is $x$. The parameters $\theta$ affect the objective of the function $f$ through a random variable $z$. In the original form we can not compute the gradients $\nabla_{\phi} f$, because a direct backpropagation is not possible through a random variable. In the reparameterized form, the randomness is seperated from the parameters $\phi$, which enables the gradients to be computed. This is done by reparameterizing the random variable $z$ as a deterministic function and differentiable function  of $\phi$, $x$ and a new random variable $\epsilon$.\cite{Kingma_2019}}
+    \caption[The illustration diagram of the reparametrization trick]%
+    {The illustration diagram of the reparametrization trick. The input of a function $f$ is $x$. The parameters $\theta$ affect the objective of the function $f$ through a random variable $z$. In the original form we can not compute the gradients $\nabla_{\phi} f$, because a direct backpropagation is not possible through a random variable. In the reparameterized form, the randomness is seperated from the parameters $\phi$, which enables the gradients to be computed. This is done by reparameterizing the random variable $z$ as a deterministic function and differentiable function  of $\phi$, $x$ and a new random variable $\epsilon$.\cite{Kingma_2019}}
 
-    \hspace*{15pt}\hbox{\scriptsize Credit: Adapted from Kingma and Welling\cite{Kingma_2019}  }
+    \hspace*{15pt}\hbox{\scriptsize Credit: Adapted from Kingma and Welling\cite{Kingma_2019}  }\label{reparametrization}
 
 \end{figure}
-\pagebreak
 
+\subsubsection{Gradients of the ELBO}
 
-The notion is based on the fact we can define a random variable $z \sim q_{\phi}(z|x)$ as a deterministic, differentiable function of a random variable $\epsilon$ and the parameters $\phi$ such that $z = g_{\phi}(\epsilon, x)$, where the distribution of $\epsilon$ is independent of $\phi$ and $x$ where, $\epsilon \sim p(\epsilon)$. With this reparameterization, the expectation with respect to $q_{\phi}(z|x)$ can be rewritten as an expectation with respect to $p(\epsilon)$: 
-\[ L_{\theta, \phi}(x) = \mathbb{E}_{q_{\phi}(z|x)} [\log p_{\theta}(x, z) - \log q_{\phi}(z|x)] \]
-\[ = \mathbb{E}_{p(\epsilon)} [\log p_{\theta}(x, g_{\phi}(\epsilon, x)) - \log q_{\phi}(g_{\phi}(\epsilon, x)|x)], \]
- which is differentiable with respect to both $\phi$ and $\theta$. 
+When applying the reparametrization trick to the ELBO it becomes differentiable with respect to both $\phi$ and $\theta$ and it is possible to form a Monte Carlo estimate of the gradients
+\[ \nabla_{\phi, \theta} L_{\theta, \phi}(x) = \nabla_{\phi, \theta} E_{q_{\phi}(z|x)} [\log p_{\theta}(x, z) - \log q_{\phi}(z|x)] \]
+\[ = E_{p(\epsilon)}[\nabla_{\phi, \theta} [\log p_{\theta}(x, g_{\phi}(\epsilon, x)) - \log q_{\phi}(g_{\phi}(\epsilon, x)|x)]] \]
+\[  \simeq \frac{1}{L} \sum_{l=1}^{L} \nabla_{\phi, \theta} [\log p_{\theta}(x, g_{\phi}(\epsilon^{(l)}, x)) - \log q_{\phi}(g_{\phi}(\epsilon^{(l)}, x)|x)] \]
+where $\epsilon^{(l)} \sim p(\epsilon)$ and $L$ is the number of samples.
 
-With this reparametrizations the expectations can be rewritten in terms of $p(\epsilon)$
-\[ \mathbb{E}_{q(z|x)}\] 
+This is the key to training VAEs using stochastic gradient descent. The resulting Monte Carlo gradient estimate is used to update the parameters of the encoder and decoder networks.\cite{Kingma_2019}
 
 
 \subsection{Gaussian VAEs}
 
-Altough Gaussian VAEs are just a special case of VAEs, they are the most common type of VAEs. Gaussian VAEs assume that the prior distribution $p(z)$ is a centered Gaussian distribution $ p(z) = \mathcal{N}(0, I)$. They also assume that the decoder distribution $p_{\theta}(x|z)$ is a Gaussian distribution whose distribution parameters are computed from z with a single fully connected layer: 
-\[ p_{\theta}(x|z) = \mathcal{N}(f_{\theta}(z), \sigma_{\theta}(z)) \]
+Altough Gaussian VAEs are just a special case of VAEs, they are the most common type of VAEs. Gaussian VAEs assume that the prior distribution $p(z)$ is a centered Gaussian distribution $ p(z) = \mathcal{N}(0, I)$. They also assume that the decoder distribution $p_{\theta}(x|z)$ is a Gaussian distribution whose distribution parameters are computed from z with by the decoder network. The decoder distribution is given by
+\[ p_{\theta}(x|z) = \mathcal{N}(f_{\theta}(z), I) \]
 where $f_{\theta}(z)$ is the mean and $\sigma_{\theta}(z)$ is the standard deviation of the Gaussian distribution. Whilst there is a lot of freedom in the form $q_{\phi}(z|x)$ can take, Gaussian VAEs assume that $q_{\phi}(z|x)$ is also a Gaussian distribution with an approximately diagonal covariance matrix: 
 \[ q_{\phi}(z|x) = \mathcal{N}(\mu_{\phi}(x), \sigma_{\phi}(x)) \]
-where $\mu_{\phi}(x)$ and $\sigma_{\phi}(x)$ are the mean and standard deviation of the Gaussian distribution which are computed by the encoder network.
+where $\mu_{\phi}(x)$ and $\sigma_{\phi}(x)$ are the mean and standard deviation of the Gaussian distribution, which are computed by the encoder network.
 
-To sample $z$ from $q_{\phi}(z|x)$, we can use the reparametrization trick described in the previous section: \[ z = \mu_{\phi}(x) + \sigma_{\phi}(x) \odot \epsilon \] where $\epsilon \sim \mathcal{N}(0, I)$ is a random variable sampled from a standard Gaussian distribution.
+To sample $z$ from $q_{\phi}(z|x)$, we can use the reparametrization trick described in the previous section
+\[ z = \mu_{\phi}(x) + \sigma_{\phi}(x) \odot \epsilon, \] 
+where $\epsilon \sim \mathcal{N}(0, I)$ is a random variable sampled from a standard Gaussian distribution and $\odot$ denotes element-wise multiplication.
 
 When applying these assumptions to the ELBO, we get the following expression: \[ L_{\theta, \phi}(x) = - D_{KL}(q_{\phi}(z|x) || p(z)) + \frac{1}{L} \sum_{l=1}^{L} \log p_{\theta}(x|z^{(l)}) \]
-\[ = - D_{KL}(\mathcal{N}(\mu_{\phi}(x), \sigma_{\phi}(x)) || \mathcal{N}(0, I)) + \frac{1}{L} \sum_{l=1}^{L} \log \mathcal{N}(x|f_{\theta}(z^{(l)}), \sigma_{\theta}(z^{(l)})) \]
-where $f_{\theta}(z^{(l)}) = f_{\theta}(\mu_{\phi}(x) + \sigma_{\phi}(x) \odot \epsilon^{(l)})$ and $\sigma_{\theta}(z^{(l)}) = \sigma_{\theta}(\mu_{\phi}(x) + \sigma_{\phi}(x) \odot \epsilon^{(l)})$ and $\epsilon^{(l)} \sim \mathcal{N}(0, I)$.
+\[ = - D_{KL}(\mathcal{N}(\mu_{\phi}(x), \sigma_{\phi}(x)) || \mathcal{N}(0, I)) + \frac{1}{L} \sum_{l=1}^{L} \log \mathcal{N}(x|f_{\theta}(z^{(l)}), I) \]
+where $f_{\theta}(z^{(l)}) = f_{\theta}(\mu_{\phi}(x) + \sigma_{\phi}(x) \odot \epsilon^{(l)})$ and $\epsilon^{(l)} \sim \mathcal{N}(0, I)$.
 
 However, the loss function to be minimized for VAE's usually used in practise is quite different from the ELBO negative. The function that is used in practice consists of: Mean Squared Error (MSE) reconstruction loss, KL divergence regularization loss and a constant $\beta$ that controls the importance of the regularization term:
-\[ L = \frac{1}{n} \sum_{i=1}^{n} ||x_i - f_{\theta}(z^{(i)}) ||^2 + D_{KL}(\mathcal{N}(\mu_{\phi}(x), \sigma_{\phi}(x)) || \mathcal{N}(0, I)) \]
-where $f_{\theta}(z^{(i)}) = f_{\theta}(\mu_{\phi}(x_i) + \sigma_{\phi}(x_i) \odot \epsilon^{(i)})$ and $\epsilon^{(i)} \sim \mathcal{N}(0, I)$. The MSE reconstruction loss is used because maximizing the Gaussian likelihood is approximately equivalent to minimizing the MSE reconstruction loss:
+\[ L = \frac{1}{n} \sum_{i=1}^{n} ||x_i - f_{\theta}(z^{(i)}) ||^2 + \beta  D_{KL}(\mathcal{N}(\mu_{\phi}(x), \sigma_{\phi}(x)) || \mathcal{N}(0, I)), \]
+where $f_{\theta}(z^{(i)}) = f_{\theta}(\mu_{\phi}(x_i) + \sigma_{\phi}(x_i) \odot \epsilon^{(i)})$ and $\epsilon^{(i)} \sim \mathcal{N}(0, I)$. The MSE reconstruction loss is used because maximizing the Gaussian likelihood is approximately equivalent to minimizing the MSE reconstruction loss. This is shown in the equation~\ref{eqMSE}.
 
 \begin{equation} \label{eqMSE}
     \begin{split}
-        p(x|z) &= \mathcal{N}(x|f(z), \sigma(z)) \\
-        \log p(x|z) &\sim  \log \mathcal{N}(x|f(z), \sigma(z)) \\
-        \log p(x|z) &\sim  \log \frac{1}{\sqrt{2 \pi \sigma(z)^2}} \exp(-\frac{(x - f(z))^2}{2 \sigma(z)^2}) \\
-        \log p(x|z) &\sim  \log \exp(-\frac{(x - f(z))^2}{2 \sigma(z)^2}) \\
-        \log p(x|z) &\sim  - \frac{1}{2 \sigma(z)^2} * (x - f(z))^2 \\
-        \log p(x|z) &\sim  -  (x - f(z))^2 \\
+        \argmax_{\theta} \log \mathcal{N}(x|f_{\theta}(z)) & = \argmax_{\theta} \log \frac{1}{\sqrt{2\pi}} \exp(-\frac{1}{2} ||x - f_{\theta}(z)||^2) \\
     \end{split}
 \end{equation}
 
+As the log Gaussian likelihood is being maximized the first term in th
+
 In the figure belowe \ref{VAEFigure} there is a visualization of the architecture of Gaussian VAEs.
+
 
 
 \begin{figure}[H]
