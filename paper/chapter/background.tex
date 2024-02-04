@@ -32,19 +32,16 @@ The Reparametrization trick also  is a crucial component of VAEs. It is used to 
 
 \subsubsection{Change of variables}
 
-It is possible to define a random variable $z \sim q_{\phi}(z,x)$ as a deterministic, differentiable function of a random variable $\epsilon$ and the parameters $\phi$ such that $z = g_{\phi}(\epsilon, x)$, where the distribution of $\epsilon$ is independent of $\phi$ and $x$ and $\epsilon \sim p(\epsilon)$. Given this change of variables, the expection with respect to $q_{\phi}(z|x)$ can be rewritten as an expectation with respect to $p(\epsilon)$:
-\[ L_{\theta, \phi}(x) = \mathbb{E}_{q_{\phi}(z|x)} [\log p_{\theta}(x, z) - \log q_{\phi}(z|x)] \]
+It is possible to define a random variable $z \sim q_{\phi}(z,x)$ as a deterministic, differentiable function of a random variable $\epsilon$ and the parameters $\phi$ such that $z = g_{\phi}(\epsilon, x)$, where the distribution of $\epsilon$ is independent of $\phi$ and $x$ and $\epsilon \sim p(\epsilon)$. Given this change of variables, the expection with respect to $q_{\phi}(z|x)$ can be rewritten as an expectation with respect to $p(\epsilon)$
+\[ E_{q_{\phi}(z|x)}[f(z)] = E_{p(\epsilon)}[f(g_{\phi}(\epsilon, x))], \]
+where $f$ is an arbitrary function.\cite{Kingma_2019}
+As a result, the gradients the expectation and gradient operators become cummutive, and there can be formed a Monte Carlo estimate of the gradients
+\[ \nabla_{\phi} E_{q_{\phi}(z|x)}[f(z)] = E_{p(\epsilon)}[\nabla_{\phi} f(z)]. \]
 
 
-The notion is based on the fact we can define a random variable $z \sim q_{\phi}(z|x)$ as a deterministic, differentiable function of a random variable $\epsilon$ and the parameters $\phi$ such that $z = g_{\phi}(\epsilon, x)$, where the distribution of $\epsilon$ is independent of $\phi$ and $x$ where, $\epsilon \sim p(\epsilon)$. With this reparameterization, the expectation with respect to $q_{\phi}(z|x)$ can be rewritten as an expectation with respect to $p(\epsilon)$: 
-\[ L_{\theta, \phi}(x) = \mathbb{E}_{q_{\phi}(z|x)} [\log p_{\theta}(x, z) - \log q_{\phi}(z|x)] \]
-\[ = \mathbb{E}_{p(\epsilon)} [\log p_{\theta}(x, g_{\phi}(\epsilon, x)) - \log q_{\phi}(g_{\phi}(\epsilon, x)|x)], \]
- which is differentiable with respect to both $\phi$ and $\theta$. 
 
-With this reparametrizations the expectations can be rewritten in terms of $p(\epsilon)$
-\[ \mathbb{E}_{q(z|x)}\] 
 
-\begin{figure}
+\begin{figure}[H]
     \centering
     \begin{tikzpicture}[
         roundnode/.style={circle, draw=red!60, fill=red!5, very thick, minimum size=7mm},
@@ -107,6 +104,16 @@ With this reparametrizations the expectations can be rewritten in terms of $p(\e
     \hspace*{15pt}\hbox{\scriptsize Credit: Adapted from Kingma and Welling\cite{Kingma_2019}  }
 
 \end{figure}
+\pagebreak
+
+
+The notion is based on the fact we can define a random variable $z \sim q_{\phi}(z|x)$ as a deterministic, differentiable function of a random variable $\epsilon$ and the parameters $\phi$ such that $z = g_{\phi}(\epsilon, x)$, where the distribution of $\epsilon$ is independent of $\phi$ and $x$ where, $\epsilon \sim p(\epsilon)$. With this reparameterization, the expectation with respect to $q_{\phi}(z|x)$ can be rewritten as an expectation with respect to $p(\epsilon)$: 
+\[ L_{\theta, \phi}(x) = \mathbb{E}_{q_{\phi}(z|x)} [\log p_{\theta}(x, z) - \log q_{\phi}(z|x)] \]
+\[ = \mathbb{E}_{p(\epsilon)} [\log p_{\theta}(x, g_{\phi}(\epsilon, x)) - \log q_{\phi}(g_{\phi}(\epsilon, x)|x)], \]
+ which is differentiable with respect to both $\phi$ and $\theta$. 
+
+With this reparametrizations the expectations can be rewritten in terms of $p(\epsilon)$
+\[ \mathbb{E}_{q(z|x)}\] 
 
 
 \subsection{Gaussian VAEs}
