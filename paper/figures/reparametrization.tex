@@ -1,0 +1,55 @@
+\begin{tikzpicture}[
+    roundnode/.style={circle, draw=red!60, fill=red!5, very thick, minimum size=7mm},
+    squarednode/.style={rectangle, draw=gray!60, fill=gray!5, very thick, minimum size=5mm},
+    redarrow/.style={->, red, >=stealth, thick},
+    redtext/.style={red}
+    ]
+
+    % Two boxes with widht of full text
+    \draw (0,0) rectangle (6, 6);
+    \draw (7,0) rectangle (13, 6);
+    % Headlines
+    \node[align=center] at (3,5.5) {Original Form};
+    \node[align=center] at (10,5.5) {Reparametrized Form};
+
+    % --- First box ---
+    %Nodes
+    \node[squarednode]      (function)      at(3, 4.5)                    {$f$};
+    \node[roundnode]        (z)             [below= of function]          {$z$};
+    \node[squarednode]      (x)             [below= of z]                 {$x$};
+    \node[squarednode]      (phi)         [left= of x]        {$\phi$};
+    %Lines
+    \draw [->] (z) -- (function);
+    \draw [->] (x) -- (z);
+    \draw [->] (phi) -- (z);
+
+    % --- Second box ---
+    %Nodes
+    \node[squarednode]      (function2)      at(10, 4.5)                    {$f$};
+    \node[squarednode]        (z2)             [below= of function2]          {$z$};
+    \node[squarednode]      (x2)             [below= of z2]                 {$x$};
+    \node[squarednode]      (phi2)         [left= of x2]        {$\phi$};
+    \node[roundnode]        (epsilon)        [right= of x2]        {$\epsilon$};
+    %Lines
+    \draw [->] (z2) -- (function2);
+    \draw [->] (x2) -- (z2);
+    \draw [->] (phi2) -- (z2);
+    \draw [->] (epsilon) -- (z2);
+
+    % draw back propagation with red line draw to the left
+    \draw [redarrow] (9.5, 4.5) -- (9.5, 3.3);
+    \node [redtext, above left= -0.3 and 0.3 of z2] { $\nabla_{z} f$};
+    \draw [redarrow] (9.5, 3) -- (8.5, 2);
+    \node [redtext, above left= -0.1 and -0.1 of phi2] { $\nabla_{\phi} f$};
+    % One box below to show the meaning of nodes and lines
+    \draw (0,-3) rectangle (13, -0.5);
+    %show the meaning of nodes 
+    \node[squarednode]    (square_explanation_node)    at(1, -1)    {};
+    \node [right= 0.5 of square_explanation_node] {: Deterministic node};
+    \node[roundnode]    (round_explanation_node)    at(1, -2)    {};
+    \node [right= 0.5 of round_explanation_node] {: Random node} ;
+    %\draw (5.5, -2)    node    {: Random node};
+    %show the meaning of lines( with name of the line)
+    \draw [->] (7, -1) -- (8, -1) node [right = 0.5,] { : Calculation of f};
+    \draw [redarrow] (7, -2) -- (8, -2) node [right = 0.5,] { : Differentiation of f};
+\end{tikzpicture}
