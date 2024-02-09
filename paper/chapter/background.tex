@@ -14,7 +14,7 @@ where $q_{\phi}(z|x)$ is the encoder distribution, $p_{\theta}(x, z)$ is the dec
 
 The ELBO can be also written as a sum of two terms,
  \[ L_{\theta, \phi}(x) = - D_{KL}(q_{\phi}(z|x) || p(z)) + \mathbb{E}_{q_{\phi}(z|x)} [\log p_{\theta}(x|z)], \]
- where $D_{KL}(q_{\phi}(z|x) || p(z))$ is the Kullback-Leibler divergence between the encoder distribution $q_{\phi}(z|x)$ and the prior distribution $p(z)$ and $\mathbb{E}_{q_{\phi}(z|x)} [\log p_{\theta}(x|z)]$ is the reconstruction term. The Kullback-Leibler divergence term encourages the encoder distribution to be close to the prior distribution, while the reconstruction term encourages the reconstruction to be as accurate as possible\cite{Kingma_2019}.
+ where $D_{KL}(q_{\phi}(z|x) || p(z))$ is the Kullback-Leibler divergence between the encoder distribution $q_{\phi}(z|x)$ and the prior distribution $p(z)$ and $\mathbb{E}_{q_{\phi}(z|x)} [\log p_{\theta}(x|z)]$ is the reconstruction term. The Kullback-Leibler divergence term encourages the encoder distribution to be close to the prior distribution, while the reconstruction term encourages the reconstruction to be as accurate as possible. Whilst this represantion of the ELBO may look different from the original, it is equivalent definition using different terms.\cite{Kingma_2019}.
 
 
 Taking random samples from from $q_{\phi}(z|x)$, Monte Carlo estimate of ELBO can be written of this as
@@ -96,7 +96,7 @@ where $\hat{x} = f_{\theta}(\mu_{\phi}(x_i) + \sigma_{\phi}(x_i) \odot \epsilon^
     \begin{split}
         \argmax_{\theta} \log \mathcal{N}(x|f_{\theta}(z), I) & = \argmax_{\theta} \log \biggl[\frac{1}{\sigma \sqrt{2\pi}} \exp \biggl( -\frac{1}{2 \sigma^2} (x - f_{\theta}(z))^2 \biggr)\biggr] \\
         & = \argmax_{\theta} \biggl[ \log \frac{1}{\sigma \sqrt{2\pi}} - \frac{1}{2 \sigma^2} (x - f_{\theta}(z))^2 \biggl]\\
-        & = \argmin_{\theta} \frac{1}{2} (x - f_{\theta}(z))^2
+        & = \argmax_{\theta} -\frac{1}{2} (x - f_{\theta}(z))^2
     \end{split}
 \end{equation}
 
@@ -130,15 +130,38 @@ One can see this forward propagation as a regular autoencoder with a quantizatio
 The posterior categorical distribution $q_{\phi}(z|x)$ is defined as follows:
 \begin{equation}
     q(z=k|x) = \begin{cases}
-        1& if \ k = \argmin_{k} || z_e(x) - e_k ||^2 \\
+        1& \text{if} \ k = \argmin_{k} || z_e(x) - e_k ||^2 \\
         0& \text{otherwise}
     \end{cases},
 \end{equation}
 where $z_e(x)$ is the output of the encoder network and $e_k$ is the $k$-th vector in the embedding table.
 The discrete latent variable $z$ is then used to look up the corresponding embedding vector $e_k$ in the embedding space, which is then used as input to the decoder network. The decoder network then produces the output $\hat{x}$.\cite{vqvae}
+The decoder distribution $p_{\theta}(x|z)$ is assumed to be a Gaussian distribution.
 
 
 \subsection{Learning}
+
+VQ-VAEs define the prior distribution as being learnt with a seperate (seperate parameters) autoregressive model. Let's denote it as $p_{\theta}(z)$. The prior distribution is trained to match the posterior distribution. The prior distribution is trained to minimize the KL divergence between the prior and the posterior distribution. The KL divergence is given by
+
+Since the proposed posterior distribution $q_{\phi}(z|x)$ is a deterministic by applying it to ELBO objective, we get the following expression:
+\begin{equation}
+    \begin{split}
+        L_{\theta, \phi}(x) &= - D_{KL}(q_{\phi}(z = k|x) || p(z)) + \mathbb{E}_{q_{\phi}(z=k|x)} [\log p_{\theta}(x|z = k)],\\
+                            &= - \mathbb{E}_{q_{\phi}(z=k|x)} [\log \frac{q_{\phi}(z=k|x)}{p(z)}] + \mathbb{E}_{q_{\phi}(z=k|x)} [\log p_{\theta}(x|z = k)],\\
+                            &= - \log \frac{1}{p(z)} + \log p_{\theta}(x|z = k),\\
+    \end{split}
+\end{equation}
+
+
+
+\begin{figure}[H]
+    \centering 
+    \input{figures/vq_vae.tex}
+    \caption{ The architecture of VAEs.}
+  	\medskip 
+	\hspace*{15pt}\hbox{\scriptsize Credit: Aäron van den Oord et al.}\label{VQVAEFiguretikz}
+\end{figure}
+
 
 \begin{figure}[H]
     \centering
