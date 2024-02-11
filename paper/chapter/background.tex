@@ -220,13 +220,18 @@ where $p(x_i|x_1, x_2, \dots, x_{i-1})$ is the conditional distribution of the $
   	\medskip 
     \hspace*{15pt}\hbox{\scriptsize Credit: Adapted from the original PixelCNN paper.\cite{pixelcnn}}\label{PixelCNNFigure}
 \end{figure}
-When PixelCNN is applied to a colored image, each pixel is jointly represented by three color channels, which are red, green and blue. We 
 
-
-
-
+The PixelCNN in the original architecture is a stack of fifteen fully convolutional network layers with masked convolutions. The masked convolutions are used to ensure that the model can only access the previous pixels, which is crucial for model to be autoregressive. The model is trained to minimize the negative log likelihood of the training data. The PixelCNNs have been shown to be very effective at capturing the distribution of the data. Most current state of the art models use the PixelCNNs as a building block for example PixelCNN++ and PixelSNAIL.\cite{pixelcnn, pixelcnnpp,pixelsnail}
 
 \subsubsection{Application in VQ-VAEs}
+
+The PixelCNNs are used in the VQ-VAEs to model the prior distribution $p_{\omega}(z)$ over the discrete latent variables. The prior distribution is trained to match the distribution of the latent variables $z$ sampled from the posterior distribution $q_{\phi}(z|x)$. The PixelCNN in combination with the VQ-VAEs has been shown to be exceptional at capturing the distribution of the latent variables and generating high resolution samples.\cite{vqvae}
+
+\section{Semi-Conditioned VAEs}
+
+    Semi-conditional VAEs 
+
+\section{Multitask Learning}
 
 
 
