@@ -229,9 +229,13 @@ The PixelCNNs are used in the VQ-VAEs to model the prior distribution $p_{\omega
 
 \section{Semi-Conditioned VAEs}
 
-    Semi-conditional VAEs 
+Semi-conditional VAEs were first introduced in 2020.\cite{Gundersen_2021} Semi-conditional VAEs are a variant of VAEs that first designed for the reconstruction of non-linear dynamic processes based on sparse observations. The semi-conditional VAEs extend the standard VAEs by adding an additional input $m$ to the decoder network $p_{\theta}(x|z, m)$, which is used to condition the decoder on the additional input. 
+
+The semi-conditional VAEs showed to be effective in making use of the additional information to improve the reconstruction of the data and the generalization to unseen data.\cite{Gundersen_2021} This shows that the similar approach could be used to improve the generalization of the VQ-VAEs to unseen data.
 
 \section{Multitask Learning}
+
+Multitask learning is a machine learning paradigm where multiple tasks are learned at the same time, which has the aim of exploiting the shared information between the tasks to improve the performance of the individual tasks. Multitask learning has been shown to be effective in various application
 
 
 
