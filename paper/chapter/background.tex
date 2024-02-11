@@ -235,8 +235,11 @@ The semi-conditional VAEs showed to be effective in making use of the additional
 
 \section{Multitask Learning}
 
-Multitask learning is a machine learning paradigm where multiple tasks are learned at the same time, which has the aim of exploiting the shared information between the tasks to improve the performance of the individual tasks. Multitask learning has been shown to be effective in various application
+Multitask learning is a machine learning paradigm where multiple tasks are learned at the same time, which has the aim of leveraging the shared information between the tasks to improve the performance of the individual tasks. Unlike the traditional single task learning, where each task is learned independently, multitask learning allows to take advantage of task relationships and to learn a shared representation that is useful for all tasks.\cite{multitasklearning}
 
+The notion of using multitask learning comes from the observation that the tasks are often related and depend on the same underlying features. This can be beneficial is scenarious where the data is limited, which is often the case for medical data. 
+
+The multitask learning can be also applied to the context of VAEs and VQ-VAEs. 
 
 
 
