@@ -1,6 +1,6 @@
 \chapter{Background}
 
-In this chapter I am going to introduce the reader to the concepts that are necessary to understand the research presented in this thesis. The chapter is divided into three sections. The first section provides an overview of Variational Autoencoders (VAEs) and their applications. The second section introduces Vector Quantized VAEs (VQ-VAEs). The third section introduces the concept of semi-conditioned VAEs. The chapter is concluded with a section that introduces the concept of multitask learning. 
+In this chapter I am going to introduce the reader to the concepts that are necessary to understand the research presented in this thesis. The chapter is divided into three sections. The first section provides an overview of Variational Autoencoders (VAEs) and their applications. The second section introduces Vector Quantized VAEs (VQ-VAEs) and PixelCNN. The third section introduces the concept of semi-conditioned VAEs. The chapter is concluded with a section that introduces the concept of multitask learning. 
 
 \section{VAEs}
 
@@ -128,7 +128,7 @@ where $e_k$ is the $k$-th embedding vector in the embedding space. The decoder t
 One can see this forward propagation as a regular autoencoder with a quantization step in the middle.\cite{vqvae}
 
 The posterior categorical distribution $q_{\phi}(z|x)$ is defined as follows:
-\begin{equation}
+\begin{equation} \label{eqVQVAEPosterior}
     q(z=k|x) = \begin{cases}
         1& \text{if} \ k = \argmin_{k} || z_e(x) - e_k ||^2 \\
         0& \text{otherwise}
@@ -138,38 +138,95 @@ where $z_e(x)$ is the output of the encoder network and $e_k$ is the $k$-th vect
 The discrete latent variable $z$ is then used to look up the corresponding embedding vector $e_k$ in the embedding space, which is then used as input to the decoder network. The decoder network then produces the output $\hat{x}$.\cite{vqvae}
 The decoder distribution $p_{\theta}(x|z)$ is assumed to be a Gaussian distribution.
 
-
 \subsection{Learning}
 
-VQ-VAEs define the prior distribution as being learnt with a seperate (seperate parameters) autoregressive model. Let's denote it as $p_{\theta}(z)$. The prior distribution is trained to match the posterior distribution. The prior distribution is trained to minimize the KL divergence between the prior and the posterior distribution. The KL divergence is given by
+As mentioned earlier, the VQ-VAEs introduce learning the prior distribution separately from the posterior distribution. The prior distribution is defined as a categorical distribution $p_{\omega}(z)$, where $z$ is a discrete latent variable.\cite{vqvae}
 
 Since the proposed posterior distribution $q_{\phi}(z|x)$ is a deterministic by applying it to ELBO objective, we get the following expression:
 \begin{equation}
     \begin{split}
-        L_{\theta, \phi}(x) &= - D_{KL}(q_{\phi}(z = k|x) || p(z)) + \mathbb{E}_{q_{\phi}(z=k|x)} [\log p_{\theta}(x|z = k)],\\
-                            &= - \mathbb{E}_{q_{\phi}(z=k|x)} [\log \frac{q_{\phi}(z=k|x)}{p(z)}] + \mathbb{E}_{q_{\phi}(z=k|x)} [\log p_{\theta}(x|z = k)],\\
-                            &= - \log \frac{1}{p(z)} + \log p_{\theta}(x|z = k),\\
+        L_{\theta, \phi, \omega}(x) &= - D_{KL}(q_{\phi}(z = k|x) || p_{\omega}(z)) + \mathbb{E}_{q_{\phi}(z=k|x)} [\log p_{\theta}(x|z = k)],\\
+                            &= - \mathbb{E}_{q_{\phi}(z=k|x)} [\log \frac{q_{\phi}(z=k|x)}{p_{\omega}(z)}] + \mathbb{E}_{q_{\phi}(z=k|x)} [\log p_{\theta}(x|z = k)],\\
+                            &= - \log \frac{1}{p_{\omega}(z)} + \log p_{\theta}(x|z = k),\\
+                            &= \log p_{\omega}(z) + \log p_{\theta}(x|z = k),\\
     \end{split}
 \end{equation}
 
+The VQVAe learning process is then divided into two stages, where in the first stage the first term is ignored and the second term is maximized. In the second stage, the prior distribution is trained. In the next 2 sections, I will describe both stages in more detail.
 
+\subsubsection{First stage}
 
-\begin{figure}[H]
+In the first stage the log likelihood of posterior distribution is \textbf{maximized}, which means the encoder and the decoder is trained with the prior distribution being arbitrary. The training objective in first stages reduces to 
+\[ L_{\theta, \phi}(x) = \log p_{\theta}(x|z = k), \]
+where $k$ is the index of the nearest embedding vector in the embedding space, which is defined in equation~\ref{eqVQVAEPosterior}. We can look at the first stage as training a regular autoencoder with a quantization step in the middle, which inherently makes the latent space distribution categorical.\cite{vqvae}
+    
+However, the expression $k = \argmin_{k} || z_e(x) - e_k ||^2$ is not differentiable with respect to the parameters of the network. To make the training process differentiable, the authors of the VQ-VAEs propose to use the straight-through estimator, which is a way of estimating the gradients of the non-differntiable function, and copy the gradietns of $z_q(x)$ to $z_e(x)$.\cite{vqvae} The straight through estimator only works if the difference between $z_e(x)$ and $e_k$ is small, which can be achieved by adding extra loss terms to the training objective.wd\cite{straight_through}
+
+This is where the VQ objective comes in. The VQ objective uses the second term of equation~\ref{eqVQVAEObjective} to encourage the encoder to produce representations that are close to the embedding vectors in the embedding space, which is called the commitement loss.\cite{vqvae}
+
+However, since the embedding space can be arbitrary large the embedding vectors can be arbitrary far from the encoder output. To prevent this, the authors of the VQ-VAEs propose to add another term to the training objective, which is called the codebook loss. The codebook loss encourages the embedding vectors to be close to the encoder output. The codebook loss has $\beta$ as a hyperparameter, which controls the importance of the codebook loss.\cite{vqvae}
+
+Thus, the resulting training objective becomes
+\begin{equation} \label{eqVQVAEObjective}
+    \begin{split}
+        L &= \log p_{\theta}(x|z = k) - \biggl( || sg(z_e(x)) - e_k ||^2 + \beta || z_q(x) - sg(e_k) ||^2 \biggr),\\
+    \end{split}
+\end{equation}
+where $sg$ is the stop gradient operation, which is is defined as identity function, but with the gradients of the output set to zero.
+
+The loss function to be \textbf{minimized} for VQ-VAE's usually used in practice is the sum of the VQ objective and the MSE reconstruction loss.
+The first term in the function is the MSE reconstruction loss because maximizing the Gaussian likelihood is approximately equivalent to minimizing the MSE reconstruction loss. This is shown in the equation~\ref{eqMSE}. 
+Thus the resulting training objective to be minimized becomes
+\[ L = \frac{1}{D} \sum_{i=1}^{D} ||x_i - \hat{x} ||^2 + || sg(z_e(x)) - e_k ||^2 + \beta || z_q(x) - sg(e_k) ||^2 , \]
+where $\hat{x} = f_{\theta}(z_q(x))$, where function $f_{\theta}$ is the decoder network, $D$ is the dimension of the input data and $k$ is the index of the nearest embedding vector in the embedding space, which is defined in equation~\ref{eqVQVAEPosterior}. 
+
+In the figure below~\ref{VQVAEFigure} there is a visualization of the architecture of VQ-VAEs.
+
+\begin{figure}
     \centering 
     \input{figures/vq_vae.tex}
     \caption{ The architecture of VAEs.}
   	\medskip 
-	\hspace*{15pt}\hbox{\scriptsize Credit: Aäron van den Oord et al.}\label{VQVAEFiguretikz}
+	\hspace*{15pt}\hbox{\scriptsize Credit: Adapted from Aäron van den Oord et al.\cite{vqvae}}\label{VQVAEFigure}
 \end{figure}
 
+\subsubsection{Second stage}
 
-\begin{figure}[H]
-    \centering
-    \makebox[\textwidth]{\includegraphics[width=\textwidth]{figures/vq_vae}}
-    
-    \caption{On the left side there is a figure describing the VQ-VAE architecture. On the right side there is visualization of the latent space whilst training. The figure is taken from~\cite{vqvae}.}
+The second stage objective is to train the prior distribution $p_{\omega}(z)$ over the discrete latent variables. The latent variables $z$ are sampled from the posterior distribution $q_{\phi}(z|x)$, which is defined in equation~\ref{eqVQVAEPosterior}. The prior distribution is categorical and can be made autoregressive by depending on other latent variables $z$.\cite{vqvae} 
+
+The prior distribution $p_{\omega}(z)$ is then trained to match the distribution of the latent variables $z$ sampled from the posterior distribution $q_{\phi}(z|x)$. To achieve this the authors of the VQ-VAEs use an autoregressive model to model the prior distribution. The autoregressive model authors used is a Gated PixelCNN, which is a variant of PixelCNN, which is described in the next section.\cite{vqvae}
+
+\subsection{PixelCNNs}
+
+The PixelCNNs are a prominent autoregressive architecture used in the field of pixel-level prediction. These models operate on images at the level of each individual pixels, learning to generate images or predict missing pixels one at a time. Deep autoregressive models have been shown to be very effective at modeling the full distribution and generating relatively low-resolution images. Generating high-resolution images with merely autoregressive models is challenging, because the size of the network increases rapidly with the size of the image.\cite{pixelcnn, pixelrnn}
+
+Auto regressive models treat and image as a sequence of pixels and the goal is to model the conditional distribution of each pixel given the previous pixels.
+Image $x$ is represented as a one-dimensional sequence of pixels $x = (x_1, x_2, \dots, x_N)$, where $x_i$ is the $i$-th pixel in the image and $N$ is the number of pixels in the image. The estimate of the joint distribution of the pixels over an image $x$ is given by the product of the conditional distributions of each pixel given the previous pixels
+\[ p(x) = \prod_{i=1}^{N} p(x_i|x_1, x_2, \dots, x_{i-1}),\]
+where $p(x_i|x_1, x_2, \dots, x_{i-1})$ is the conditional distribution of the $i$-th pixel given the previous pixels. The generational process of the image is then done by sampling each pixel sequantially from the conditional distribution of the pixel given the previous pixels, which is shown in the figure~\ref{PixelCNNFigure}.\cite{pixelcnn}
+
+
+\begin{figure}
+    \centering 
+    \includegraphics[scale=0.20]{figures/pixelcnn.png}
+    \caption[The conditional generation in autoregressive models]%
+    {The conditional generation in autoregressive models. The model generates the pixels of the image one at a time, conditioning on the previous pixels. The model is autoregressive, because the distribution of each pixel is conditioned on the previous pixels.}
   	\medskip 
-	\hspace*{15pt}\hbox{\scriptsize Credit: Aäron van den Oord et al.}\label{VQVAEFigure}
+    \hspace*{15pt}\hbox{\scriptsize Credit: Adapted from the original PixelCNN paper.\cite{pixelcnn}}\label{PixelCNNFigure}
 \end{figure}
+When PixelCNN is applied to a colored image, each pixel is jointly represented by three color channels, which are red, green and blue. We 
+
+
+
+
+
+\subsubsection{Application in VQ-VAEs}
+
+
+
+
+
+
+
 
 
