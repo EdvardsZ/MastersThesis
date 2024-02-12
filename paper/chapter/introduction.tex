@@ -1,5 +1,9 @@
 \chapter{Introduction}
 
+In this chapter, I will explain the reasoning and motivation behind this research. In the second section, I will talk about the objective of the thesis and the research questions that I will attempt to answer. Finally, I will provide a brief outline for the rest of the thesis
+
+\section{Motivation}
+
 Over the past 10 years, Variational Autoencoders (VAEs) have become valuable assets in the field of deep learning and generative modeling. At the most basic level, they are used as tools for data generation and compression by learning the underlying patterns and structures present in a given dataset. VAEs have shown their versatility and have found applications in multiple domains, including image generation, anomaly detection, natural language processing, and speech synthesis. However, VAEs, given a limited set of data and compute power, have limitations and challenges.\cite{kingma2013autoencoding,Kingma_2019, vqvae, dalle}
 
 One of the key challenges traditional VAE's face is that they tend to produce blurry, over-smoothed samples. More recently Vector Quantized Variational Autoencoders (VQ-VAEs) have been introduced to address VAE's limitation, which combines the strenghts of VAEs and discrete vector quantization.\cite{dalle} The VQ-VAE architecture solves the problem of capturing fine-grained details in the data, whilst maintaning interpretability of latent representations and generational properties of VAEs. However, both VAEs and VQ-VAEs have the same challange of striking a balance between the reconstruction accuracy and the effectiveness of the learned latent representations and when the data has multiple sources of variation it can be difficult to capture all of that in a single model.\cite{Kingma_2019,betavae, vqvae}
@@ -8,13 +12,21 @@ Multitask learning, on the contrary, is a paradigm that aims to improve model ge
 
 This research aims to investigate the effectiveness and potential of combining semi-conditioned and conditioned VAEs in one model which will be explored in the context of standard VAEs and as well as VQ-VAEs. This research proposes 2 methods of combining semi-conditioned and conditioned VAEs, which will be referred to as SCVAE1D, SCVAE2D, SCVQVAE1D and SCVQVAE2D. SCVAE2D and SCVQVAE2D is an approach to combine semi-conditioned and non-conditioned VAEs with 2 decoders, where the first decoder is conditioned and the second decoder is non-conditioned. SCVAE1D and SCVQVAE1D is an approach to combine semi-conditioned and non-conditioned VAEs with 1 decoder, where the decoder can be conditioned or non-conditioned. The main goal of this research is to investigate the potential of these methods to improve the reconstruction accuracy and generalization capabilities of VAEs and VQ-VAES and by conducting a comprehensive analysis and experimentation, the aim is to shed light on the advantages and limitations of these methods.
 
-\section{Research Question}
+\section{Objective}
 
-The central research question addressed in this thesis is as follows:
+In this thesis, I aim to investigate and explore the integration of SCVAEs can be combined with standard non-conditioned VAEs through multi-task learning. My objective is to determine whether leveraging the multitask property enhances the performance of VAEs compared to traditional ones, and if so, under what conditions. Additionally, I will explore the applicability of this multitask property to VQ-VAEs.
 
-\begin{quote}
-\textit{Can Multitask Variational Autoencoders (MT-VAEs) enhance the performance and versatility of Variational Autoencoders (VAEs) by jointly optimizing multiple tasks, and under what conditions do MT-VAEs demonstrate superior performance in comparison to traditional VAEs?}
-\end{quote}
+More specifically, I will attempt to answer the following questions:
+
+\begin{itemize}
+    \item Can semi-conditional variational autencoders by combined with standard VAEs through multi-task learning?
+    \item Can semi-conditional variational autoencoders can also be combined with the VQ-VAEs with multi task learning?
+    \item .....
+\end{itemize}
+
+
+
+\section{Thesis Outline}
 
 
 
