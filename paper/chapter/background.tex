@@ -45,8 +45,8 @@ This is the reparametrization trick, which is further explained and illustrated 
 \begin{figure}
     \centering
     \input{figures/reparametrization.tex}
-    \caption[The illustration diagram of the reparametrization trick]%
-    {The illustration diagram of the reparametrization trick. The input of a function $f$ is $x$. The parameters $\theta$ affect the objective of the function $f$ through a random variable $z$. In the original form we can not compute the gradients $\nabla_{\phi} f$, because a direct backpropagation is not possible through a random variable. In the reparameterized form, the randomness is seperated from the parameters $\phi$, which enables the gradients to be computed. This is done by reparameterizing the random variable $z$ as a deterministic function and differentiable function  of $\phi$, $x$ and a new random variable $\epsilon$.\cite{Kingma_2019}}
+    \caption[Illustration diagram of the reparametrization trick]%
+    {Illustration diagram of the reparametrization trick. The input of a function $f$ is $x$. The parameters $\theta$ affect the objective of the function $f$ through a random variable $z$. In the original form we can not compute the gradients $\nabla_{\phi} f$, because a direct backpropagation is not possible through a random variable. In the reparameterized form, the randomness is seperated from the parameters $\phi$, which enables the gradients to be computed. This is done by reparameterizing the random variable $z$ as a deterministic function and differentiable function  of $\phi$, $x$ and a new random variable $\epsilon$.\cite{Kingma_2019}}
 
     \hspace*{15pt}\hbox{\scriptsize Credit: Adapted from Kingma and Welling\cite{Kingma_2019}  }\label{reparametrization}
 
@@ -105,8 +105,8 @@ In the figure belowe~\ref{VAEFigure} there is a visualization of the architectur
 \begin{figure}[H]
     \centering 
     \input{figures/vae_tikz.tex}
-    \caption[The architecture of Gaussian VAEs.]%
-    { The architecture of Gaussian VAEs. The input $x$ is passed through the encoder with parameters $\phi$ producing the mean $\mu$ and the standard deviation $\sigma$ of the Gaussian distribution. The random variable $\epsilon$ is sampled from a standard Gaussian distribution and is used to sample $ z = \mu + \sigma \odot \epsilon$. The sampled $z$ is then passed through the decoder with parameters $\theta$ producing the output $\hat{x}$. The loss function to be minimized is the sum of the MSE reconstruction loss and the KL divergence regularization loss. 
+    \caption[Architecture of Gaussian VAEs.]%
+    { Architecture of Gaussian VAEs. The input $x$ is passed through the encoder with parameters $\phi$ producing the mean $\mu$ and the standard deviation $\sigma$ of the Gaussian distribution. The random variable $\epsilon$ is sampled from a standard Gaussian distribution and is used to sample $ z = \mu + \sigma \odot \epsilon$. The sampled $z$ is then passed through the decoder with parameters $\theta$ producing the output $\hat{x}$. The loss function to be minimized is the sum of the MSE reconstruction loss and the KL divergence regularization loss. 
     }
   	\medskip 
 	\hspace*{15pt}\hbox{\scriptsize Credit: Adapted from Kingma and Welling\cite{Kingma_2019} }\label{VAEFigure}
@@ -187,9 +187,9 @@ In the figure below~\ref{VQVAEFigure} there is a visualization of the architectu
 \begin{figure}
     \centering 
     \input{figures/vq_vae.tex}
-    \caption[The architecture of VQ-VAEs.]%
+    \caption[Architecture of VQ-VAEs.]%
     { 
-        The architecture of VQ-VAEs. The input $x$ is passed through the encoder convolutional neural network producing the output $z_e(x)$. For each output vector in $z_e(x)$, the nearest embedding vector in the embedding table $e$ is found. The indices of the nearest embedding vectors are then used as the discrete latent variables $z$. The discrete latent variables $z$ are then used to look up and retrieve the corresponding embedding vectors. The retrieved embedding vectors are then used as input to the decoder convolutional neural network producing the output $\hat{x}$. During the backward pass the gradients of the gradients of $z_q(x)$ are copied to $z_e(x)$ using the straight-through estimator, which is illustrated with a red arrow.
+        Architecture of VQ-VAEs. The input $x$ is passed through the encoder convolutional neural network producing the output $z_e(x)$. For each output vector in $z_e(x)$, the nearest embedding vector in the embedding table $e$ is found. The indices of the nearest embedding vectors are then used as the discrete latent variables $z$. The discrete latent variables $z$ are then used to look up and retrieve the corresponding embedding vectors. The retrieved embedding vectors are then used as input to the decoder convolutional neural network producing the output $\hat{x}$. During the backward pass the gradients of the gradients of $z_q(x)$ are copied to $z_e(x)$ using the straight-through estimator, which is illustrated with a red arrow.
         Upper Left: The visualization of the embedding space during training.  The encoder output vector is shown as a dark green dot and the nearest embedding vector is shown as a dark purple dot. The commitement and codebook loss encourage the both the encoder output vector and the nearest embedding vector to be close to each other.\cite{vqvae}
     }
   	\medskip 
@@ -215,8 +215,8 @@ where $p(x_i|x_1, x_2, \dots, x_{i-1})$ is the conditional distribution of the $
 \begin{figure}
     \centering 
     \includegraphics[scale=0.20]{figures/pixelcnn.png}
-    \caption[The conditional generation in autoregressive models]%
-    {The conditional generation in autoregressive models. The model generates the pixels of the image one at a time, conditioning on the previous pixels. The model is autoregressive, because the distribution of each pixel is conditioned on the previous pixels.}
+    \caption[Conditional generation in autoregressive models]%
+    {Conditional generation in autoregressive models. The model generates the pixels of the image one at a time, conditioning on the previous pixels. The model is autoregressive, because the distribution of each pixel is conditioned on the previous pixels.}
   	\medskip 
     \hspace*{15pt}\hbox{\scriptsize Credit: Adapted from the original PixelCNN paper.\cite{pixelcnn}}\label{PixelCNNFigure}
 \end{figure}
