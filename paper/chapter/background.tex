@@ -14,14 +14,22 @@ where $q_{\phi}(z|x)$ is the encoder distribution, $p_{\theta}(x, z)$ is the dec
 
 The ELBO can be also written as a sum of two terms,
  \[ L_{\theta, \phi}(x) = - D_{KL}(q_{\phi}(z|x) || p(z)) + \mathbb{E}_{q_{\phi}(z|x)} [\log p_{\theta}(x|z)], \]
- where $D_{KL}(q_{\phi}(z|x) || p(z))$ is the Kullback-Leibler divergence between the encoder distribution $q_{\phi}(z|x)$ and the prior distribution $p(z)$ and $\mathbb{E}_{q_{\phi}(z|x)} [\log p_{\theta}(x|z)]$ is the reconstruction term. The Kullback-Leibler divergence term encourages the encoder distribution to be close to the prior distribution, while the reconstruction term encourages the reconstruction to be as accurate as possible. Whilst this represantion of the ELBO may look different from the original, it is equivalent definition using different terms.\cite{Kingma_2019}.
+ where:
+
+\begin{itemize}
+    \item $D_{KL}(q_{\phi}(z|x) || p(z))$ is the Kullback-Leibler divergence between the encoder distribution $q_{\phi}(z|x)$ and the prior distribution $p(z)$
+    \item $\mathbb{E}_{q_{\phi}(z|x)} [\log p_{\theta}(x|z)]$ is the reconstruction term
+\end{itemize}
+
+The Kullback-Leibler divergence term encourages the encoder (posterior) distribution to align with the prior distribution, acting as a regularization term. This alignment is crucial for effective utilization of the latent space. On the other hand, the reconstruction term encourages the decoder to reconstruct the input data as accurately as possible, which encourages the decoder to accurately capture the data distribution.
+
+While the expression fo the ELBO might appear different from the original formulation, it remains equivalent, merely using different terms to express the same notion~\cite{Kingma_2019}.
 
 
-Taking random samples from $q_{\phi}(z|x)$ a Monte Carlo estimate of ELBO can be written as
+Sampling from $q_{\phi}(z|x)$ enables the Monte Carlo estimatation
 \[ L_{\theta, \phi}(x) = - D_{KL}(q_{\phi}(z|x) || p(z)) + \frac{1}{L} \sum_{l=1}^{L} \log p_{\theta}(x|z^{(l)}) ,\]
 where $z^{(l)} \sim q_{\phi}(z|x)$ and $L$ is the number of samples and first term is the Kullback-Leibler divergence term and the second term is the reconstruction term~\cite{Kingma_2019}. 
 
-The regularization term is the Kullback-Leibler divergence between the encoder distribution and the prior distribution. The regularization term encourages the encoder distribution to be close to the prior distribution. The reconstruction term is the reconstruction error of the decoder. The reconstruction term encourages the decoder to reconstruct the input data as accurately as possible.
 
 The individual datapoint ELBO and it's gradients are in general intractable to compute. However, unbiased estimates of the ELBO and its gradients can be obtained using the reparametrization trick, which is described in the next section~\cite{Kingma_2019}.
 
