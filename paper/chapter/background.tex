@@ -170,7 +170,7 @@ In the first stage the log likelihood of posterior distribution is \textbf{maxim
 \[ L_{\theta, \phi}(x) = \log p_{\theta}(x|z = k), \]
 where $k$ is the index of the nearest embedding vector in the embedding space, which is defined in equation~\ref{eqVQVAEPosterior}. We can look at the first stage as training a regular autoencoder with a quantization step in the middle, which inherently makes the latent space distribution categorical~\cite{vqvae}.
     
-However, the expression $k = \argmin_{k} || z_e(x) - e_k ||^2$ is not differentiable with respect to the parameters of the network. To make the training process differentiable, the authors of the VQ-VAEs propose to use the straight-through estimator, which is a way of estimating the gradients of the non-differentiable function, and copy the gradients of $z_q(x)$ to $z_e(x)$~\cite{vqvae}. The straight through estimator only works if the difference between $z_e(x)$ and $e_k$ is small, which can be achieved by adding extra loss terms to the training objective.wd\cite{straight_through}
+However, the expression $k = \argmin_{k} || z_e(x) - e_k ||^2$ is not differentiable with respect to the parameters of the network. To make the training process differentiable, the authors of the VQ-VAEs propose to use the straight-through estimator, which is a way of estimating the gradients of the non-differentiable function, and copy the gradients of $z_q(x)$ to $z_e(x)$~\cite{vqvae}. The straight through estimator only works if the difference between $z_e(x)$ and $e_k$ is small, which can be achieved by adding extra loss terms to the training objective.~\cite{straight_through}
 
 This is where the VQ objective comes in. The VQ objective uses the second term of equation~\ref{eqVQVAEObjective} to encourage the encoder to produce representations that are close to the embedding vectors in the embedding space, which is called the commitment loss~\cite{vqvae}.
 
@@ -237,17 +237,25 @@ The PixelCNNs are used in the VQ-VAEs to model the prior distribution $p_{\omega
 
 \section{Semi-Conditioned VAEs}
 
-Semi-conditional VAEs were first introduced in 2020~\cite{Gundersen_2021}. Semi-conditional VAEs are a variant of VAEs that first designed for the reconstruction of non-linear dynamic processes based on sparse observations. The semi-conditional VAEs extend the standard VAEs by adding an additional input $m$ to the decoder network $p_{\theta}(x|z, m)$, which is used to condition the decoder on the additional input. 
+Semi-conditional VAEs were first introduced in 2020~\cite{Gundersen_2021}. Semi-conditional VAEs (SCVAEs) are a variant of VAEs that first designed for the reconstruction of non-linear dynamic processes based on sparse observations. The semi-conditional VAEs extend the standard VAEs framework by adding an additional input $m$ to the decoder network $p_{\theta}(x|z, m)$, which is used to condition the decoder on the additional information. 
 
-The semi-conditional VAEs showed to be effective in making use of the additional information to improve the reconstruction of the data and the generalization to unseen data~\cite{Gundersen_2021}. This shows that the similar approach could be used to improve the generalization of the VQ-VAEs to unseen data.
+The additional information $m$ can be any type of information that is available at the time of the reconstruction and can be used to improve the reconstruction of the data. In the original paper, the authors used the SCVAEs to reconstruct fluid flow data. The additional information $m$ was the sparse measurements of the flow data. The method was showcased on two different datasets, velocity data from simulations of 2D flow around a cylinder, and bottom currents~\cite{Gundersen_2021}.
+
+Natural applications for the SCVAEs are related to domains where there is often sparse measurements, such as environmental data. However, the SCVAEs can also be used, for instance, in computer vision to generate new image based on sparse pixel representations~\cite{Gundersen_2021}.
+
+The semi-conditional property of the SCVAEs could also be applied to the VQ-VAEs, which has not been explored yet in the literature. Also, the potential of combining non-conditioned and semi-conditioned VAEs through multitask learning has not been explored yet.
 
 \section{Multitask Learning}
 
 Multitask learning is a machine learning paradigm where multiple tasks are learned at the same time, which has the aim of leveraging the shared information between the tasks to improve the performance of the individual tasks. Unlike the traditional single task learning, where each task is learned independently, multitask learning allows taking advantage of task relationships and to learn a shared representation that is useful for all tasks~\cite{multitasklearning}.
 
-The notion of using multitask learning comes from the observation that the tasks are often related and depend on the same underlying features. This can be beneficial is scenarios where the data is limited, which is often the case for medical data. 
+The notion of using multitask learning comes from the observation that the tasks are often related and depend on the same underlying features. This can be beneficial is scenarios where the data is limited, which is often the case for medical data~\cite{medicalMultiTask}.
 
-The multitask learning can be also applied to VAEs and VQ-VAEs. 
+For example, in medical image-analysis, in a scenario where the task is to develop a system for identifying and classifying different types of abnormalities in medical images. Traditionally this could be done by training a seperate model for each type of abnormality. However, this approach is not optimal due to limited data and the shared features that could be used to identify and classify multiple types of abnormalities~\cite{multitasklearning}.
+
+Multitask learning is an approach in which a single model is trained to perform multiple tasks. In the context of medical image-analysis, this could involve training multitask VAE or VQVAE model capable simultaneously learning to reconstruct images, whilst also learning to classify different types of conditions. 
+
+Multitask learning has been shown to be most effective when the tasks are related and data is limited. The potential and flexibility of multitask learning for improving the model performance make it a very valuable technique in machine learning. It has an unexplored potential in the context of VAEs and VQ-VAEs, which is the main motivation for this thesis.
 
 
 

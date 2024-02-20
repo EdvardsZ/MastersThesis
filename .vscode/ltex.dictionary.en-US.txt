@@ -19,3 +19,4 @@ VQ-VAE
 PixelCNNs
 Kullback-Leibler
 PixelSNAIL
+SCVAEs
