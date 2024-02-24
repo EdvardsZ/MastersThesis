@@ -11,18 +11,37 @@ In this thesis, the conditioned information $m$ will be sparse pixels from the i
 
 \subsection{Sampling operation}
 
+I will use the sampling operation to acquire the conditioned information $m$ from the input image $x$. In this master's thesis we will explore 2 sampling types for this method. The first sampling type is to sample the conditioned information $m$ from the input image $x$ by sampling the exact same sparse pixels from the input image $x$. The second sampling type is to sample the conditioned information $m$ from the input image $x$ by sampling exact number of pixels from the input image $x$ uniformly at random. 
+
 \subsection{Application to Gaussian VAEs}
 
 \begin{figure}[H]
     \centering 
     \input{figures/scvae2d.tex}
-    \caption[Architecture of SCVAE1D.]%
+    \caption[Method 1 applied to Gaussian VAEs.]%
     { 
-        Architecture of Gaussian VAEs. The input $x$ is passed through the encoder with parameters $\phi$ producing the mean $\mu$ and the standard deviation $\sigma$ of the Gaussian distribution. The random variable $\epsilon$ is sampled from a standard Gaussian distribution and is used to sample $ z = \mu + \sigma \odot \epsilon$. The sampled $z$ is then passed through the decoder with parameters $\theta$ producing the output $\hat{x}$. The loss function to be minimized is the sum of the MSE reconstruction loss and the KL divergence regularization loss. 
+        Method 1 applied to Gaussian VAEs. The Gaussian VAEs framework is extended by adding a second decoder $p_\xi(x|z,m)$, where $m$ is the conditioned information about the input data. Same as in 
+
+        
+        
+        
+        The input $x$ is passed through the encoder with parameters $\phi$ producing the mean $\mu$ and the standard deviation $\sigma$ of the Gaussian distribution. The random variable $\epsilon$ is sampled from a standard Gaussian distribution and is used to sample $ z = \mu + \sigma \odot \epsilon$. Then the sampled $z$ is used as input to both decoders. The first decoder with parameters $\theta$ produces the output $\hat{x}$. The second decoder with parameters $\xi$ produces the output $\hat{x}$. The loss function to be minimized is the sum of the MSE reconstruction loss and the KL divergence regularization loss.
+        
+        
+        The sampled $z$ is then passed through the decoder with parameters $\theta$ producing the output $\hat{x}$. The loss function to be minimized is the sum of the MSE reconstruction loss and the KL divergence regularization loss. 
     }\label{SCVAE1DFigure}
 \end{figure}
 
 \subsection{Application to VQ-VAEs}
+
+\begin{figure}[H]
+    \centering 
+    \input{figures/scvqvae2d.tex}
+    \caption[Architecture of SCVAE1D.]%
+    { 
+        Architecture of Gaussian VAEs. The input $x$ is passed through the encoder with parameters $\phi$ producing the mean $\mu$ and the standard deviation $\sigma$ of the Gaussian distribution. The random variable $\epsilon$ is sampled from a standard Gaussian distribution and is used to sample $ z = \mu + \sigma \odot \epsilon$. The sampled $z$ is then passed through the decoder with parameters $\theta$ producing the output $\hat{x}$. The loss function to be minimized is the sum of the MSE reconstruction loss and the KL divergence regularization loss. 
+    }\label{SCVQVAE1DFigure}
+\end{figure}
 
 \section{Method 2}
 
