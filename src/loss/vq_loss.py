@@ -8,7 +8,7 @@ class VQLoss(nn.Module):
         self.beta = beta
         self.loss_type = loss_type
 
-    def forward(self, inputs, outputs):
+    def forward(self, inputs, outputs, traininig = False ):
         x, x_cond, y = inputs
 
         reconstructions, reconstructions_masked, quantized, latent, embedding_indices = outputs
