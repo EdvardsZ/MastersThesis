@@ -4,18 +4,35 @@ This chapter will outline the methods how SCVAEs and non-conditioned VAEs are in
 
 \section{Method 1}
 
-The SCVAE1D method and its VQ-VAE counterpart SCVQVAE1D is 
+The first method of merging SCVAEs with non-conditioned VAEs is to expand the VAEs framework with a second decoder $p_\xi(x|z,m)$, where $m$ is the conditioned information about the input data.
+The first decoder is uses only the latent variable $z$ to reconstruct the input data. The second decoder is used to reconstruct the input data, given some conditioned information $m$ about the input data and the latent variable. 
 
-\begin{figure}
+In this thesis, the conditioned information $m$ will be sparse pixels from the input data. The sparse pixels will be used to condition the second decoder to reconstruct the input data. The first decoder will be used to reconstruct the input data with just the latent variable $z$. The input data $m$ will be acquired by sampling operation from the input data.
+
+\subsection{Sampling operation}
+
+\subsection{Application to Gaussian VAEs}
+
+\begin{figure}[H]
     \centering 
     \input{figures/scvae2d.tex}
     \caption[Architecture of SCVAE1D.]%
     { 
         Architecture of Gaussian VAEs. The input $x$ is passed through the encoder with parameters $\phi$ producing the mean $\mu$ and the standard deviation $\sigma$ of the Gaussian distribution. The random variable $\epsilon$ is sampled from a standard Gaussian distribution and is used to sample $ z = \mu + \sigma \odot \epsilon$. The sampled $z$ is then passed through the decoder with parameters $\theta$ producing the output $\hat{x}$. The loss function to be minimized is the sum of the MSE reconstruction loss and the KL divergence regularization loss. 
-    }
-  	\medskip 
-	\hspace*{15pt}\hbox{\scriptsize Credit: Adapted from Aäron van den Oord et al.~\cite{vqvae}.}\label{SCVAE1DFigure}
+    }\label{SCVAE1DFigure}
 \end{figure}
+
+\subsection{Application to VQ-VAEs}
+
+\section{Method 2}
+
+
+The first decoder is used to reconstruct the input data, given some conditioned information $m$ about the input data and the latent variable. The second decoder is used to reconstruct the input data with just the latent variable $z$.
+
+and the second decoder is used to reconstruct the input data, given no information about the input data. In this thesis we will explore how we can use sparse pixels from the input data as the information that 
+
+The SCVAE1D method and its VQ-VAE counterpart SCVQVAE1D is 
+
 
 
 
