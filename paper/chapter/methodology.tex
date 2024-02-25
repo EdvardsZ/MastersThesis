@@ -8,9 +8,9 @@ In the first method, we expand the VAEs framework with a second decoder $p_\xi(x
 
 \subsection{Conditioning information}
 
-In this method, the conditioning information $m$ is acquired by sampling constant number of pixels from the input data. To sample the pixels from the input image $x$, we will use the sampling operation, which will be described in the following section.
+In this method, the conditioning information $m$ is acquired by sampling constant number of pixels from the input data. To sample the pixels from the input image $x$, we will use a pixel sampling operation, which will be described in the following section.
 
-\subsubsection{Sampling operation}
+\subsubsection{Pixel Sampling operation}
 
 To acquire the conditioning information $m$ from the input image $x$, we will use sampling operation. I will explore two sampling types for this method, which can be seen in Figure~\ref{SamplingFigure} and are described as follows: 
 
@@ -19,16 +19,11 @@ To acquire the conditioning information $m$ from the input image $x$, we will us
     \item \textbf{Uniform random sampling:} In this sampling type, the conditioning information $m$ is sampled from the input image $x$ by sampling exact number of pixels from the input image $x$ uniformly at random.
 \end{enumerate}
 
-\begin{figure}[H]
-    \centering 
-    \input{figures/sampling.tex}
-    \caption[Sampling types.]%
-    { 
-        Sampling types. The first sampling type is to sample the conditioning information $m$ from the input image $x$ by sampling the exact same sparse pixels from the input image $x$. The second sampling type is to sample the conditioned information $m$ from the input image $x$ by sampling number of pixels from the input image $x$ uniformly at random. 
-    }\label{SamplingFigure}
-\end{figure}
-
 \subsection{Application to Gaussian VAEs}
+
+The application of this method to Gaussian VAEs is illustrated in Figure~\ref{SCVAE1DFigure}. 
+
+
 
 \begin{figure}[H]
     \centering 
@@ -66,6 +61,19 @@ The first decoder is used to reconstruct the input data, given some conditioned 
 and the second decoder is used to reconstruct the input data, given no information about the input data. In this thesis we will explore how we can use sparse pixels from the input data as the information that 
 
 The SCVAE1D method and its VQ-VAE counterpart SCVQVAE1D is 
+
+\subsection{Conditioning information}
+
+
+
+\begin{figure}
+    \centering 
+    \input{figures/sampling.tex}
+    \caption[Table of Pixel sampling types for conditioning.]%
+    { 
+        Table of Pixel sampling types for conditioning. The table has 3 rows each representing a different sampling type. The first row represents the exact same sampling type, the second row represents the uniform random sampling type and the third row represents the Gaussian sampling type where the pixels are more likely to be sampled from the center of the image. The first column represents the original image, the second column represents the mask and the third column represents the result of the sampling operation. 
+    }\label{SamplingFigure}
+\end{figure}
 
 
 
