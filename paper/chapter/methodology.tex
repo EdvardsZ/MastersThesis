@@ -4,35 +4,27 @@ This chapter will outline the methods how SCVAEs and non-conditioned VAEs are in
 
 \section{Method 1: Expanding the VAEs framework}
 
-In the first method, we expand the VAEs framework with a second decoder $p_\xi(x|z,m)$, where $m$ represents the conditioned information about the input data.  This approach involves utilizing two decoders within the VAEs framework: one for reconstructing the input data solely based on the latent variable $z$, and the other for reconstructing the input data based on both the latent variable $z$ and the conditioned information $m$. 
+In the first method, we expand the VAEs framework with a second decoder $p_\xi(x|z,m)$, which is conditioned on an additional property $m$ of the input data. This approach involves utilizing two decoders within the VAEs framework: one for reconstructing the input data solely based on the latent variable $z$, and the other for reconstructing the input data based on both the latent variable $z$ and the additional conditioning information $m$.
 
-The first decoder uses only the latent variable $z$ to reconstruct the input data. However, the second decoder, which incorporates the conditioned information $m$, is adapted from the decoder architecture used in SCVAEs. This decoder architecture ensures effective utilization of conditioned information, leveraging the insights from SCVAEs~\cite{Gundersen_2021}.
+\subsection{Conditioning information}
 
-\subsection{Conditioned information}
-
-In this method, the conditioned information $m$ is acquired by sampling constant number of pixels from the input data. To sample the pixels from the input image $x$, we will use the sampling operation, which will be described in the following section.
+In this method, the conditioning information $m$ is acquired by sampling constant number of pixels from the input data. To sample the pixels from the input image $x$, we will use the sampling operation, which will be described in the following section.
 
 \subsubsection{Sampling operation}
 
-To acquire the conditioned information $m$ from the input image $x$, we will use sampling operation. I will explore two sampling types for this method:
+To acquire the conditioning information $m$ from the input image $x$, we will use sampling operation. I will explore two sampling types for this method, which can be seen in Figure~\ref{SamplingFigure} and are described as follows: 
 
 \begin{enumerate}
-    \item \textbf{Exact same sampling:} In this sampling type, the conditioned information $m$ is sampled from the input image $x$ by sampling the exact same sparse pixels from the input image $x$. In this work, the pixels that will be sampled from the input image will be a sparse grid of pixels.
-    \item \textbf{Uniform random sampling:} In this sampling type, the conditioned information $m$ is sampled from the input image $x$ by sampling exact number of pixels from the input image $x$ uniformly at random.
+    \item \textbf{Exact same sampling:} In this sampling type, the conditioning information $m$ is sampled from the input image $x$ by sampling the exact same sparse pixels from the input image $x$. In this work, the pixels that will be sampled from the input image will be a sparse grid of pixels.
+    \item \textbf{Uniform random sampling:} In this sampling type, the conditioning information $m$ is sampled from the input image $x$ by sampling exact number of pixels from the input image $x$ uniformly at random.
 \end{enumerate}
-
-
-
-\subsection{Sampling operation}
-
-I will use the sampling operation to acquire the conditioned information $m$ from the input image $x$. In this master's thesis we will explore 2 sampling types for this method. The first sampling type is to sample the conditioned information $m$ from the input image $x$ by sampling the exact same sparse pixels from the input image $x$. The second sampling type is to sample the conditioned information $m$ from the input image $x$ by sampling exact number of pixels from the input image $x$ uniformly at random. 
 
 \begin{figure}[H]
     \centering 
     \input{figures/sampling.tex}
     \caption[Sampling types.]%
     { 
-        Sampling types. The first sampling type is to sample the conditioned information $m$ from the input image $x$ by sampling the exact same sparse pixels from the input image $x$. The second sampling type is to sample the conditioned information $m$ from the input image $x$ by sampling exact number of pixels from the input image $x$ uniformly at random. 
+        Sampling types. The first sampling type is to sample the conditioning information $m$ from the input image $x$ by sampling the exact same sparse pixels from the input image $x$. The second sampling type is to sample the conditioned information $m$ from the input image $x$ by sampling number of pixels from the input image $x$ uniformly at random. 
     }\label{SamplingFigure}
 \end{figure}
 
