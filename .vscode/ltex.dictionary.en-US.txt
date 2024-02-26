@@ -20,3 +20,4 @@ PixelCNNs
 Kullback-Leibler
 PixelSNAIL
 SCVAEs
+AdamW
