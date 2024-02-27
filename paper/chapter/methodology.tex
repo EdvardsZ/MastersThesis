@@ -150,7 +150,27 @@ reconstruction. Otherwise, it operates solely based on the latent variable $z$.
 
 \subsection{Conditioning strategy}
 
-Same as in previous methods we're gonna
+Same as in previous method the conditioning information $m$ is acquired by sampling pixels. However, in this method, the conditioning information $m$ is sampled from the input image $x$ by sampling a variable amount of pixels from the input image $x$. The amount of pixels to be sampled from the input image will be a variable number of pixels.
+
+For the conditioning information $m$, I will implement a two-step sampling process:
+
+\begin{enumerate}
+    \item \textbf{Sampling the number of pixels:} In this step, the number of pixels to be sampled from the input image $x$ is sampled from a power law distribution. The power law distribution is scaled to the size of the input image $x$ and is used to sample the number of pixels to be sampled from the input image $x$.
+    \item \textbf{Sampling the pixels:} In this step, the conditioning information $m$ is sampled from the input image $x$ by sampling the number of pixels sampled in the previous step from the input image $x$ uniformly at random or from a Gaussian distribution.
+\end{enumerate}
+
+\subsection{Application to Gaussian VAEs}
+
+\begin{figure}[H]
+    \centering
+    \input{figures/scvae1d.tex}
+    \caption[Method 2 applied to Gaussian VAEs.]%
+    {
+        Method 2 applied to Gaussian VAEs. The Gaussian VAEs framework is modified by allowing the decoder to be conditioned on a variable amount of information and to dynamically adjust its behavior based on the amount of information present in the variable $m$. The input $x$ is passed through the encoder with parameters $\phi$ producing the mean $\mu$ and the standard deviation $\sigma$ of the Gaussian distribution. The random variable $\epsilon$ is sampled from a standard Gaussian distribution and is used to sample $ z = \mu + \sigma \odot \epsilon$. The sampled $z$ is then used as input to the decoder as well as the extra conditioning information $m$. With this approach there is no need for a second decoder, as the single decoder is capable to reconstruct the data based on the latent variable $z$ and the conditioning information $m$ or just the latent variable $z$.
+    }\label{SCVAE1DFigure}
+\end{figure}
+
+\subsection{Application to VQ-VAEs}
 
 \begin{figure}
     \centering
@@ -160,4 +180,5 @@ Same as in previous methods we're gonna
         Table of pixel sampling types for conditioning. The table has 3 rows each representing a different sampling type. The first row represents the exact same sampling type, the second row represents the uniform random sampling type and the third row represents the Gaussian sampling type where the pixels are more likely to be sampled from the center of the image. The first column represents the original image, the second column represents the mask and the third column represents the result of the sampling operation.
     }\label{SamplingFigure}
 \end{figure}
+
 
