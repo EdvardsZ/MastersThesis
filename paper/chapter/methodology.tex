@@ -9,7 +9,8 @@ merging SCVAEs with non-conditioned VAEs by utilizing the same encoder and
 decoder for both models by employing novel training strategies. This method
 will also be applied to both Gaussian VAEs and VQ-VAEs.
 
-\section{Method 1: Expanding the VAEs framework}
+
+\section{\method{1}}
 
 In the first method, we expand the VAEs framework with a second decoder
 $p_\xi(x|z,m)$, which is conditioned on an additional property $m$ of the input
@@ -77,9 +78,9 @@ and as well as the conditioning information $m$.
 \begin{figure}[H]
     \centering
     \input{figures/scvae2d.tex}
-    \caption[Method 1 applied to Gaussian VAEs.]%
+    \caption[\method{1} applied to Gaussian VAEs.]%
     {
-        Method 1 applied to Gaussian VAEs. The Gaussian VAEs framework is extended by adding a second conditioned decoder $p_\xi(x|z,m)$. The input $x$ is passed through the encoder with parameters $\phi$ producing the mean $\mu$ and the standard deviation $\sigma$ of the Gaussian distribution. The random variable $\epsilon$ is sampled from a standard Gaussian distribution and is used to sample $ z = \mu + \sigma \odot \epsilon$. The sampled $z$ is then used as input to both decoders. As a result, the loss function consists of three components: the MSE reconstruction loss of the first decoder, the MSE reconstruction loss of the second decoder and the KL divergence regularization loss.
+        \methodOne\ applied to Gaussian VAEs. The Gaussian VAEs framework is extended by adding a second conditioned decoder $p_\xi(x|z,m)$. The input $x$ is passed through the encoder with parameters $\phi$ producing the mean $\mu$ and the standard deviation $\sigma$ of the Gaussian distribution. The random variable $\epsilon$ is sampled from a standard Gaussian distribution and is used to sample $ z = \mu + \sigma \odot \epsilon$. The sampled $z$ is then used as input to both decoders. As a result, the loss function consists of three components: the MSE reconstruction loss of the first decoder, the MSE reconstruction loss of the second decoder and the KL divergence regularization loss.
     }\label{SCVAE2DFigure}
 \end{figure}
 
@@ -128,13 +129,13 @@ latent variable $z$.
 \begin{figure}[H]
     \centering
     \input{figures/scvqvae2d.tex}
-    \caption[Method 1 applied to VQ-VAEs.]%
+    \caption[\method{1} applied to VQ-VAEs.]%
     {
-        Method 1 applied to VQ-VAEs. The VQ-VAEs framework is extended by adding a second conditioned decoder. Instead of using a fully connected layer to merge the latent variable $z$ and the conditioning information $m$, the corresponding embedding table vectors $z_q(x)$ must be computed for the latent variable $z$ before merging it with the conditioning information $m$. As a result of adding the second conditioned decoder, the loss function requires the addition of the MSE reconstruction loss of the second decoder.
+        \method{1} applied to VQ-VAEs. The VQ-VAEs framework is extended by adding a second conditioned decoder. Instead of using a fully connected layer to merge the latent variable $z$ and the conditioning information $m$, the corresponding embedding table vectors $z_q(x)$ must be computed for the latent variable $z$ before merging it with the conditioning information $m$. As a result of adding the second conditioned decoder, the loss function requires the addition of the MSE reconstruction loss of the second decoder.
     }\label{SCVQVAE2DFigure}
 \end{figure}
 
-\section{Method 2: Utilizing a Single Decoder with Variable Conditioning}
+\section{\method{2}}
 
 In the second method, I use a single decoder within the VAE Architecture.
 However, the use decoder is expanded to be capable of reconstructing the input
@@ -152,32 +153,42 @@ reconstruction. Otherwise, it operates solely based on the latent variable $z$.
 
 Same as in previous method the conditioning information $m$ is acquired by sampling pixels. However, in this method, the conditioning information $m$ is sampled from the input image $x$ by sampling a variable amount of pixels from the input image $x$. The amount of pixels to be sampled from the input image will be a variable number of pixels.
 
+The conditioning information $m$ has an added mask, which is used to tell the decoder which pixels are sampled from the input image $x$. The mask is a binary matrix of the same size as the input image $x$, where the value of 1 represents the sampled pixels and the value of 0 represents the pixels that are not sampled. When there is no conditioning information the mask is filled with zeros. The count sampling distribution is chosen to be a power law distribution with a high scaling factor so that the decoder can learn to handle also the cases where the conditioning information is not available. The scaling factor will be a hyperparameter of the model.
+
 For the conditioning information $m$, I will implement a two-step sampling process:
 
 \begin{enumerate}
     \item \textbf{Sampling the number of pixels:} In this step, the number of pixels to be sampled from the input image $x$ is sampled from a power law distribution. The power law distribution is scaled to the size of the input image $x$ and is used to sample the number of pixels to be sampled from the input image $x$.
-    \item \textbf{Sampling the pixels:} In this step, the conditioning information $m$ is sampled from the input image $x$ by sampling the number of pixels sampled in the previous step from the input image $x$ uniformly at random or from a Gaussian distribution.
+    \item \textbf{Sampling the pixels:} In this step, the conditioning information $m$ is sampled from the input image $x$ by sampling the number of pixels sampled in the previous step from the input image $x$ uniformly at random or from a Gaussian distribution, which can be seen in Figure~\ref{SamplingFigure}.
 \end{enumerate}
 
 \subsection{Application to Gaussian VAEs}
 
+In Gaussian VAEs, applying the second method involves modifying the decoder to be capable of reconstructing the input data under variable conditioning. The modified decoder $p_\xi(x|z,m)$ is capable of reconstructing the input data based on the latent variable $z$ and the conditioning information $m$ or just the latent variable $z$.
+
+This is achieved by using a fully connected layer to merge the latent variable $z$ and the conditioning information $m$ before passing it through the transposed convolutional layers. The architecture of the Gaussian VAEs framework with a single decoder capable of variable conditioning is illustrated in Figure~\ref{SCVAE1DFigure}.
+
+
+
 \begin{figure}[H]
     \centering
     \input{figures/scvae1d.tex}
-    \caption[Method 2 applied to Gaussian VAEs.]%
+    \caption[\method{2} applied to Gaussian VAEs.]%
     {
-        Method 2 applied to Gaussian VAEs. The Gaussian VAEs framework is modified by allowing the decoder to be conditioned on a variable amount of information and to dynamically adjust its behavior based on the amount of information present in the variable $m$. The input $x$ is passed through the encoder with parameters $\phi$ producing the mean $\mu$ and the standard deviation $\sigma$ of the Gaussian distribution. The random variable $\epsilon$ is sampled from a standard Gaussian distribution and is used to sample $ z = \mu + \sigma \odot \epsilon$. The sampled $z$ is then used as input to the decoder as well as the extra conditioning information $m$. With this approach there is no need for a second decoder, as the single decoder is capable to reconstruct the data based on the latent variable $z$ and the conditioning information $m$ or just the latent variable $z$.
+        \methodTwo\ applied to Gaussian VAEs. The Gaussian VAEs framework is modified by allowing the decoder to be conditioned on a variable amount of information and to dynamically adjust its behavior based on the amount of information present in the variable $m$. The input $x$ is passed through the encoder with parameters $\phi$ producing the mean $\mu$ and the standard deviation $\sigma$ of the Gaussian distribution. The random variable $\epsilon$ is sampled from a standard Gaussian distribution and is used to sample $ z = \mu + \sigma \odot \epsilon$. The sampled $z$ is then used as input to the decoder as well as the extra conditioning information $m$. With this approach there is no need for a second decoder, as the single decoder is capable to reconstruct the data based on the latent variable $z$ and the conditioning information $m$ or just the latent variable $z$.
     }\label{SCVAE1DFigure}
 \end{figure}
 
 \subsection{Application to VQ-VAEs}
 
+In VQVAEs, same as in Gaussian VAEs, the second method involves modifying the decoder to be capable to receive variable conditioning information. Unlike Gaussian VAEs, the VQ-VAEs use Vector Quantization to discretize the continuous latent space. Because of this, the latent variable $z$ can not be directly merged with the conditioning information $m$ using a fully connected layer. Instead, the corresponding embedding table vectors $z_q(x)$ must be computed for the latent variable $z$ before merging it with the conditioning information $m$. The architecture of the VQ-VAEs framework with a single decoder capable of variable conditioning is illustrated in Figure~\ref{SCVQVAE1DFigure}.
+
 \begin{figure}[H]
     \centering
     \input{figures/scvqvae1d.tex}
-    \caption[Method 2 applied to VQ-VAEs.]%
+    \caption[\method{2} applied to VQ-VAEs.]%
     {
-        Method 2 applied to VQ-VAEs. The VQ-VAEs framework is modified by allowing the decoder to be conditioned on a variable amount of information and to dynamically adjust its behavior based on the amount of information present in the variable $m$. The input $x$ is passed through the encoder producing the output $z_e(x)$. The output $z_e(x)$ is then used as input to the autoregressive model to generate the latent variable $z$. The latent variable $z$ is then used as input to the decoder as well as the extra conditioning information $m$. With this approach there is no need for a second decoder, as the single decoder is capable to reconstruct the data based on the latent variable $z$ and the conditioning information $m$ or just the latent variable $z$.
+        \methodTwo\ applied to VQ-VAEs. The VQ-VAEs framework is modified by allowing the decoder to be conditioned on a variable amount of information and to dynamically adjust its behavior based on the amount of information present in the variable $m$. The input $x$ is passed through the encoder producing the output $z_e(x)$. The output $z_e(x)$ is then used as input to the autoregressive model to generate the latent variable $z$. The latent variable $z$ is then used as input to the decoder as well as the extra conditioning information $m$. With this approach there is no need for a second decoder, as the single decoder is capable to reconstruct the data based on the latent variable $z$ and the conditioning information $m$ or just the latent variable $z$.
     }\label{SCVQVAE1DFigure}
 \end{figure}
 

@@ -6,6 +6,21 @@
 \documentclass[12pt,oneside,final,a4paper]{report}
 \usepackage{generators/imports}
 
+\newcommand{\methodOne}{Multidecoder method}
+\newcommand{\methodTwo}{Single decoder method}
+
+\newcommand{\method}[1]
+{
+  \ifnum#1=1
+    Multi-decoder method
+  \else
+    Single decoder method
+  \fi
+}
+
+
+
+
 \usepackage{amsmath}
 \usepackage{indentfirst}
 \DeclareMathOperator*{\argmax}{arg\,max}
