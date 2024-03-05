@@ -21,3 +21,5 @@ Kullback-Leibler
 PixelSNAIL
 SCVAEs
 AdamW
+SC-VAEs
+MT-VAEs
