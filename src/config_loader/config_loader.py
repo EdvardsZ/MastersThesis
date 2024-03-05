@@ -25,6 +25,14 @@ def get_model_name(config: dict) -> str:
     return model_name + '(' + model_parameter_string + ')' + '?' + trainer_parameter_string
 
 
+def print_model_params(config: dict):
+    model_name = config['model_name']
+    model_params = config['model_params']
+    print("***"*20)
+    print("Model name: ", model_name)
+    print("Model params: ", '_'.join([str(value) for key, value in model_params.items()]))
+
+
 def find_all_configs() -> list:
     configs = []
     for folder in os.listdir("configs"):

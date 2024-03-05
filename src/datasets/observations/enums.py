@@ -20,7 +20,6 @@ class PixelSamplingMethod(Enum):
 class CountSamplingMethod(Enum):
     EXACT = "EXACT"
     VARIABLE = "VARIABLE"
-    EXPONENTIAL = "EXPONENTIAL"
     POWER_LAW = "POWER_LAW"
 
     def get_sampler(self):
@@ -28,8 +27,6 @@ class CountSamplingMethod(Enum):
             return ExactPixelCountSampler()
         elif self == CountSamplingMethod.VARIABLE:
             return VariablePixelCountSampler()
-        elif self == CountSamplingMethod.EXPONENTIAL:
-            return ExponentialPixelCountSampler()
         elif self == CountSamplingMethod.POWER_LAW:
             return PowerLawPixelCountSampler()
         else:
