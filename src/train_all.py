@@ -44,15 +44,12 @@ def get_training_configs_for_dataset(dataset):
         model_name = config["model_name"]
 
         config["data_params"]["dataset"] = dataset
-        config["trainer_params"]["max_epochs"] = 1
+        config["trainer_params"]["max_epochs"] = 50
 
 
         is_conditioned = "SC" in model_name
         is_second_method = "2" in model_name
         
-
-        if not is_conditioned: 
-            training_configs.append(config)
 
         sampler_pairs = []
         
@@ -71,10 +68,10 @@ def get_training_configs_for_dataset(dataset):
                     copy = apply_sampling_pairs_to_config(config, count_sampling, pixel_sampling)
                     training_configs.append(copy)
         else:
-            sampler_pairs = get_sampling_pairs_no_conditioning()
-            for count_sampling, pixel_sampling in sampler_pairs:
-                copy = apply_sampling_pairs_to_config(config, count_sampling, pixel_sampling)
-                training_configs.append(copy)
+            sampler_pair = (CountSamplingMethod.EXACT, PixelSamplingMethod.EXACT)
+            copy = apply_sampling_pairs_to_config(config, sampler_pair[0], sampler_pair[1])
+
+            training_configs.append(copy)
 
         #print_model_params(config)
         samplers = "[" + ", ".join([f"({count.value}, {pixel.value})" for count, pixel in sampler_pairs]) + "]"
