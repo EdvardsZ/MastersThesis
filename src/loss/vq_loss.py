@@ -38,6 +38,14 @@ class VQLoss(nn.Module):
 
         loss += vq_loss
 
+        one_recon_loss = loss_dict['recon_loss_0(MASKED)'] if 'recon_loss_0(MASKED)' in loss_dict else loss_dict['recon_loss_0']
+
+        one_recon_loss = one_recon_loss + vq_loss
+
+        name = 'recon_0(MASKED) + vq_loss' if 'recon_loss_0(MASKED)' in loss_dict else 'recon_0 + vq_loss'
+
+        loss_dict[name] = one_recon_loss
+
         loss_dict['loss'] = loss
 
         return loss_dict
