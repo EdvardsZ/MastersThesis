@@ -34,8 +34,14 @@ class VAELoss(nn.Module):
         loss_dict['kl_loss'] = kl_loss(z_mean, z_log_var)
         losses.append(kl)
 
+        one_recon_loss = loss_dict['recon_loss_0(MASKED)'] if 'recon_loss_0(MASKED)' in loss_dict else loss_dict['recon_loss_0']
+        one_recon_loss = one_recon_loss + kl
+        name = 'recon_0(MASKED) + kl_loss' if 'recon_loss_0(MASKED)' in loss_dict else 'recon_0 + kl_loss'
+        loss_dict[name] = one_recon_loss
+
+
         loss_dict['loss_sum'] = sum(losses)
-        loss_dict['loss'] = self.adaptive_sum(losses, training)
+        loss_dict['loss'] = sum(losses) #self.adaptive_sum(losses, training)
         return loss_dict
 
 

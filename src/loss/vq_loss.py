@@ -46,6 +46,7 @@ class VQLoss(nn.Module):
 
         loss_dict[name] = one_recon_loss
 
+        loss_dict['loss_sum'] = loss
         loss_dict['loss'] = loss
 
         return loss_dict
