@@ -5,6 +5,6 @@ data_params:
   count_sampling: EXACT
   pixel_sampling: EXACT
 model_params:
-  latent_dim: 16
+  latent_dim: 64
 trainer_params:
   max_epochs: 50
