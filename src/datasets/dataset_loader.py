@@ -8,8 +8,9 @@ from typing import Tuple
 def load_dataset(data_config: dict) -> Tuple[torch.utils.data.DataLoader, torch.utils.data.DataLoader, torch.utils.data.DataLoader, Tuple[int, int, int]]:
     BATCH_SIZE = data_config['batch_size']
     dataset = data_config['dataset']
-    count_sampling = data_config['count_sampling']
-    pixel_sampling = data_config['pixel_sampling']
+    
+    count_sampling = data_config.get('count_sampling', CountSamplingMethod.EXACT)
+    pixel_sampling = data_config.get('pixel_sampling', PixelSamplingMethod.EXACT)
 
     count_sampling = CountSamplingMethod(count_sampling)
     pixel_sampling = PixelSamplingMethod(pixel_sampling)
