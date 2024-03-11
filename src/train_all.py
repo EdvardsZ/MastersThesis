@@ -44,8 +44,7 @@ def get_training_configs_for_dataset(dataset):
         model_name = config["model_name"]
 
         config["data_params"]["dataset"] = dataset
-        config["trainer_params"]["max_epochs"] = 50
-
+        config["trainer_params"]["max_epochs"] = 100
 
         is_conditioned = "SC" in model_name
         is_second_method = "2" in model_name
@@ -68,9 +67,9 @@ def get_training_configs_for_dataset(dataset):
                     copy = apply_sampling_pairs_to_config(config, count_sampling, pixel_sampling)
                     training_configs.append(copy)
         else:
-            sampler_pair = (CountSamplingMethod.EXACT, PixelSamplingMethod.EXACT)
-            copy = apply_sampling_pairs_to_config(config, sampler_pair[0], sampler_pair[1])
-
+            # sampler_pair = (CountSamplingMethod.EXACT, PixelSamplingMethod.EXACT)
+            # copy = apply_sampling_pairs_to_config(config, sampler_pair[0], sampler_pair[1])
+            copy = deepcopy(config)
             training_configs.append(copy)
 
         #print_model_params(config)
@@ -80,7 +79,7 @@ def get_training_configs_for_dataset(dataset):
     return training_configs
 
 
-for dataset in ["MNIST"]: #, "CIFAR10", "CelebA"]:
+for dataset in ["MNIST", "CIFAR10"]: #, "CIFAR10", "CelebA"]:
     print(f"Dataset: {dataset}")
     print("*"*20)
     res = get_training_configs_for_dataset(dataset)
@@ -92,7 +91,13 @@ for dataset in ["MNIST"]: #, "CIFAR10", "CelebA"]:
 
     for config in res:
         print_model_params(config)
-        print(config["data_params"]["count_sampling"], config["data_params"]["pixel_sampling"])
+
+        # try else none
+        try:
+            print(config["data_params"]["count_sampling"], config["data_params"]["pixel_sampling"])
+        except:
+            # do nothign
+            pass
 
     print("*"*20)
     print("Ready to train")

@@ -2,8 +2,6 @@ model_name: VQVAE
 data_params:
   dataset: CIFAR10
   batch_size: 128
-  count_sampling: EXACT
-  pixel_sampling: EXACT
 model_params:
   num_embeddings: 256
   embedding_dim: 64

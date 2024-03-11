@@ -1,9 +1,7 @@
 model_name: VAE
 data_params:
-  dataset: CIFAR10
+  dataset: MNIST
   batch_size: 128
-  count_sampling: EXACT
-  pixel_sampling: EXACT
 model_params:
   latent_dim: 16
 trainer_params:
