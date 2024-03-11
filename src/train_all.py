@@ -79,7 +79,7 @@ def get_training_configs_for_dataset(dataset):
     return training_configs
 
 
-for dataset in ["MNIST", "CIFAR10"]: #, "CIFAR10", "CelebA"]:
+for dataset in ["MNIST", "CIFAR10", "CelebA"]: #, "CIFAR10", "CelebA"]:
     print(f"Dataset: {dataset}")
     print("*"*20)
     res = get_training_configs_for_dataset(dataset)

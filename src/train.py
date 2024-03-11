@@ -21,7 +21,7 @@ def train_and_evaluate(config: dict, cross_validation = False):
 
     model = VAEModule(config['model_params'], model_name=config['model_name'], image_shape=image_shape)
 
-    trainer = ExtendedTrainer(project_name="MTVAEs", **config['trainer_params'], model_name=model_name )
+    trainer = ExtendedTrainer(project_name="MTVAEs_03.11", **config['trainer_params'], model_name=model_name )
 
     if cross_validation:
         trainer.cross_validate(model, train_loader, val_loader)
