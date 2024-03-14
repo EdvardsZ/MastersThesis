@@ -1,18 +1,16 @@
 \chapter{Methods}
 
 This chapter will outline the methods how SCVAEs and non-conditioned VAEs are
-integrated using multitask learning in this thesis. Initially, describe the
+integrated using multitask learning in this thesis. Initially, I describe the
 method of merging SCVAEs with non-conditioned VAEs by expanding the SCVAEs
-framework with a second decoder. This method will be applied to both Gaussian
-VAEs and VQ-VAEs. In the following section, I will describe another method of
+framework with a second decoder. In the following section, I describe another method of
 merging SCVAEs with non-conditioned VAEs by utilizing the same encoder and
-decoder for both models by employing novel training strategies. This method
-will also be applied to both Gaussian VAEs and VQ-VAEs.
+decoder for both models by employing novel training strategies. Both methods will be applied to both Gaussian VAEs and VQ-VAEs.
 
 
 \section{\method{1}}
 
-In the first method, we expand the VAEs framework with a second decoder
+In the first method, VAEs framework is expanded with a second decoder
 $p_\xi(x|z,m)$, which is conditioned on an additional property $m$ of the input
 data. This approach involves utilizing two decoders within the VAEs framework:
 one for reconstructing the input data solely based on the latent variable $z$,
@@ -23,12 +21,12 @@ variable $z$ and the additional conditioning information $m$.
 
 In this method, the conditioning information $m$ is acquired by sampling
 constant number of pixels from the input data. To sample the pixels from the
-input image $x$, we will use a pixel sampling operation, which will be
+input image $x$, I will use a pixel sampling operation, which will be
 described in the following section.
 
 \subsubsection{Pixel Sampling operation}
 
-To acquire the conditioning information $m$ from the input image $x$, we will
+To acquire the conditioning information $m$ from the input image $x$, I will
 use sampling operation. I will explore two sampling types for this method,
 which can be seen in Figure~\ref{SamplingFigure} and are described as follows:
 
@@ -57,7 +55,7 @@ the second conditioned decoder, the loss objective is extended to include the
 reconstruction loss of the second conditioned decoder. The overall loss
 objective to be \textbf{minimized} becomes
 
-\[ L = \frac{1}{D} \sum_{i=1}^{D} ||x_i - \hat{x}_1 ||^2 + \frac{1}{D} \sum_{i=1}^{D} || x_i - \hat{x}_2 ||^2 + \beta  \frac{1}{2} \biggl( -\log \sigma^2_\phi(x) - 1 + \mu^2_\phi(x) + \sigma^2_\phi(x) \biggr), \]
+\[ L = \frac{1}{D} \sum_{i=1}^{D} ||x_i - \hat{x}_{1i} ||^2 + \frac{1}{D} \sum_{i=1}^{D} || x_i - \hat{x}_{2i} ||^2 + \beta  \frac{1}{2} \biggl( -\log \sigma^2_\phi(x) - 1 + \mu^2_\phi(x) + \sigma^2_\phi(x) \biggr), \]
 
 where $D$ is the number of pixels in the input image, $x_i$ is the $i$-th pixel
 of the input image, $\hat{x}_1$ is the output of the first decoder, $\hat{x}_2$
@@ -118,7 +116,7 @@ of the input image, $\hat{x}_1$ is the output of the first decoder, $\hat{x}_2$
 is the output of the second decoder, $z_e(x)$ is the output of the encoder,
 $z_q(x)$ is the mapping output after Vector Quantization, $e_k$ is the $k$-th
 embedding table vector, $\beta$ is the commitment loss weight, $sg$ is the stop
-gradient operation.
+gradient operation, which was previously defined in the background \autoref{background:vqvae}.
 
 After the first stage of the training, the model has the ability to reconstruct
 the input data based just on the latent variable $z$ and as well as the
