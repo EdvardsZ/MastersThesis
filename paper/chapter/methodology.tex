@@ -89,11 +89,6 @@ the VQ-VAEs framework is similar to the approach used for Gaussian VAEs.
 However, there differences that need to be taken into account when applying
 this method to VQ-VAEs.
 
-The VQ-VAEs differ from the Gaussian VAEs in that the VQ-VAEs use Vector
-Quantization to discretize the continuous latent space. Because of this, the
-latent variable $z$ can not be directly merged with the conditioning
-information $m$ using a fully connected layer. Instead,
-
 One of the main differences is that the VQ-VAEs framework uses a discrete
 latent space and the Vector Quantization. Because of this, the latent variable
 $z$ can not be directly merged with the conditioning information $m$ using a

@@ -89,8 +89,8 @@ where $f_{\theta}(z^{(l)}) = f_{\theta}(\mu_{\phi}(x) + \sigma_{\phi}(x) \odot \
 
 However, the loss function to be \textbf{minimized} for VAE's usually used in practice is quite different from the ELBO negative. 
 The function that is used in practice consists of: Mean Squared Error (MSE) reconstruction loss, KL divergence regularization loss and a constant $\beta$ that controls the importance of the regularization term
-\[ L = \frac{1}{D} \sum_{i=1}^{D} ||x_i - \hat{x} ||^2 + \beta  \frac{1}{2} \biggl( -\log \sigma^2_\phi(x) - 1 + \mu^2_\phi(x) + \sigma^2_\phi(x) \biggr), \]
-where $\hat{x} = f_{\theta}(\mu_{\phi}(x_i) + \sigma_{\phi}(x_i) \odot \epsilon^{(i)})$ and $\epsilon^{(i)} \sim \mathcal{N}(0, I)$, $D$ is the dimension of the input data~\cite{Kingma_2019,betavae}. The second term in the function is derived from simplifying the KL divergence term in the ELBO, which is shown in the equation~\ref{eqKL}. The first term in the function is the MSE reconstruction loss because maximizing the Gaussian likelihood is approximately equivalent to minimizing the MSE reconstruction loss. This is shown in the equation~\ref{eqMSE}.
+\[ L = \frac{1}{D} \sum_{i=1}^{D} ||x_i - \hat{x} ||^2 + \beta  \frac{1}{2} \sum_{i=1}^{Z} \biggl( -\log \sigma^2_\phi(x) - 1 + \mu^2_\phi(x) + \sigma^2_\phi(x) \biggr), \]
+where $\hat{x} = f_{\theta}(\mu_{\phi}(x_i) + \sigma_{\phi}(x_i) \odot \epsilon^{(i)})$ and $\epsilon^{(i)} \sim \mathcal{N}(0, I)$, $D$ is the dimension of the input data and the $Z$ is the dimension of the latent space~\cite{Kingma_2019,betavae}. The second term in the function is derived from simplifying the KL divergence term in the ELBO, which is shown in the equation~\ref{eqKL}. The first term in the function is the MSE reconstruction loss because maximizing the Gaussian likelihood is approximately equivalent to minimizing the MSE reconstruction loss. This is shown in the equation~\ref{eqMSE}.
 \begin{equation} \label{eqKL}
     \begin{split}
         D_{KL}(q_\phi(z|x) \| p_\theta(z)) &= \int q_\phi(z|x) \biggl[\ \log q_\phi(z|x) - \log p_\theta(z) \ \biggr] dz \\
