@@ -55,11 +55,11 @@ the second conditioned decoder, the loss objective is extended to include the
 reconstruction loss of the second conditioned decoder. The overall loss
 objective to be \textbf{minimized} becomes
 
-\[ L = \frac{1}{D} \sum_{i=1}^{D} ||x_i - \hat{x}_{1i} ||^2 + \frac{1}{D} \sum_{i=1}^{D} || x_i - \hat{x}_{2i} ||^2 + \beta  \frac{1}{2} \biggl( -\log \sigma^2_\phi(x) - 1 + \mu^2_\phi(x) + \sigma^2_\phi(x) \biggr), \]
+\[ L = \frac{1}{D} \sum_{i=1}^{D} ||x_i - \hat{x}_{1_{i}} ||^2 + \frac{1}{D} \sum_{i=1}^{D} || x_i - \hat{x}_{2_{i}} ||^2 + \beta  \frac{1}{2} \sum_{i=1}^{Z} \biggl( -\log \sigma^2_\phi(x)_i - 1 + \mu^2_\phi(x)_i + \sigma^2_\phi(x)_i \biggr), \]
 
 where $D$ is the number of pixels in the input image, $x_i$ is the $i$-th pixel
 of the input image, $\hat{x}_1$ is the output of the first decoder, $\hat{x}_2$
-is the output of the second decoder, $\beta$ is the KL divergence weight,
+is the output of the second decoder, $\beta$ is the KL divergence weight, Z is the dimension of the latent space,
 $\mu_\phi(x)$ and $\sigma_\phi(x)$ are the mean and the standard deviation of
 the Gaussian distribution produced by the encoder, respectively.
 
@@ -104,11 +104,12 @@ with the inclusion of the second conditioned decoder, the loss objective is
 extended to include the reconstruction loss of the second conditioned decoder.
 The overall loss objective to be \textbf{minimized} becomes
 
-\[ L = \frac{1}{D} \sum_{i=1}^{D} ||x_i - \hat{x}_1 ||^2 + \frac{1}{D} \sum_{i=1}^{D} || x_i - \hat{x}_2 \hat{x} ||^2 + || sg(z_e(x)) - e_k ||^2 + \beta || z_q(x) - sg(e_k) ||^2 , \]
+\[ L = \frac{1}{D} \sum_{i=1}^{D} ||x_i - \hat{x}_{1_{i}} ||^2 + \frac{1}{D} \sum_{i=1}^{D} || x_i - \hat{x}_{2_{i}} ||^2 + \frac{1}{Z} \sum_{i=1}^{Z} \biggl( || sg(z_e(x)_i) - e_{k_i} ||^2 + \beta || z_q(x)_i - sg(e_{k{_i}}) ||^2 \biggr) , \]
 
 where $D$ is the number of pixels in the input image, $x_i$ is the $i$-th pixel
 of the input image, $\hat{x}_1$ is the output of the first decoder, $\hat{x}_2$
-is the output of the second decoder, $z_e(x)$ is the output of the encoder,
+is the output of the second decoder, $Z$ is the number of latent space vectors,
+ $z_e(x)$ is the output of the encoder,
 $z_q(x)$ is the mapping output after Vector Quantization, $e_k$ is the $k$-th
 embedding table vector, $\beta$ is the commitment loss weight, $sg$ is the stop
 gradient operation, which was previously defined in the background \autoref{background:vqvae}.

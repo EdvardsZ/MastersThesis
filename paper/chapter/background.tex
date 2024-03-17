@@ -89,7 +89,7 @@ where $f_{\theta}(z^{(l)}) = f_{\theta}(\mu_{\phi}(x) + \sigma_{\phi}(x) \odot \
 
 However, the loss function to be \textbf{minimized} for VAE's usually used in practice is quite different from the ELBO negative. 
 The function that is used in practice consists of: Mean Squared Error (MSE) reconstruction loss, KL divergence regularization loss and a constant $\beta$ that controls the importance of the regularization term
-\[ L = \frac{1}{D} \sum_{i=1}^{D} ||x_i - \hat{x} ||^2 + \beta  \frac{1}{2} \sum_{i=1}^{Z} \biggl( -\log \sigma^2_\phi(x) - 1 + \mu^2_\phi(x) + \sigma^2_\phi(x) \biggr), \]
+\[ L = \frac{1}{D} \sum_{i=1}^{D} ||x_i - \hat{x} ||^2 + \beta  \frac{1}{2} \sum_{i=1}^{Z} \biggl( -\log \sigma^2_\phi(x)_i - 1 + \mu^2_\phi(x)_i + \sigma^2_\phi(x)_i \biggr), \]
 where $\hat{x} = f_{\theta}(\mu_{\phi}(x_i) + \sigma_{\phi}(x_i) \odot \epsilon^{(i)})$ and $\epsilon^{(i)} \sim \mathcal{N}(0, I)$, $D$ is the dimension of the input data and the $Z$ is the dimension of the latent space~\cite{Kingma_2019,betavae}. The second term in the function is derived from simplifying the KL divergence term in the ELBO, which is shown in the equation~\ref{eqKL}. The first term in the function is the MSE reconstruction loss because maximizing the Gaussian likelihood is approximately equivalent to minimizing the MSE reconstruction loss. This is shown in the equation~\ref{eqMSE}.
 \begin{equation} \label{eqKL}
     \begin{split}
@@ -188,8 +188,8 @@ where $sg$ is the stop gradient operation, which is defined as identity function
 The loss function to be \textbf{minimized} for VQ-VAE's usually used in practice is the sum of the VQ objective and the MSE reconstruction loss.
 The first term in the function is the MSE reconstruction loss because maximizing the Gaussian likelihood is approximately equivalent to minimizing the MSE reconstruction loss. This is shown in the equation~\ref{eqMSE}. 
 Thus, the resulting training objective to be minimized becomes
-\[ L = \frac{1}{D} \sum_{i=1}^{D} ||x_i - \hat{x} ||^2 + || sg(z_e(x)) - e_k ||^2 + \beta || z_q(x) - sg(e_k) ||^2 , \]
-where $\hat{x} = f_{\theta}(z_q(x))$, where function $f_{\theta}$ is the decoder network, $D$ is the dimension of the input data and $k$ is the index of the nearest embedding vector in the embedding space, which is defined in equation~\ref{eqVQVAEPosterior}. 
+\[ L = \frac{1}{D} \sum_{i=1}^{D} ||x_i - \hat{x}_i ||^2 + \frac{1}{Z} \sum_{i=1}^{Z} \biggl( || sg(z_e(x))_i - e_{k_{i}} ||^2 + \beta || z_q(x)_i -  sg(e_{k{i}}) ||^2 \biggr), \]
+where $\hat{x} = f_{\theta}(z_q(x))$, where function $f_{\theta}$ is the decoder network, $D$ is the dimension of the input data, $Z$ is the number of latent space vectors and $k_{i}$ is the index of the nearest embedding vector in the embedding space for the $i$-th latent space vector, which is defined in equation~\ref{eqVQVAEPosterior}~\cite{vqvae}.
 
 In the figure below~\ref{VQVAEFigure} there is a visualization of the architecture of VQ-VAEs.
 
@@ -252,7 +252,7 @@ Multitask learning is a machine learning paradigm where multiple tasks are learn
 
 The notion of using multitask learning comes from the observation that the tasks are often related and depend on the same underlying features. This can be beneficial is scenarios where the data is limited, which is often the case for medical data~\cite{medicalMultiTask}.
 
-For example, in medical image-analysis, in a scenario where the task is to develop a system for identifying and classifying different types of abnormalities in medical images. Traditionally this could be done by training a seperate model for each type of abnormality. However, this approach is not optimal due to limited data and the shared features that could be used to identify and classify multiple types of abnormalities~\cite{multitasklearning}.
+For example, in medical image-analysis, in a scenario where the task is to develop a system for identifying and classifying different types of abnormalities in medical images. Traditionally this could be done by training a separate model for each type of abnormality. However, this approach is not optimal due to limited data and the shared features that could be used to identify and classify multiple types of abnormalities~\cite{multitasklearning}.
 
 Multitask learning is an approach in which a single model is trained to perform multiple tasks. In the context of medical image-analysis, this could involve training multitask VAE or VQVAE model capable simultaneously learning to reconstruct images, whilst also learning to classify different types of conditions. 
 
