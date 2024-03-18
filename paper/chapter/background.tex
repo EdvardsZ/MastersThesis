@@ -1,6 +1,6 @@
 \chapter{Background}
 
-In this chapter I am going to introduce the concepts that are necessary to understand the research presented in this thesis. The chapter is divided into four sections. The first section provides an overview of Variational Autoencoders (VAEs) and their applications. The second section introduces Vector Quantized VAEs (VQ-VAEs) and PixelCNN. The third section introduces the concept of semi-conditioned VAEs. The chapter is concluded with a section that introduces the concept of multitask learning. 
+In this chapter I am going to introduce the concepts that are necessary to understand the research presented in this thesis. The chapter is divided into four sections. The first section provides an overview of Variational Autoencoders (VAEs) and their applications. The second section introduces Vector Quantized VAEs (VQ-VAEs) and PixelCNN. The third section introduces the concept of semi-conditioned VAEs. The fourth section delves into additional concepts that are necessary to understand the research presented in this thesis. The chapter is concluded with a section that introduces the concept of multitask learning. 
 
 \section{VAEs}
 
@@ -120,8 +120,7 @@ In the figure below~\ref{VAEFigure} there is a visualization of the architecture
 	\hspace*{15pt}\hbox{\scriptsize Credit: Adapted from Kingma and Welling~\cite{Kingma_2019} }\label{VAEFigure}
 \end{figure}
 
-\section{Vector Quantized VAEs}
-\label{background:vqvae}
+\section{Vector Quantized VAEs}\label{background:vqvae}
 
 Vector Quantized VAEs (VQ-VAEs) are a variant of VAEs that were introduced in 2017 by Aäron van den Oord et al.~\cite{vqvae}. The VQ-VAEs have shown various improvements over the standard VAEs, such as higher quality of the generated sampled, better disentanglement of the latent space and better generalization to unseen data. The VQ-VAEs have been used in various applications, such as image generation, speech synthesis and music generation, text to image generation~\cite{vqvae2,vqvaespeechsynthesis, musicvqvae,dalle}.
 
@@ -209,9 +208,33 @@ In the figure below~\ref{VQVAEFigure} there is a visualization of the architectu
 
 The second stage objective is to train the prior distribution $p_{\omega}(z)$ over the discrete latent variables. The latent variables $z$ are sampled from the posterior distribution $q_{\phi}(z|x)$, which is defined in equation~\ref{eqVQVAEPosterior}. The prior distribution is categorical and can be made autoregressive by depending on other latent variables $z$~\cite{vqvae}.
 
-The prior distribution $p_{\omega}(z)$ is then trained to match the distribution of the latent variables $z$ sampled from the posterior distribution $q_{\phi}(z|x)$. To achieve this the authors of the VQ-VAEs use an autoregressive model to model the prior distribution. The autoregressive model authors used is a Gated PixelCNN, which is a variant of PixelCNN, which is described in the next section~\cite{vqvae}.
+The prior distribution $p_{\omega}(z)$ is then trained to match the distribution of the latent variables $z$ sampled from the posterior distribution $q_{\phi}(z|x)$. To achieve this the authors of the VQ-VAEs use an autoregressive model to model the prior distribution. The autoregressive model authors used is a Gated PixelCNN, which is a variant of PixelCNN, which is described in \autoref{background:pixelcnn}~\cite{vqvae}.
 
-\subsection{PixelCNNs}
+\section{Semi-Conditioned VAEs}
+
+Semi-conditional VAEs were first introduced in 2020~\cite{Gundersen_2021}. Semi-conditional VAEs (SCVAEs) are a variant of VAEs that first designed for the reconstruction of non-linear dynamic processes based on sparse observations. The semi-conditional VAEs extend the standard VAEs framework by adding an additional input $m$ to the decoder network $p_{\theta}(x|z, m)$, which is used to condition the decoder on the additional information. 
+
+The additional information $m$ can be any type of information that is available at the time of the reconstruction and can be used to improve the reconstruction of the data. In the original paper, the authors used the SCVAEs to reconstruct fluid flow data. The additional information $m$ was the sparse measurements of the flow data. The method was showcased on two different datasets, velocity data from simulations of 2D flow around a cylinder, and bottom currents~\cite{Gundersen_2021}.
+
+Natural applications for the SCVAEs are related to domains where there is often sparse measurements, such as environmental data. However, the SCVAEs can also be used, for instance, in computer vision to generate new image based on sparse pixel representations~\cite{Gundersen_2021}.
+
+The semi-conditional property of the SCVAEs could also be applied to the VQ-VAEs, which has not been explored yet in the literature. Also, the potential of combining non-conditioned and semi-conditioned VAEs through multitask learning has not been explored yet.
+
+\section{Multitask Learning}
+
+Multitask learning is a machine learning paradigm where multiple tasks are learned at the same time, which has the aim of leveraging the shared information between the tasks to improve the performance of the individual tasks. Unlike the traditional single task learning, where each task is learned independently, multitask learning allows taking advantage of task relationships and to learn a shared representation that is useful for all tasks~\cite{multitasklearning}.
+
+The notion of using multitask learning comes from the observation that the tasks are often related and depend on the same underlying features. This can be beneficial is scenarios where the data is limited, which is often the case for medical data~\cite{medicalMultiTask}.
+
+For example, in medical image-analysis, in a scenario where the task is to develop a system for identifying and classifying different types of abnormalities in medical images. Traditionally this could be done by training a separate model for each type of abnormality. However, this approach is not optimal due to limited data and the shared features that could be used to identify and classify multiple types of abnormalities~\cite{multitasklearning}.
+
+Multitask learning is an approach in which a single model is trained to perform multiple tasks. In the context of medical image-analysis, this could involve training multitask VAE or VQVAE model capable simultaneously learning to reconstruct images, whilst also learning to classify different types of conditions. 
+
+Multitask learning has been shown to be most effective when the tasks are related and data is limited. The potential and flexibility of multitask learning for improving the model performance make it a very valuable technique in machine learning. It has an unexplored potential in the context of VAEs and VQ-VAEs, which is the main motivation for this thesis.
+
+\section{Additional concepts}
+
+\subsection{PixelCNN}\label{background:pixelcnn}
 
 The PixelCNNs are a prominent autoregressive architecture used in the field of pixel-level prediction. These models operate on images at the level of each individual pixels, learning to generate images or predict missing pixels one at a time. Deep autoregressive models have been shown to be very effective at modeling the full distribution and generating relatively low-resolution images. Generating high-resolution images with merely autoregressive models is challenging, because the size of the network increases rapidly with the size of the image~\cite{pixelcnn, pixelrnn}.
 
@@ -236,27 +259,17 @@ The PixelCNN in the original architecture is a stack of fifteen fully convolutio
 
 The PixelCNNs are used in the VQ-VAEs to model the prior distribution $p_{\omega}(z)$ over the discrete latent variables. The prior distribution is trained to match the distribution of the latent variables $z$ sampled from the posterior distribution $q_{\phi}(z|x)$. The PixelCNN in combination with the VQ-VAEs has been shown to be exceptional at capturing the distribution of the latent variables and generating high resolution samples~\cite{vqvae}.
 
-\section{Semi-Conditioned VAEs}
 
-Semi-conditional VAEs were first introduced in 2020~\cite{Gundersen_2021}. Semi-conditional VAEs (SCVAEs) are a variant of VAEs that first designed for the reconstruction of non-linear dynamic processes based on sparse observations. The semi-conditional VAEs extend the standard VAEs framework by adding an additional input $m$ to the decoder network $p_{\theta}(x|z, m)$, which is used to condition the decoder on the additional information. 
+\subsection{Random number generation using Power law distribution}
 
-The additional information $m$ can be any type of information that is available at the time of the reconstruction and can be used to improve the reconstruction of the data. In the original paper, the authors used the SCVAEs to reconstruct fluid flow data. The additional information $m$ was the sparse measurements of the flow data. The method was showcased on two different datasets, velocity data from simulations of 2D flow around a cylinder, and bottom currents~\cite{Gundersen_2021}.
+Power law distribution in probability theory and statistics is a distribution in which one variable is proportional to a power of the other, i.e., 
+$p(x) \propto x^{\alpha}$, where $x$ is the random variable and $\alpha$ is the exponent parameter, where $\alpha$ determines the shape of the distribution. The power law distribution is a heavy-tailed distribution, which means that the probability of the large values is higher than in the normal distribution. The power law distribution is used in various fields, such as physics, biology, economics, and computer science~\cite{powerlaw}. 
 
-Natural applications for the SCVAEs are related to domains where there is often sparse measurements, such as environmental data. However, the SCVAEs can also be used, for instance, in computer vision to generate new image based on sparse pixel representations~\cite{Gundersen_2021}.
+One example of the power law distribution could be the function $ f(x) = \alpha x^{\alpha - 1} $ for $ 0 \leq x \leq 1 $, $a > 0$. One advantage to this distribution is that this distribution has a finite range and is easy to scale to any range. This fact will be used when power law distribution is used to sample the number of pixels to be conditioned on in the semi-conditional VAEs.
 
-The semi-conditional property of the SCVAEs could also be applied to the VQ-VAEs, which has not been explored yet in the literature. Also, the potential of combining non-conditioned and semi-conditioned VAEs through multitask learning has not been explored yet.
 
-\section{Multitask Learning}
 
-Multitask learning is a machine learning paradigm where multiple tasks are learned at the same time, which has the aim of leveraging the shared information between the tasks to improve the performance of the individual tasks. Unlike the traditional single task learning, where each task is learned independently, multitask learning allows taking advantage of task relationships and to learn a shared representation that is useful for all tasks~\cite{multitasklearning}.
 
-The notion of using multitask learning comes from the observation that the tasks are often related and depend on the same underlying features. This can be beneficial is scenarios where the data is limited, which is often the case for medical data~\cite{medicalMultiTask}.
-
-For example, in medical image-analysis, in a scenario where the task is to develop a system for identifying and classifying different types of abnormalities in medical images. Traditionally this could be done by training a separate model for each type of abnormality. However, this approach is not optimal due to limited data and the shared features that could be used to identify and classify multiple types of abnormalities~\cite{multitasklearning}.
-
-Multitask learning is an approach in which a single model is trained to perform multiple tasks. In the context of medical image-analysis, this could involve training multitask VAE or VQVAE model capable simultaneously learning to reconstruct images, whilst also learning to classify different types of conditions. 
-
-Multitask learning has been shown to be most effective when the tasks are related and data is limited. The potential and flexibility of multitask learning for improving the model performance make it a very valuable technique in machine learning. It has an unexplored potential in the context of VAEs and VQ-VAEs, which is the main motivation for this thesis.
 
 
 
