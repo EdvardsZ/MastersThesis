@@ -1,11 +1,25 @@
 \chapter{Methods}
 
-This chapter will outline the methods how SCVAEs and non-conditioned VAEs are
-integrated using multitask learning in this thesis. Initially, I describe the
-method of merging SCVAEs with non-conditioned VAEs by expanding the SCVAEs
-framework with a second decoder. In the following section, I describe another method of
-merging SCVAEs with non-conditioned VAEs by utilizing the same encoder and
-decoder for both models by employing novel training strategies. Both methods will be applied to both Gaussian VAEs and VQ-VAEs.
+This chapter will outline the methods how SCVAEs and non-conditioned VAEs are integrated using multitask learning in this thesis, which will be explored in the context of images. 
+The chapter will be divided in three sections. The first section will describe the conditioning strategies, which will be used to condition the VAEs. In the following section, I will describe the method of merging SCVAEs with non-conditioned VAEs using two decoders, where one is conditioned, and the other is not. This method will be referred to as \method{1}. In the following section, I describe another method of merging SCVAEs with non-conditioned VAEs by utilizing the same encoder and decoder for both models by employing novel training strategies, which will be referred to as \method{2}. Both methods will be applied to both Gaussian VAEs and VQ-VAEs.
+
+\section{Conditioning information}
+
+In this thesis, I will obtain the conditioning information $m$ from the input image $x$ by sampling pixels some pixels from the input image $x$. In this process first the first step is to obtain a mask which will be used to sample the pixels from the input image $x$. The mask will be a binary matrix of the same size as the input image $x$, where a value of 1 represents the sampled pixels and a value of 0 represents the pixels that are not sampled. The decision how many pixels to sample and which pixels to sample will be described in the following sections for each method.
+
+After the mask is obtained, the mask is applied to the input image $x$ to obtain the masked image, which is then used to obtain the conditioning information $m$ by concatenating the mask with the masked image, which can be seen in Figure~\ref{ConditioningFigure}.
+
+In both proposed methods, the conditioning information $m$ will be incorporated into decoder by first flattening it and then concatenating it with the latent variable $z$ before passing it through the transposed convolutional layers. 
+
+\begin{figure}
+    \centering
+    \input{figures/conditioning.tex}
+    \caption[The illustration of the process of obtaining the conditioning information $m$ from the input image $x$ and the mask.]%
+    {
+        The illustration of the process of obtaining the conditioning information $m$ from the input image $x$ and the mask. The process to obtain the conditioning information $m$ consists of two steps: the first step is to obtain the masked image from the input image $x$ and the mask, and the second step is to add the mask to the masked image to obtain the conditioning information $m$. The conditioning information $m$ is then used to condition the decoder.
+    }\label{ConditioningFigure}
+\end{figure}
+
 
 
 \section{\method{1}}
@@ -17,7 +31,7 @@ one for reconstructing the input data solely based on the latent variable $z$,
 and the other for reconstructing the input data based on both the latent
 variable $z$ and the additional conditioning information $m$.
 
-\subsection{Conditioning information}
+\subsection{Conditioning strategy}
 
 In this method, the conditioning information $m$ is acquired by sampling
 constant number of pixels from the input data. To sample the pixels from the
@@ -147,7 +161,7 @@ reconstruction. Otherwise, it operates solely based on the latent variable $z$.
 
 Similar to the previous method, the conditioning information $m$ is acquired by sampling pixels from the input image $x$. However, in this method, the conditioning information $m$ is sampled by selecting a variable number of pixels from the input image $x$. The number of pixels to be sampled from the input image varies and is sampled from a power law distribution. The power law distribution is scaled to the size of the input image $x$ and is used to compute the number of pixels to be sampled from the input image $x$.
 
-The conditioning information $m$ includes an additional mask, which indicates to the decoder which pixels are sampled from the input image $x$ and which pixels are not sampled. The mask is a binary matrix of the same size as the input image $x$, where a value of 1 represents the sampled pixels and a value of 0 represents the pixels that are not sampled. When there is no conditioning information, the mask is filled with zeros. If image $x$ has 3 channels, then the mask will be applied to all channels. The count sampling distribution is chosen to be a power law distribution with a high exponent so that the decoder can learn to handle also the cases where the conditioning information is not available. The exponent will be a hyperparameter of the model.
+The count sampling distribution is chosen to be a power law distribution with a high exponent so that the decoder can learn to handle also the cases where the conditioning information is not available. The exponent will be a hyperparameter of the model. The power law distribution is chosen because it is a heavy-tailed distribution, which means that it has a higher probability of sampling a few pixels and a lower probability of sampling many pixels~\cite{powerlaw}. This is useful because it allows the model to learn to handle the cases where there is no conditioning information. Another reason for choosing the power law distribution is that it has a finite range and scalability, which makes it suitable for sampling the number of pixels from the input image.
 
 For the conditioning information $m$, I will implement a two-step sampling process:
 
