@@ -9,6 +9,19 @@ The first section presents the results of\method{1}, the second section presents
 In this section, I will present the results of \method{1} on both Gaussian VAEs and VQ-VAEs.
 
 \subsection{Results on Gaussian VAEs}
+% Think about: Coefficients, Number of pixels to be sampled. How it changes the results.
+The experiments on Gaussian VAEs were run on multiple configurations of encoder and decoder architectuers. 
+The expiremnts were run on both latent space of 16 and 64 dimensions. 
+
+
+\begin{figure}[H]
+    \centering
+    \input{figures/results/scvae2d.tex}
+    \caption[Trained neural network with \method{1} applied to a Gaussian VAE.]
+    { Trained neural network with \method{1} applied to a Gaussian VAE on CelebA dataset and latent space 16.
+    }
+    \label{fig:res_val}
+\end{figure}
 
 \begin{figure}[H]
     \centering
