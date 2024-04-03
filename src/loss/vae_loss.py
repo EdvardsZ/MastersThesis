@@ -3,15 +3,15 @@ import torch.nn as nn
 import torch.nn.functional as F
 from models.outputs import VAEModelOutput
 from typing import Tuple
-from .soft_adapt import SoftAdaptModule
-from loss import soft_adapt
+from loss.adapt import Adapt, AdaptiveMode 
 
 class VAELoss(nn.Module):
-    def __init__(self, beta : int | None = None):
+    def __init__(self, adaptive_mode: AdaptiveMode | None, beta_soft_adapt : int | None = None):
         super(VAELoss, self).__init__()
-        self.beta = beta
-        if beta is not None:
-            self.soft_adapt = SoftAdaptModule(beta = beta)
+        print("VAE_adaptive_mode: ", adaptive_mode)
+        print("VAE_beta_soft_adapt: ", beta_soft_adapt)
+
+        self.adapt = Adapt(mode = adaptive_mode, soft_adapt_beta = beta_soft_adapt)
 
     def forward(self, inputs: Tuple[torch.Tensor, torch.Tensor, torch.Tensor], outputs: VAEModelOutput, training = False):
         reconstructions_unmasked, reconstructions_masked,  z, z_mean, z_log_var = outputs
@@ -24,15 +24,14 @@ class VAELoss(nn.Module):
                 recon = recon_loss(inputs[0], recon)
                 loss_dict[f'recon_loss_{i}(MASKED)'] = recon
 
-        losses = []
+        recon_losses = []
 
         for i, recon in enumerate(reconstructions_unmasked):
             loss_dict[f'recon_loss_{i}'] = recon_loss(inputs[0], recon)
-            losses.append(loss_dict[f'recon_loss_{i}'])
+            recon_losses.append(loss_dict[f'recon_loss_{i}'])
         
         kl = kl_loss(z_mean, z_log_var)
         loss_dict['kl_loss'] = kl_loss(z_mean, z_log_var)
-        losses.append(kl)
 
         one_recon_loss = loss_dict['recon_loss_0(MASKED)'] if 'recon_loss_0(MASKED)' in loss_dict else loss_dict['recon_loss_0']
         one_recon_loss = one_recon_loss + kl
@@ -40,17 +39,9 @@ class VAELoss(nn.Module):
         loss_dict[name] = one_recon_loss
 
 
-        loss_dict['loss_sum'] = sum(losses)
-        loss_dict['loss'] = sum(losses) #self.adaptive_sum(losses, training)
+        loss_dict['loss_sum'] = sum(recon_losses) + kl
+        loss_dict['loss'] = self.adapt(recon_losses, kl, training)
         return loss_dict
-
-
-    def adaptive_sum(self, losses, training):
-         if self.beta is None:
-            return sum(losses)
-         else:
-            return self.soft_adapt(losses, training)
-         
     
 def kl_loss(z_mean, z_log_var):
         return -0.5 * torch.sum(1 + z_log_var - z_mean.pow(2) - z_log_var.exp())

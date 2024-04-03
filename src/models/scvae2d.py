@@ -5,17 +5,27 @@ from models.helpers import concat_latent_with_cond
 from .base_vae import BaseVAE
 from models.outputs import VAEModelOutput
 import torch
+
+
 class SCVAE2D(BaseVAE):
-    def __init__(self, latent_dim=2, image_shape=(1, 28, 28)):
+    def __init__(
+        self,
+        latent_dim=2,
+        image_shape=(1, 28, 28),
+        adaptive_mode=None,
+        soft_adapt_beta=None,
+    ):
         super(SCVAE2D, self).__init__(latent_dim, image_shape)
         self.image_shape = image_shape
         self.latent_dim = latent_dim
-        self.encoder = EncoderWithLatentLayer(latent_dim=latent_dim, image_size=image_shape)
+        self.encoder = EncoderWithLatentLayer(
+            latent_dim=latent_dim, image_size=image_shape
+        )
         self.decoder = DecoderWithLatentLayer(image_size=image_shape)
 
         self.pixel_decoder = DecoderWithLatentLayer(image_size=image_shape)
 
-        self.loss = VAELoss()
+        self.loss = VAELoss(adaptive_mode, soft_adapt_beta)
 
     def forward(self, x, x_cond, y) -> VAEModelOutput:
         z, z_mean, z_log_var = self.encoder(x)
@@ -28,7 +38,9 @@ class SCVAE2D(BaseVAE):
 
         with torch.no_grad():
             self.pixel_decoder.eval()
-            x_cat_masked = concat_latent_with_cond(z, torch.zeros_like(x_cond, requires_grad=False))
+            x_cat_masked = concat_latent_with_cond(
+                z, torch.zeros_like(x_cond, requires_grad=False)
+            )
             output_2_masked = self.pixel_decoder(x_cat_masked)
             self.pixel_decoder.train()
 
