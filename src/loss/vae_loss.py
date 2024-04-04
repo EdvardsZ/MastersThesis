@@ -6,10 +6,11 @@ from typing import Tuple
 from loss.adapt import Adapt, AdaptiveMode 
 
 class VAELoss(nn.Module):
-    def __init__(self, adaptive_mode: AdaptiveMode | None, beta_soft_adapt : int | None = None):
+    def __init__(self, adaptive_mode: str | None, beta_soft_adapt : int | None = None):
         super(VAELoss, self).__init__()
-        print("VAE_adaptive_mode: ", adaptive_mode)
-        print("VAE_beta_soft_adapt: ", beta_soft_adapt)
+        adaptive_mode = AdaptiveMode(adaptive_mode) if adaptive_mode is not None else None
+        
+        beta_soft_adapt = beta_soft_adapt if beta_soft_adapt is not None else 0.0001
 
         self.adapt = Adapt(mode = adaptive_mode, soft_adapt_beta = beta_soft_adapt)
 

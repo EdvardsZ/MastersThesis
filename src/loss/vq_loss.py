@@ -5,9 +5,9 @@ from loss.adapt import Adapt, AdaptiveMode
 
 
 class VQLoss(nn.Module):
-    def __init__(self, adaptive_mode: AdaptiveMode | None = None, beta_soft_adapt : int | None = None):
+    def __init__(self, adaptive_mode: str | None = None, beta_soft_adapt : int | None = None):
         super(VQLoss, self).__init__()
-
+        adaptive_mode = AdaptiveMode(adaptive_mode) if adaptive_mode is not None else None
         self.adapt = Adapt(mode = adaptive_mode, soft_adapt_beta = beta_soft_adapt)
 
     def forward(self, inputs, outputs, training = False ):
