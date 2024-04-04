@@ -16,7 +16,7 @@ class VQLoss(nn.Module):
         reconstructions, reconstructions_masked, quantized, latent, embedding_indices = outputs
 
         loss_dict = {}
-
+            
         recon_losses = []
 
         for i, recon in enumerate(reconstructions_masked):
@@ -27,7 +27,7 @@ class VQLoss(nn.Module):
         for i, recon in enumerate(reconstructions):
             recon = F.mse_loss(x, recon)
             loss_dict[f'recon_loss_{i}'] = recon
-            recon_losses += recon
+            recon_losses.append(recon)
 
         embeddding_loss = F.mse_loss(quantized, latent.detach())
         loss_dict['embeddding_loss'] = embeddding_loss
