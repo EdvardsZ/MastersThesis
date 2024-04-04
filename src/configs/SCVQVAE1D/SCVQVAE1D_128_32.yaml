@@ -10,4 +10,4 @@ model_params:
   hidden_dims : [128, 256]
   n_residual_layers: 2
 trainer_params:
-  max_epochs: 50
+  max_epochs: 100

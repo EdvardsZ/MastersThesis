@@ -6,13 +6,13 @@ from typing import Tuple
 from loss.adapt import Adapt, AdaptiveMode 
 
 class VAELoss(nn.Module):
-    def __init__(self, adaptive_mode: str | None, beta_soft_adapt : int | None = None):
+    def __init__(self, adaptive_mode: str | None, beta_soft_adapt : float | None = None):
         super(VAELoss, self).__init__()
-        adaptive_mode = AdaptiveMode(adaptive_mode) if adaptive_mode is not None else None
         
+        mode = AdaptiveMode(adaptive_mode) if adaptive_mode is not None else None
         beta_soft_adapt = beta_soft_adapt if beta_soft_adapt is not None else 0.0001
 
-        self.adapt = Adapt(mode = adaptive_mode, soft_adapt_beta = beta_soft_adapt)
+        self.adapt = Adapt(mode = mode, soft_adapt_beta = beta_soft_adapt)
 
     def forward(self, inputs: Tuple[torch.Tensor, torch.Tensor, torch.Tensor], outputs: VAEModelOutput, training = False):
         reconstructions_unmasked, reconstructions_masked,  z, z_mean, z_log_var = outputs

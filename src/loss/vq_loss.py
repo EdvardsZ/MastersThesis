@@ -5,10 +5,13 @@ from loss.adapt import Adapt, AdaptiveMode
 
 
 class VQLoss(nn.Module):
-    def __init__(self, adaptive_mode: str | None = None, beta_soft_adapt : int | None = None):
+    def __init__(self, adaptive_mode: str | None = None, beta_soft_adapt : float | None = None):
         super(VQLoss, self).__init__()
-        adaptive_mode = AdaptiveMode(adaptive_mode) if adaptive_mode is not None else None
-        self.adapt = Adapt(mode = adaptive_mode, soft_adapt_beta = beta_soft_adapt)
+        
+        mode = AdaptiveMode(adaptive_mode) if adaptive_mode is not None else None
+        beta_soft_adapt = beta_soft_adapt if beta_soft_adapt is not None else 0.01
+        
+        self.adapt = Adapt(mode = mode, soft_adapt_beta = beta_soft_adapt)
 
     def forward(self, inputs, outputs, training = False ):
         x, x_cond, y = inputs

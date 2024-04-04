@@ -5,4 +5,4 @@ data_params:
 model_params:
   latent_dim: 16
 trainer_params:
-  max_epochs: 50
+  max_epochs: 100
