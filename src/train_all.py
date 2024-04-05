@@ -1,5 +1,8 @@
 
 from config_loader import get_training_configs_for_dataset, print_model_params, get_model_name
+from train import train_and_evaluate
+from loss.adapt import AdaptiveMode
+from copy import deepcopy
 
 def print_summary(configs):
     print(f"Total number of configs: {len(configs)}")
@@ -22,15 +25,40 @@ def get_configs_sorted(dataset):
     
     return res
 
-for dataset in ["MNIST","CIFAR10", "CelebA"]: #, "CIFAR10", "CelebA"]:
+def create_copy_of_config_with_adaptive_mode(config, param):
+    config_copy = deepcopy(config)
+    config_copy["model_params"]["adaptive_mode"] = param.value
+    return config_copy
+
+def add_extra_configs(configs):
+    res = []
+    
+    for config in configs:
+        
+        if "2D" in config["model_name"]:
+            copy = create_copy_of_config_with_adaptive_mode(config, AdaptiveMode.SOFT)
+            res.append(copy)
+            copy = create_copy_of_config_with_adaptive_mode(config, AdaptiveMode.SCALED)
+            res.append(copy)
+               
+        if "1D" in config["model_name"]:
+            copy = create_copy_of_config_with_adaptive_mode(config, AdaptiveMode.SOFT)
+            res.append(copy)    
+        res.append(config)
+        
+    return res
+
+
+for dataset in ["MNIST", "CIFAR10", "CelebA"]:
     print(f"Dataset: {dataset}")
     print("*"*20)
     
-    res = get_configs_sorted(dataset)
-
-    print_summary(res)
+    configs = get_configs_sorted(dataset)
+    configs = add_extra_configs(configs)
     
-    for config in res:
+    print_summary(configs)
+    
+    for config in configs:
         full_model_name = get_model_name(config)
         print(f"Training {full_model_name}")
         train_and_evaluate(config)
