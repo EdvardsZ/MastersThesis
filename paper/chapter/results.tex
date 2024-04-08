@@ -9,26 +9,43 @@ The first section presents the results of\method{1}, the second section presents
 In this section, I will present the results of \method{1} on both Gaussian VAEs and VQ-VAEs.
 
 \subsection{Results on Gaussian VAEs}
+
+The experiments on Gaussian VAEs showed that the \method{1} can be used not only to obtain a condiotioned decoder, but also to improve the quality of non-conditioned decoder when compared to non-conditioned Gaussian VAEs. However, KL divergence loss of the latent space increased when \method{1} was applied. This can be explained by the fact that the there is a trade-off between the quality of the reconstruction and the KL divergence of the latent space. 
 % Think about: Coefficients, Number of pixels to be sampled. How it changes the results.
-The experiments on Gaussian VAEs were run on multiple configurations of encoder and decoder architectuers. 
-The expiremnts were run on both latent space of 16 and 64 dimensions. 
+
+When applying SoftAdapt to this method to this method I did not observe any significant improvement in the quality of the reconstruction. The results of the experiments are presented in the figures below\ \ref{fig:res_val} and \ref{fig:results_method1_gaussian_vae}.
+The experiments on Gaussian VAEs were run on multiple configurations of encoder and decoder architectuers. The expiremnts were run on both latent space of 16 and 64 dimensions. 
 
 
 \begin{figure}[H]
     \centering
     \input{figures/results/scvae2d.tex}
     \caption[Trained neural network with \method{1} applied to a Gaussian VAE.]
-    { Trained neural network with \method{1} applied to a Gaussian VAE on CelebA dataset and latent space 16.
+    { 
+        Trained neural network with \method{1} applied to a Gaussian VAE on CelebA dataset and latent space 16. 
+        On the left side as input is the original image, on the right side there are two outputs of the decoders. 
+        The image from the condiotioned decoder is reconstructed with a higher quality compared to the non-conditioned decoder, because the condiotioned decoder $Decoder_2$ uses conditioning information $m$.
     }
     \label{fig:res_val}
 \end{figure}
 
+
 \begin{figure}[H]
     \centering
-    \includegraphics[width=0.8\textwidth]{figures/SCVAE2D_16_CIFAR10.png}
-    \caption{KL divergence of the latent space of the Gaussian VAEs.}
-    \label{fig:kl_divergence_gaussian_vae}
+    \includegraphics[width=0.8\textwidth]{figures/results/KL_and_RECON.png}
+    \caption[Validation loss comparison during training of a Gaussian VAE.]
+    {
+        Validation loss comparison with and without \method{1} applied during training of a Gaussian VAE.
+        Left: KL divergence loss of the latent space comparison. Right: Reconstruction loss comparison of the $Decoder_1$ - non conditioned decoder.
+    }
+    \label{fig:results_method1_gaussian_vae}
 \end{figure}
+
+
+
+
+
+
 
 \subsubsection{Exact same sampling}
 
@@ -48,6 +65,7 @@ In this section, I will present the results of \method{2} on both Gaussian VAEs 
 \subsection{Results on Gaussian VAEs}
 
 \subsubsection{Uniform random sampling}
+
 
 \subsubsection{Gaussian sampling}
 
