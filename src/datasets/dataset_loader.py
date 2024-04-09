@@ -20,8 +20,8 @@ def load_dataset(data_config: dict) -> Tuple[torch.utils.data.DataLoader, torch.
         transforms.ToTensor()
     ])
 
-    train_set = ConditionalDataset(train=True, transform=preprocess, dataset = dataset, count_sampling = count_sampling, pixel_sampling = pixel_sampling)
-    test_val_set = ConditionalDataset(train=False, transform=preprocess, dataset = dataset, count_sampling = count_sampling, pixel_sampling = pixel_sampling)
+    train_set = ConditionalDataset(train=True, transform=preprocess, dataset = dataset, data_config = data_config)
+    test_val_set = ConditionalDataset(train=False, transform=preprocess, dataset = dataset, data_config = data_config)
     # split test and validation set
     test_size = 0.5
     test_set_size = int(len(test_val_set) * test_size)

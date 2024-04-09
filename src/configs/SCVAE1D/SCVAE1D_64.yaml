@@ -2,8 +2,8 @@ model_name: SCVAE1D
 data_params:
   dataset: MNIST
   batch_size: 128
-  count_sampling: EXACT
-  pixel_sampling: EXACT
+  count_sampling: POWER_LAW
+  pixel_sampling: UNIFORM
 model_params:
   latent_dim: 64
 trainer_params:

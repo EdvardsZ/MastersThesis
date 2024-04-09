@@ -16,15 +16,15 @@ class ConditionalDataset(Dataset):
                  target_transform=None, 
                  download: bool=False, 
                  dataset: str = "MNIST", 
-                 count_sampling: CountSamplingMethod = CountSamplingMethod.EXACT, 
-                 pixel_sampling: PixelSamplingMethod = PixelSamplingMethod.EXACT):
+                 data_config: dict | None = None):
+        
         if transform is None:
             transform = transforms.Compose([
                 transforms.ToTensor()
             ])
         
         self.dataset = self.get_dataset(dataset, root, train, transform, target_transform, download)
-        self.partial_observation = PartialObservation(count_sampling, pixel_sampling, add_mask = True)
+        self.partial_observation = PartialObservation(data_config)
 
 
     def get_dataset(self, dataset: str, root: str, train: bool, transform, target_transform, download: bool):

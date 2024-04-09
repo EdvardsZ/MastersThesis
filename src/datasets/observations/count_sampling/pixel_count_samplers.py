@@ -14,8 +14,8 @@ class ExponentialPixelCountSampler(CountSampler):
         return pixel_count
 
 class PowerLawPixelCountSampler(CountSampler):
-    def __init__(self):
-        self.exponent = 40
+    def __init__(self, exponent: float = 40):
+        self.exponent = exponent
         return
     def get_pixel_count(self, image: torch.Tensor) -> int:
         total_pixels = image.shape[1] * image.shape[2]

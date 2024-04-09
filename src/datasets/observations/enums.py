@@ -22,7 +22,7 @@ class CountSamplingMethod(Enum):
     VARIABLE = "VARIABLE"
     POWER_LAW = "POWER_LAW"
 
-    def get_sampler(self):
+    def get_sampler(self, exponent: float | None = None):
         if self == CountSamplingMethod.EXACT:
             return ExactPixelCountSampler()
         elif self == CountSamplingMethod.VARIABLE:

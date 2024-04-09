@@ -2,8 +2,8 @@ model_name: SCVQVAE1D
 data_params:
   dataset: CIFAR10
   batch_size: 128
-  count_sampling: EXACT
-  pixel_sampling: EXACT
+  count_sampling: POWER_LAW
+  pixel_sampling: UNIFORM
 model_params:
   num_embeddings: 128
   embedding_dim: 32
