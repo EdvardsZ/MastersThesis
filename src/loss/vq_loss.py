@@ -9,7 +9,7 @@ class VQLoss(nn.Module):
         super(VQLoss, self).__init__()
         
         mode = AdaptiveMode(adaptive_mode) if adaptive_mode is not None else None
-        beta_soft_adapt = beta_soft_adapt if beta_soft_adapt is not None else 0.01
+        beta_soft_adapt = beta_soft_adapt if beta_soft_adapt is not None else 0.005
         
         self.adapt = Adapt(mode = mode, soft_adapt_beta = beta_soft_adapt)
 
