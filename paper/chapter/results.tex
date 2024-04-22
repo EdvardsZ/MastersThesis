@@ -46,13 +46,21 @@ When trying to use deeper neural networks on the Gaussian VAEs, I observed that 
 
 When applying \method{1} to VQ-VAEs, the results showed that both the quality of the reconstruction and the VQ objective loss improved, which could be observed for both exact same sampling and uniform sampling. This could be explained by the fact that the VQ-VAEs are more robust and stable compared to Gaussian VAEs.
 
+When looking at the differences between the exact same sampling and uniform sampling it showed negligible difference to each other. 
+
 Same as previously mentioned the method was applied with SoftAdapt loss balancing technique and without it. The results showed little to no difference between the two. However, the training stability was improved when using SoftAdapt with fewer fluctuations in the loss.
 
-
-
-\subsubsection{Exact same sampling}
-
-\subsubsection{Uniform sampling}
+\begin{figure}[H]
+    \centering
+    \input{figures/results/scvqvae2d.tex}
+    \caption[Trained neural network with \method{1} applied to a VQ-VAE.]
+    { 
+        Trained neural network with \method{1} with Exact same sampling applied to a VQ-VAE on CelebA dataset and latent space 16. 
+        On the left side as input is the original image, on the right side there are two outputs of the decoders. 
+        The image from the conditioned decoder is reconstructed with a higher quality compared to the non-conditioned decoder, because the conditioned decoder $Decoder_2$ uses conditioning information $m$.
+    }
+    \label{fig:res_val_vqvae}
+\end{figure}
 
 
 \section{Results of \method{2}}
