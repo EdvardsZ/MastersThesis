@@ -1,8 +1,7 @@
 \chapter{Results}
 
 This chapter presents the findings of the experiments conducted in this masters thesis. The chapter is divided into two sections.
-The first section presents the results of\method{1}, the second section presents the results of \method{2},
- where both methods will be evaluated in context of both Gaussian VAEs and VQ-VAEs.
+The first section presents the results of\method{1}, the second section presents the results of \method{2}, where both methods will be evaluated in context of both Gaussian VAEs and VQ-VAEs. In the final section, I will present the cross-validation results of the both methods.
 
 \section{Results of \method{1}}
 
@@ -10,19 +9,21 @@ In this section, I will present the results of \method{1} on both Gaussian VAEs 
 
 \subsection{Results on Gaussian VAEs}
 
-The experiments on Gaussian VAEs showed that the \method{1} can be used not only to obtain a condiotioned decoder, but also to improve the quality of non-conditioned decoder when compared to non-conditioned Gaussian VAEs. However, KL divergence loss of the latent space increased when \method{1} was applied. This can be explained by the fact that the there is a trade-off between the quality of the reconstruction and the KL divergence of the latent space. 
+The experiments showed similar results for both exact sampling and uniform sampling. The results showed that \method{1} can be used not only to obtain a condiotioned decoder, but also to improve the quality of non-conditioned decoder reconstruction when compared to non-conditioned Gaussian VAEs. However, KL divergence loss of the latent space increased when \method{1} was applied. This can be explained by the fact that the there is a trade-off between the quality of the reconstruction and the KL divergence of the latent space. An example of this can be seen in the figure  \ref{fig:res_val} and \ref{fig:results_method1_gaussian_vae}. 
+
+When comparing the results of the exact same sampling and uniform sampling it showed little difference to each other.
+
+In order to exclude and verify that I the results are not due to the architecture of the neural network, I applied range of loss balancing techinques such as coefficient balancing and applying SoftAdapt. After applying these techinques it could still be observed that the quality of the reconstruction was improved in expense of a slightly higher KL divergence loss of the latent space.
+
+When trying to use deeper neural networks on the Gaussian VAEs, I observed that the posterior collapse was more likely to happen, which is a common problem in Gaussian VAEs~\cite{wang2023posterior}.
 % Think about: Coefficients, Number of pixels to be sampled. How it changes the results.
-
-When applying SoftAdapt to this method to this method I did not observe any significant improvement in the quality of the reconstruction. The results of the experiments are presented in the figures below\ \ref{fig:res_val} and \ref{fig:results_method1_gaussian_vae}.
-The experiments on Gaussian VAEs were run on multiple configurations of encoder and decoder architectuers. The expiremnts were run on both latent space of 16 and 64 dimensions. 
-
 
 \begin{figure}[H]
     \centering
     \input{figures/results/scvae2d.tex}
     \caption[Trained neural network with \method{1} applied to a Gaussian VAE.]
     { 
-        Trained neural network with \method{1} applied to a Gaussian VAE on CelebA dataset and latent space 16. 
+        Trained neural network with \method{1} with Exact same sampling applied to a Gaussian VAE on CelebA dataset and latent space 16. 
         On the left side as input is the original image, on the right side there are two outputs of the decoders. 
         The image from the condiotioned decoder is reconstructed with a higher quality compared to the non-conditioned decoder, because the condiotioned decoder $Decoder_2$ uses conditioning information $m$.
     }
@@ -41,17 +42,13 @@ The experiments on Gaussian VAEs were run on multiple configurations of encoder 
     \label{fig:results_method1_gaussian_vae}
 \end{figure}
 
-
-
-
-
-
-
-\subsubsection{Exact same sampling}
-
-\subsubsection{Uniform sampling}
-
 \subsection{Results on VQ-VAEs}
+
+When applying \method{1} to VQ-VAEs, the results showed that both the quality of the reconstruction and the VQ objective loss improved, which could be observed for both exact same sampling and uniform sampling. This could be explained by the fact that the VQ-VAEs are more robust and stable compared to Gaussian VAEs.
+
+Same as previously mentioned the method was applied with SoftAdapt loss balaning technique and without it. Th results showed little to no difference between the two. However, the training stability was improved when using SoftAdapt with less fluctuaiions in the loss.
+
+
 
 \subsubsection{Exact same sampling}
 
