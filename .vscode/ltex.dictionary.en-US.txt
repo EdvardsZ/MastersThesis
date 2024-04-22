@@ -23,3 +23,5 @@ SCVAEs
 AdamW
 SC-VAEs
 MT-VAEs
+SoftAdapt
+CelebA
