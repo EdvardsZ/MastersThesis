@@ -25,3 +25,5 @@ SC-VAEs
 MT-VAEs
 SoftAdapt
 CelebA
+MNIST
+LeakyReLU
