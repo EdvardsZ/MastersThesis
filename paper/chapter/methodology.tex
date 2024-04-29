@@ -62,11 +62,11 @@ I will explore two-pixel sampling types for this method,
 which can be seen in Figure~\ref{SamplingFigure} and are described as follows:
 
 \begin{enumerate}
-    \item \textbf{Exact same sampling:} In this sampling type, the conditioning information $m$ is sampled from the input image $x$ by sampling the exact same sparse pixels from the input image $x$. In this work, the pixels that will be sampled from the input image will be a sparse grid of pixels.
-    \item \textbf{Uniform random sampling:} In this sampling type, the conditioning information $m$ is sampled from the input image $x$ by sampling exact number of pixels from the input image $x$ uniformly at random.
+    \item \textbf{Exact Same Sampling:} In this sampling type, the conditioning information $m$ is sampled from the input image $x$ by sampling the same sparse pixels from the input image $x$. In this work, the pixels that will be sampled from the input image will be a sparse grid of pixels.
+    \item \textbf{Uniform Random Sampling:} In this sampling type, the conditioning information $m$ is sampled from the input image $x$ by sampling the exact number of pixels from the input image $x$ uniformly at random.
 \end{enumerate}
 
-The sampling process will be done every time the input image $x$ is passed through the model. This means that in the case of the uniform random sampling, the conditioning information $m$ will be different for each time the image is passed through the model. This is done to ensure that the model learns to generalize and handle various cases.
+The sampling process will be done every time the input image $x$ is passed through the model. This means that in the case of the Uniform Random Sampling, the conditioning information $m$ will be different for each time the image is passed through the model. This is done to ensure that the model learns to generalize and handle various cases.
 
 \subsection{Application to Gaussian VAEs}
 
@@ -84,7 +84,7 @@ been sampled for the second decoder, the same latent variable $z$ is used
 instead of sampling a new one. This is done to ensure that the latent variable
 $z$ is the same for both decoders and ensures that it is easier to compare the
 reconstructions of the input data. The architecture of the Gaussian
-VAEs framework with the second conditioned decoder is illustrated in
+VAE framework with the second conditioned decoder is illustrated in
 Figure~\ref{SCVAE2DFigure}
 
 Although the training strategy could have been to train decoders by alternating between them, in this thesis, I will explore the training strategy where both decoders are trained simultaneously.

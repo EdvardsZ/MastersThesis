@@ -36,7 +36,7 @@ When trying to use deeper neural networks on the Gaussian VAEs, I observed that 
     \includegraphics[width=0.8\textwidth]{figures/results/KL_and_RECON.png}
     \caption[Validation loss during training of a Gaussian VAE.]
     {
-        Validation loss during training with and without \method{1} applied on Gaussian VAE.
+        Validation losses during training with and without \method{1} applied on Gaussian VAE.
         Left: KL divergence loss of the latent space comparison. Right: Reconstruction loss comparison of the $Decoder_1$ - non-conditioned decoder.
     }
     \label{fig:results_method1_gaussian_vae}
@@ -68,7 +68,7 @@ Same as previously mentioned the method was applied with the SoftAdapt loss bala
     \includegraphics[width=0.8\textwidth]{figures/results/VQ+RECON.png}
     \caption[Validation loss comparison during training of a Gaussian VAE.]
     {
-        Validation loss during training with and without \method{1} applied on VQ-VAE.
+        Validation losses during training with and without \method{1} applied on VQ-VAE.
         Left: VQ objective loss comparison. Right: Reconstruction loss comparison of the $Decoder_1$ - non-conditioned decoder.
     }
     \label{fig:results_method1_vq_vae}
@@ -80,19 +80,41 @@ In this section, I will present the results of \method{2} on both Gaussian VAEs 
 
 \subsection{Results on Gaussian VAEs}
 
-Although, there were some 
+The results showed that \method{2} can be used for unifying two decoders into one. The experiments were conducted with both Uniform and Gaussian sampling. The results showed that for both methods this comes at a cost of slightly lower quality of the reconstruction when no conditioning information is given compared to a standard Gaussian VAE. However, the findings showed that this approach can substantially reduce the KL divergence loss of the latent space, which can be seen in figure \ref{fig:results_method2_gaussian_vae}.
 
+Although, for both Uniform and Gaussian sampling findings showed that this method results in a slightly lower quality of the reconstruction compared to a standard Gaussian VAE. This approach reduced the KL divergence loss of the latent space for both of the sampling methods. For Uniform sampling, the results showed that the KL divergence loss of the latent space was reduced more compared to Gaussian sampling. One possible explanation for this could be that with Gaussian sampling, there is a higher probability of sampling the same pixel multiple times, which can be less informative for the decoder.
 
+Experiments were also conducted with a range of different exponent values for the power-law distribution. The findings showed that the higher the exponent value the more the model was able to reduce the reconstruction loss of the scenario, where no conditioning information is given. However, the KL divergence loss of the latent space increased with higher exponent values.
 
-\subsubsection{Uniform random sampling}
-
-
-\subsubsection{Gaussian sampling}
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\textwidth]{figures/results/scvae1d/KL_and_recon.png}
+    \caption[Validation loss during training with \method{2} applied on Gaussian VAE.]
+    {
+        Validation losses during training with and without \method{2} applied on Gaussian VAE.
+        Left: KL loss comparison. Right: Reconstruction loss comparison of the $Decoder_1$ - non-conditioned decoder with a standard Gaussian VAE.
+    }
+    \label{fig:results_method2_gaussian_vae}
+\end{figure}
 
 \subsection{Results on VQ-VAEs}
 
-\subsubsection{Uniform random sampling}
+The findings showed that \method{2} worked very well with VQ-VAEs. The results showed it can be used to substantially reduce the VQ objective loss and at the same time to improve the quality of the reconstruction when no conditioning information is given. This showed to be the case for both Uniform and Gaussian sampling with a high enough exponent value for the power-law distribution.
 
-\subsubsection{Gaussian sampling}
+The experiments were run with a range of different exponent values: 20, 30, 40, 50, 60. The results showed that the higher the exponent value the better the reconstruction in the scenario where no conditioning information is given, which is expected since the higher the exponent value the less number of pixels are given to the decoder as conditioning information on average.
 
+When comparing Uniform and Gaussian sampling, the results showed that Gaussian sampling performed slightly better than Uniform sampling. This can be explained by the fact that the information around the center of the image is more important for the reconstruction, which is more likely to be sampled with Gaussian sampling.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\textwidth]{figures/results/scvqvae1d/VQ_and_recon.png}
+    \caption[Validation loss comparison during training of a VQ-VAE.]
+    {
+        Validation losses during training with and without \method{2} applied on VQ-VAE.
+        Left: VQ objective loss comparison. Right: Reconstruction loss comparison of the $Decoder_1$ - non-conditioned decoder with a standard VQ-VAE.
+    }
+    \label{fig:results_method2_vq_vae}
+\end{figure}
+
+\section{Cross-validation results}
 
