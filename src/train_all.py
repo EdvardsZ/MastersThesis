@@ -30,20 +30,41 @@ def create_copy_of_config_with_adaptive_mode(config, param):
     config_copy["model_params"]["adaptive_mode"] = param.value
     return config_copy
 
+def create_copy_of_config_with_exponent_and_power_law(config, exponent):
+    config_copy = deepcopy(config)
+    config_copy["data_params"]["count_sampling"] = "POWER_LAW"
+    config_copy["data_params"]["exponent"] = exponent
+    return config_copy
+
 def add_extra_configs(configs):
     res = []
     
     for config in configs:
         
         if "2D" in config["model_name"]:
+            # here play around with the adaptive mode
             copy = create_copy_of_config_with_adaptive_mode(config, AdaptiveMode.SOFT)
             res.append(copy)
             copy = create_copy_of_config_with_adaptive_mode(config, AdaptiveMode.SCALED)
             res.append(copy)
                
         if "1D" in config["model_name"]:
-            copy = create_copy_of_config_with_adaptive_mode(config, AdaptiveMode.SOFT)
+            # here play around with different exponential values
+            copy = create_copy_of_config_with_exponent_and_power_law(config, 60)
+            res.append(copy)  
+            
+            copy = create_copy_of_config_with_exponent_and_power_law(config, 50)
             res.append(copy)    
+            
+            copy = create_copy_of_config_with_exponent_and_power_law(config, 30)
+            res.append(copy)
+            
+            copy = create_copy_of_config_with_exponent_and_power_law(config, 20)
+            res.append(copy)
+            
+            
+            config["data_params"]["exponent"] = 40
+            
         res.append(config)
         
     return res
