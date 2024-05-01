@@ -10,3 +10,4 @@ src/wandb
 src_1/wandb
 paper/generators/glossary.tex
 src/assets
+.nfs*

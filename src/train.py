@@ -6,7 +6,7 @@ from loss import VQLoss
 from plotting import plot_stage_one_results
 
 
-def train_and_evaluate(config: dict, cross_validation = False):
+def train_and_evaluate(config: dict, device: int, cross_validation = False):
     """Fully trains and evaluates a model for a given config"""
 
     print("***"*20)
@@ -21,20 +21,22 @@ def train_and_evaluate(config: dict, cross_validation = False):
 
     model = VAEModule(config['model_params'], model_name=config['model_name'], image_shape=image_shape)
 
-    trainer = ExtendedTrainer(project_name="MTVAEs_03.11", **config['trainer_params'], model_name=model_name )
+    trainer = ExtendedTrainer(project_name="MTVAEs_05.01-cross-val", **config['trainer_params'], model_name=model_name, devices = [device])
 
     if cross_validation:
         trainer.cross_validate(model, train_loader, val_loader)
     else:
         trainer.fit(model, train_loader, val_loader)
 
-    #saves model checkpoint
-    trainer.save_model_checkpoint()
+        #saves model checkpoint
+        trainer.save_model_checkpoint()
 
 
-    model.eval()
+        model.eval()
+        plot_stage_one_results(model, val_loader, save_name=model_name)
+        
     print("1st stage training done")
-    plot_stage_one_results(model, val_loader, save_name=model_name)
+
 
 
     # TODO second stage training
