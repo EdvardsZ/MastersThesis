@@ -1,16 +1,16 @@
 \chapter{Discussion}
 
-In this chapter, the results in the preceding chapter are analyzed, interpreted and discussed in the context of the objective and research questions. This chapter is divided into four sections. The first section discusses the results of \method{1}, and the second section discusses the results of \method{2}. The third section provides a comparative analysis of the two methods, and the final section discusses the limitations of the research and potential future work.
+In this chapter, the results in the preceding chapter are analyzed, interpreted and discussed in the context of the objective and research questions. This chapter is divided into four sections. The first section discusses the results of \methodOne{1}, and the second section discusses the results of \methodTwo{2}. The third section provides a comparative analysis of the two methods, and the final section discusses the limitations of the research and potential future work.
 
-\section{Analysis of \method{1}}
+\section{Analysis of \methodOne{1}}
 
-The results of \method{1} show that it is overall a viable method for combining semi-conditional and non-conditional VAEs. The resulting model has multitask capabilities, which allow it to improve the quality of the reconstruction and the generalization capabilities of the VAE. It was shown that the method can be applied to both VQ-VAE  and Gaussian VAEs.
+The results of \methodOne{1} show that it is overall a viable method for combining semi-conditional and non-conditional VAEs. The resulting model has multitask capabilities, which allow it to improve the quality of the reconstruction and the generalization capabilities of the VAE. It was shown that the method can be applied to both VQ-VAE  and Gaussian VAEs.
 
 One of the disadvantages of this method is that it requires a second decoder, which increases the complexity of the model and the computational cost. However, the results show that in some cases, the increase in complexity is justified by the improvement in the quality of the reconstruction.
 
 \subsection{Findings on Gaussian VAEs}
 
-The results on Gaussian VAEs showed that a standard Gaussian VAE can be combined with a semi-conditional VAE by using \method{1}. This method improved the reconstruction quality of the non-conditioned decoder and added a second decoder that allows the model to reconstruct or generate images given some pixels. However, the results showed that this meant a slight increase in the KL divergence loss of the latent space. This is expected since the model has to learn two decoders instead of one, and it means it puts less emphasis on the KL divergence loss of the latent space.
+The results on Gaussian VAEs showed that a standard Gaussian VAE can be combined with a semi-conditional VAE by using \methodOne{1}. This method improved the reconstruction quality of the non-conditioned decoder and added a second decoder that allows the model to reconstruct or generate images given some pixels. However, the results showed that this meant a slight increase in the KL divergence loss of the latent space. This is expected since the model has to learn two decoders instead of one, and it means it puts less emphasis on the KL divergence loss of the latent space.
 
 It could be observed that the conditioned decoder was able to reconstruct the images with noticeably higher quality than the non-conditioned decoder. This is expected since the conditioned decoder has more information direct information about image pixels, which makes it easier to reconstruct.  
 
@@ -18,22 +18,22 @@ When comparing Exact and Uniform sampling, I did not see any significant differe
 
 \subsection{Findings on VQ-VAEs}
 
-When applying \method{1} to VQ-VAEs, the results showed that both the quality of the reconstruction and the VQ objective loss can be improved. As a result, the model gets multitask properties to reconstruct and generate images given some pixels or to reconstruct images with higher quality. The improvement can be explained that even though 2 decoders are used, they still share the same encoder, which can make it better at its core task. 
+When applying \methodOne{1} to VQ-VAEs, the results showed that both the quality of the reconstruction and the VQ objective loss can be improved. As a result, the model gets multitask properties to reconstruct and generate images given some pixels or to reconstruct images with higher quality. The improvement can be explained that even though 2 decoders are used, they still share the same encoder, which can make it better at its core task. 
 
 It was observed that the conditioned decoder was able to reconstruct the image with a higher quality compared to the non-conditioned decoder, however, the difference observed was not as significant as with Gaussian VAEs. The reasoning behind this could be that the VQ-VAEs already have a high-quality reconstruction, which makes it harder to improve the quality of the reconstruction.
 
-The \method{1} was tested with both Exact Same Sampling and Uniform Sampling, and it was observed even though the results were similar, the Uniform Sampling showed slightly better results. The rationale behind this could be that the Uniform Sampling gives much more diverse samples, which can be more informative for the network.
+The \methodOne{1} was tested with both Exact Same Sampling and Uniform Sampling, and it was observed even though the results were similar, the Uniform Sampling showed slightly better results. The rationale behind this could be that the Uniform Sampling gives much more diverse samples, which can be more informative for the network.
 
 
-\section{Analysis of \method{2}}
+\section{Analysis of \methodTwo{2}}
 
-\method{2} involves using the same decoder to unify both the conditioned and non-conditioned tasks, which is done by using variable conditioning - a technique that allows to condition of the decoder on a variable amount of information or just an empty mask. The rationale behind this is that the model decoder can learn to do both tasks and can detect if and where the mask is empty.
+\methodTwo{2} involves using the same decoder to unify both the conditioned and non-conditioned tasks, which is done by using variable conditioning - a technique that allows to condition of the decoder on a variable amount of information or just an empty mask. The rationale behind this is that the model decoder can learn to do both tasks and can detect if and where the mask is empty.
 
 One of the advantages of this method is that it does not require a second decoder, which reduces the complexity of the model and the computational cost, which can be a problem for large-scale high-resolution models.
 
 \subsection{Findings on Gaussian VAEs}
 
-Upon analysis, it has become clear that when \method{2} is applied to Gaussian VAEs, the decoder of the model can reconstruct images given some pixels as conditioned information or with no information at all. This method improved substantially the KL divergence loss of the latent space, which means that it is possible to generate more accurate samples from the latent space. However, one of the drawbacks of this method is that it reduced the quality of the reconstruction in the non-conditioned case. 
+Upon analysis, it has become clear that when \methodTwo{2} is applied to Gaussian VAEs, the decoder of the model can reconstruct images given some pixels as conditioned information or with no information at all. This method improved substantially the KL divergence loss of the latent space, which means that it is possible to generate more accurate samples from the latent space. However, one of the drawbacks of this method is that it reduced the quality of the reconstruction in the non-conditioned case. 
 
 It could also be observed that 
 
