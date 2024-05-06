@@ -33,12 +33,16 @@ One of the advantages of this method is that it does not require a second decode
 
 \subsection{Findings on Gaussian VAEs}
 
-Upon analysis, it has become clear that when \methodTwo{2} is applied to Gaussian VAEs, the decoder of the model can reconstruct images given some pixels as conditioned information or with no information at all. This method improved substantially the KL divergence loss of the latent space, which means that it is possible to generate more accurate samples from the latent space. However, one of the drawbacks of this method is that it reduced the quality of the reconstruction in the non-conditioned case. 
+Upon analysis, it has become clear that when \methodTwo{2} is applied to Gaussian VAEs, the decoder of the model can reconstruct images given some pixels as conditioned information or with no information at all. This method improved substantially the KL divergence loss of the latent space, which means that it is possible to generate more accurate samples from the latent space. 
 
-It could also be observed that 
+However, one of the drawbacks of this method is that it reduced the quality of the reconstruction in the non-conditioned case. The cause for this could be that the decoder and the encoder are not deep enough to learn to do both tasks at the same time. In my experiments, when using a deeper encoder and decoder, it resulted in posterior collapse, which is a common problem in Gaussian VAEs.
+
+It could also be observed that Uniform Sampling showed better results than Gaussian Sampling. The cause for this could be traced back to the fact that for Gaussian Sampling, there's a high chance to sample the same pixel multiple times, which can make the model overfit to the same pixels.
 
 
 \subsection{Findings on VQ-VAEs}
+
+When applying \methodTwo{2} to VQ-VAEs, the results showed that the model was able to
 
 \section{Comparative Analysis}
 
