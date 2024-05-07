@@ -54,9 +54,10 @@ It was discovered that the Gaussian Sampling showed slightly better results than
 In the context of comparing the two methods, one must first and foremost consider the complexity of the model. The \methodOne{1} requires a second decoder,
 which increases the complexity of the model and the computational cost. This can be a problem for high-resolution and large-scale models, as it could mean that the model is too slow to train or too computationally expensive to use. On the other hand, \methodTwo{2} does not require a second decoder, which does not introduce a lot of extra complexity to the model. This makes it more suitable for real-world applications.
 
-%Try to compare the results of the two methods
+For both of the methods applied to Gaussian VAEs with deeper encoder and decoder networks, the training instability in the form of the posterior collapse was observed, which means that latent variables have become uninformative, leading the model to ignore them. This is a common problem in Gaussian VAEs and can be hard to avoid. However, this is something that is not a problem by design in VQ-VAEs, which makes them more stable and easier to train.
 
-For both of the methods, the training stability of Gaussian VAEs was a problem, which was not the case for VQ-VAEs. This is because the training of Gaussian VAEs is more tricky, 
+%Try to compare the results of the two methods
+Both methods brought improvements to the quality of the reconstruction and the generalization capabilities when applied to VQ-VAEs. However, the \methodTwo{2} showed better results in terms of the VQ objective loss, while \methodOne{1} showed better results in terms of the reconstruction quality. This could be explained by the fact that \methodOne{1} has two decoders, which can make it better at the core task of the VQ-VAE, which is to reconstruct the image.
 
 
 % Tell about the extra complexity of the model and how it can be a problem for large-scale models.
@@ -66,6 +67,15 @@ For both of the methods, the training stability of Gaussian VAEs was a problem, 
 % SoftAdapt overall?.
 
 \section{Limitations and Future Work}
+
+% Tell about 
+One of the limitations of this research is that the experiments could have been conducted on a much wider range of hyperparameters and datasets. This could have given a better understanding of the methods and their capabilities and limitations. Another limitation is that the experiments were conducted on relatively small datasets, which could have affected the results.
+
+One limitation of this research is that there could have been more experiments comparing different sampling methods. This could have given a better insight into the differences between the sampling methods and how they affect the results of the model.
+
+One possible future direction for this research could be to investigate the possibility of using a training schedule where the model is initially trained with \methodOne{1} and then later switched to a regular VQ-VAE or Gaussian VAE. This could potentially improve the results of the model for unconditional generation tasks.
+
+
 
 % Tell about comparing the sampling types more...
 % Tell that something sort of a training scheduling could be used to improve the training stability of the model.
