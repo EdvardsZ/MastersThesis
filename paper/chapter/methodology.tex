@@ -260,9 +260,23 @@ The datasets will be split into training, validation and test sets, where the tr
 
 The encoder and the decoder of the models will be convolutional neural networks. The number of layers and the number of filters in each layer will be hyperparameters of the model. Both the encoder and the decoder will have a similar architecture of convolutional layers followed by batch normalization layers and LeakyReLU activation functions. However, the encoder and the decoder for the Gaussian VAEs will be more shallow compared to the VQ-VAEs, because the Gaussian VAEs suffer from the posterior collapse if the neural network is too deep. 
 
-The latent space of the Gaussian VAEs will be 16 and 64 dimensions with 4 hidden layers with dimensions set to 32, 64, 128, and 256. 
+For Gaussian VAEs experiments were conducted in 2 configurations:
 
-The latent space of the VQ-VAEs will be with 16, 32 and 64 dimensions with 
+\begin{itemize}
+    \item Configuration 1: latent space dimension of 16, with hidden dimensions of 32, 64, 128, 256
+    \item Configuration 2: latent space dimension of 64, with hidden dimensions of 32, 64, 128, 256
+\end{itemize}
+
+For VQ-VAEs experiments were conducted in 3 configurations:
+
+\begin{itemize}
+    \item Configuration 1: 128 embeddings and 16 the embedding dimension, hidden dimensions for both encoder and decoder were set to 32 and 64 and 0 residual layers.
+    \item Configuration 2: 128 embeddings and 32 the embedding dimension, hidden dimensions for both encoder and decoder were set to 128 and 256 and 2 residual layers.
+    \item Configuration 3: 256 embeddings and 64 the embedding dimension, hidden dimensions for both encoder and decoder were set to 128 and 256 and 4 residual layers.
+\end{itemize}
+
+
+
 
 \subsection{Training}
 
