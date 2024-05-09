@@ -14,19 +14,26 @@ class Result:
         
     def get_config_number(self) -> int:
         bracket_text = self.filename.split("(")[1].split(")")[0]
-        num_embeddings = bracket_text.split("_")[0]
-        embedding_dim = bracket_text.split("_")[1]
-        hidden_dim = bracket_text.split("_")[2]
-        num_blocks = bracket_text.split("_")[3]
+        if "VQVAE" in self.filename:
+            embedding_dim = bracket_text.split("_")[1]
+            
+            if embedding_dim == "16":
+                return 1
+            if embedding_dim == "32":
+                return 2
+            if embedding_dim == "64":
+                return 3
+            else :
+                raise Exception("Unknown embedding_dim:" + embedding_dim)
+        else:
+            latent_dim = bracket_text.split("_")[0]
+            if latent_dim == "16":
+                return 1
+            if latent_dim == "64":
+                return 2
+            else:
+                raise Exception("Unknown bracket_text:" + latent_dim)
         
-        if embedding_dim == "16":
-            return 1
-        if embedding_dim == "32":
-            return 2
-        if embedding_dim == "64":
-            return 3
-        else :
-            raise Exception("Unknown embedding_dim")
         
     def get_display_model_name(self) -> str:
         name = self.filename.split("(")[0]
