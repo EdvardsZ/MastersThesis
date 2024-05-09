@@ -4,6 +4,7 @@ from train import train_and_evaluate
 from loss.adapt import AdaptiveMode
 from copy import deepcopy
 import sys, getopt
+import os
 
 def print_summary(configs):
     print(f"Total number of configs: {len(configs)}")
@@ -83,6 +84,9 @@ def get_device_and_dataset():
     if device is None or dataset is None:
         raise Exception("Missing device or dataset")
     return device, dataset
+
+
+os.environ["WANDB__SERVICE_WAIT"] = "300"
 
 device, dataset = get_device_and_dataset()
 project_name = "MTVAEs_05.01-cross-val"
