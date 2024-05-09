@@ -74,6 +74,10 @@ class Result:
             res += "VQ-VAE"
         else:
             res += "Gaussian VAE"
+            
+        config_number = self.get_config_number()
+        
+        res += f"(Conf. Nr.{config_number})"
         
         if "SC" in name:
             if "1D" in name:
