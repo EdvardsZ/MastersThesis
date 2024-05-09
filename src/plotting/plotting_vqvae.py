@@ -14,8 +14,8 @@ def plot_samples_with_reconstruction_and_indices(model, data_loader, n=6, save_n
     reconstruction_masked = output[1]
     indices = output[-1].reshape(-1, 1, image_shape[1] // 4, image_shape[2] // 4) ## This is assumpution that downsample that there are 2 downsample layers
 
-    images_to_plot = [x, indices]
-    images_to_plot_titles = ["Original", "Indices"]
+    images_to_plot = [x, x_cond, indices]
+    images_to_plot_titles = ["Original", "Conditioned sample", "Indices"]
 
     for i, reconstruction in enumerate(reconstructions):
         images_to_plot.append(reconstruction)
