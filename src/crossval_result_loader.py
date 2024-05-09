@@ -12,6 +12,37 @@ class Result:
         self.filename = filename
         self.data = data
         
+    def get_unconditioned_losses(self) -> dict[str, Loss]:
+        
+        recon = self.get_unconditioned_reconstruction()
+        
+        if "VQVAE" in self.filename:
+            if "test_vq_loss" in self.data:
+                vq = self.data["test_vq_loss"]
+                return {"Reconstruction loss": recon, "VQ objective loss": vq}
+            else:
+                raise Exception("No VQ loss found")
+            
+        if "VAE" in self.filename:
+            if "test_kl_loss" in self.data:
+                kl = self.data["test_kl_loss"]
+                return {"Reconstruction loss": recon, "KL divergence loss": kl}
+            else:
+                raise Exception("No KL loss found")
+            
+        raise Exception("Unknown model type")       
+            
+    def get_unconditioned_reconstruction(self) -> Loss:
+        if "test_recon_loss_0(MASKED)" in self.data:
+            recon = self.data["test_recon_loss_0(MASKED)"]
+        if "test_recon_loss_0" in self.data:
+            recon = self.data["test_recon_loss_0"]
+            
+        if recon is None:
+            raise Exception("No recon loss found")
+        
+        return recon      
+        
     def get_config_number(self) -> int:
         bracket_text = self.filename.split("(")[1].split(")")[0]
         if "VQVAE" in self.filename:
@@ -25,7 +56,7 @@ class Result:
                 return 3
             else :
                 raise Exception("Unknown embedding_dim:" + embedding_dim)
-        else:
+        if "VAE" in self.filename:
             latent_dim = bracket_text.split("_")[0]
             if latent_dim == "16":
                 return 1
@@ -33,7 +64,7 @@ class Result:
                 return 2
             else:
                 raise Exception("Unknown bracket_text:" + latent_dim)
-        
+        raise Exception("Unknown model type")
         
     def get_display_model_name(self) -> str:
         name = self.filename.split("(")[0]
@@ -53,7 +84,7 @@ class Result:
                 else:
                     raise Exception("Unknown Decoder method")
         
-        return res       
+        return res        
     
         
 def get_crossval_results(data: list)-> dict[str, Loss]:
