@@ -4,14 +4,31 @@ from modules import VAEModule
 from lightning_extensions import ExtendedTrainer
 from loss import VQLoss
 from plotting import plot_stage_one_results
-
-
-def train_and_evaluate(config: dict, device: int, cross_validation = False):
+import torch
+import os
+from crossval_result_loader import check_if_done_already, check_if_pending, mark_as_pending, remove_pending
+    
+    
+def train_and_evaluate(config: dict, project_name: str, device: int, cross_validation = False):
     """Fully trains and evaluates a model for a given config"""
 
     print("***"*20)
 
     model_name = get_model_name(config)
+    
+    
+    if cross_validation:
+        if check_if_done_already(model_name, project_name):
+            print("Job is already done(Results already exist)")
+            print("Training skipped")
+            print("***"*20)
+            return
+        if check_if_pending(model_name, project_name):
+            print("Job is pending")
+            print("Training skipped")
+            print("***"*20)
+            return
+        mark_as_pending(model_name, project_name, job_nr = device)
 
     print("Starting training for model: ", model_name)
 
@@ -60,3 +77,5 @@ def train_and_evaluate(config: dict, device: int, cross_validation = False):
 
     print("All done")
     print("----"*20)
+    if cross_validation:
+        remove_pending(model_name, project_name)
