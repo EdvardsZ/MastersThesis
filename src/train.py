@@ -38,7 +38,7 @@ def train_and_evaluate(config: dict, project_name: str, device: int, cross_valid
 
     model = VAEModule(config['model_params'], model_name=config['model_name'], image_shape=image_shape)
 
-    trainer = ExtendedTrainer(project_name="MTVAEs_05.01-cross-val", **config['trainer_params'], model_name=model_name, devices = [device],refresh_rate = 60)
+    trainer = ExtendedTrainer(project_name="MTVAEs_05.01-cross-val", **config['trainer_params'], model_name=model_name, devices = [device],refresh_rate = 60, checkpoint_path="data/checkpoints/")
 
     if cross_validation:
         trainer.cross_validate(model, train_loader, val_loader)
