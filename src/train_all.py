@@ -3,6 +3,7 @@ from config_loader import get_training_configs_for_dataset, print_model_params, 
 from train import train_and_evaluate
 from loss.adapt import AdaptiveMode
 from copy import deepcopy
+import sys, getopt
 
 def print_summary(configs):
     print(f"Total number of configs: {len(configs)}")
@@ -45,22 +46,16 @@ def add_extra_configs(configs):
             # here play around with the adaptive mode
             copy = create_copy_of_config_with_adaptive_mode(config, AdaptiveMode.SOFT)
             res.append(copy)
-            copy = create_copy_of_config_with_adaptive_mode(config, AdaptiveMode.SCALED)
-            res.append(copy)
+            # copy = create_copy_of_config_with_adaptive_mode(config, AdaptiveMode.SCALED)
+            # res.append(copy)
                
         if "1D" in config["model_name"]:
             # here play around with different exponential values
             copy = create_copy_of_config_with_exponent_and_power_law(config, 60)
-            res.append(copy)  
+            res.append(copy)      
             
-            copy = create_copy_of_config_with_exponent_and_power_law(config, 50)
-            res.append(copy)    
-            
-            copy = create_copy_of_config_with_exponent_and_power_law(config, 30)
-            res.append(copy)
-            
-            copy = create_copy_of_config_with_exponent_and_power_law(config, 20)
-            res.append(copy)
+            # copy = create_copy_of_config_with_exponent_and_power_law(config, 20)
+            # res.append(copy)
             
             
             config["data_params"]["exponent"] = 40
@@ -69,18 +64,38 @@ def add_extra_configs(configs):
         
     return res
 
+def get_device_and_dataset():
+    # --device argument int
+    # --dataset argument CIFAR10 or MNIST or CelebA
+    try:
+        opts, args = getopt.getopt(sys.argv[1:], "d:", ["device=", "dataset="])
+    except getopt.GetoptError:
+        print('train_all.py --device <device> --dataset <dataset>')
+        sys.exit(2)
+    device = None
+    dataset = None
+    for opt, arg in opts:
+        if opt in ("-d", "--device"):
+            device = int(arg)
+        elif opt in ("--dataset"):
+            dataset = arg
+            
+    if device is None or dataset is None:
+        raise Exception("Missing device or dataset")
+    return device, dataset
 
-project_name = "MTVAEs"
-for dataset in ["MNIST", "CIFAR10", "CelebA"]:
-    print(f"Dataset: {dataset}")
-    print("*"*20)
-    
-    configs = get_configs_sorted(dataset)
-    configs = add_extra_configs(configs)
-    
-    print_summary(configs)
-    
-    for config in configs:
-        full_model_name = get_model_name(config)
-        print(f"Training {full_model_name}")
-        train_and_evaluate(config, project_name = project_name, device = 0, cross_validation=True)
+device, dataset = get_device_and_dataset()
+project_name = "MTVAEs_05.01-cross-val"
+print(f"Dataset: {dataset}")
+print(f"Device: {device}")
+print("*"*20)
+
+configs = get_configs_sorted(dataset)
+configs = add_extra_configs(configs)
+
+print_summary(configs)
+
+for config in configs:
+    full_model_name = get_model_name(config)
+    print(f"Training {full_model_name}")
+    train_and_evaluate(config, project_name = project_name, device = 5, cross_validation=True)
