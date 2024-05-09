@@ -28,6 +28,25 @@ class Result:
         else :
             raise Exception("Unknown embedding_dim")
         
+    def get_display_model_name(self) -> str:
+        name = self.filename.split("(")[0]
+        
+        res = ""
+        if "VQ" in name:
+            res += "VQ-VAE"
+        else:
+            res += "Gaussian VAE"
+        
+        if "SC" in name:
+            if "1D" in name:
+                res += " with Single Decoder method"
+            else: 
+                if "2D" in name:
+                    res += " with Multi Decoder method"
+                else:
+                    raise Exception("Unknown Decoder method")
+        
+        return res       
     
         
 def get_crossval_results(data: list)-> dict[str, Loss]:
