@@ -124,4 +124,43 @@ def get_results(directory: str) -> list[Result]:
     print("Loaded: ", len(results))
     print("Done.")
     return results
+
+
+def check_if_done_already(full_model_name, project_name) -> bool:
+    # find in the model name the dataset name ( 'dataset=DATASET_NAME&)
+    dataset_name = full_model_name.split("dataset=")[1].split("&")[0]
+    path = f"assets/results/raw/{project_name}/{dataset_name}/{full_model_name}_crossval_results.pt"
     
+    if os.path.exists(path):
+        return True
+    
+    return False
+
+def check_if_pending(full_model_name, project_name) -> bool:
+    # find in the model name the dataset name ( 'dataset=DATASET_NAME&)
+    dataset_name = full_model_name.split("dataset=")[1].split("&")[0]
+    path = f"assets/results/pending/{project_name}/{dataset_name}/{full_model_name}_crossval_results.txt"
+    
+    if os.path.exists(path):
+        return True
+    
+    return False
+
+def mark_as_pending(full_model_name, project_name, job_nr: int):
+    # find in the model name the dataset name ( 'dataset=DATASET_NAME&)
+    dataset_name = full_model_name.split("dataset=")[1].split("&")[0]
+    path = f"assets/results/pending/{project_name}/{dataset_name}/{full_model_name}_crossval_results.txt"
+    
+    os.makedirs(os.path.dirname(path), exist_ok=True)
+    with open(path, "w") as f:
+        f.write("Pending: " + str(job_nr))
+        
+    return
+
+def remove_pending(full_model_name, project_name):
+    # find in the model name the dataset name ( 'dataset=DATASET_NAME&)
+    dataset_name = full_model_name.split("dataset=")[1].split("&")[0]
+    path = f"assets/results/pending/{project_name}/{dataset_name}/{full_model_name}_crossval_results.txt"
+    
+    os.remove(path)
+    return

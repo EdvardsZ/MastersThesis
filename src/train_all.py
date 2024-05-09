@@ -70,6 +70,7 @@ def add_extra_configs(configs):
     return res
 
 
+project_name = "MTVAEs"
 for dataset in ["MNIST", "CIFAR10", "CelebA"]:
     print(f"Dataset: {dataset}")
     print("*"*20)
@@ -82,4 +83,4 @@ for dataset in ["MNIST", "CIFAR10", "CelebA"]:
     for config in configs:
         full_model_name = get_model_name(config)
         print(f"Training {full_model_name}")
-        train_and_evaluate(config)
+        train_and_evaluate(config, project_name = project_name, device = 0, cross_validation=True)
