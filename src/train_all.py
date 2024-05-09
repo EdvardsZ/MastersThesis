@@ -98,4 +98,4 @@ print_summary(configs)
 for config in configs:
     full_model_name = get_model_name(config)
     print(f"Training {full_model_name}")
-    train_and_evaluate(config, project_name = project_name, device = 5, cross_validation=True)
+    train_and_evaluate(config, project_name = project_name, device = device, cross_validation=True)

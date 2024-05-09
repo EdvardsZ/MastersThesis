@@ -10,8 +10,8 @@ do
     nohup python train_all.py --device $index --dataset CelebA > CelebA_job_$index.out 2>&1 &
     echo "Started Python job $index"
 
-    # Wait 15 seconds before starting the job
-    sleep 15
+    # Wait 25 seconds before starting the job
+    sleep 25
 done
 
 echo "All Python jobs started successfully"
