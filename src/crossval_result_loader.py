@@ -65,6 +65,24 @@ class Result:
             else:
                 raise Exception("Unknown bracket_text:" + latent_dim)
         raise Exception("Unknown model type")
+    
+    def get_method_name(self) -> str:
+        name = self.filename.split("(")[0]
+        
+        res = ""
+        if "SC" in name:
+            if "1D" in name:
+                res += "Single Decoder method"
+            else: 
+                if "2D" in name:
+                    res += "Multi Decoder method"
+                else:
+                    raise Exception("Unknown Decoder method")
+                
+        if res == "":
+            res = "-"
+        
+        return res
         
     def get_display_model_name(self) -> str:
         name = self.filename.split("(")[0]
