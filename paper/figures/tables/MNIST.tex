@@ -5,112 +5,112 @@
 \hline
  & Config. & Method & Parameters & Reconstruction loss & VQ loss \\
 \hline
-\multirow{27}{*}{\rotatebox[origin=c]{90}{VQ-VAE}} & \multirow{9}{*}{1} & \multirow{4}{*}{Multi Decoder} & Exact sampling & 0.0025 +- 6.5e-09 & 0.0082 +- 1.9e-07 \\
+\multirow{27}{*}{\rotatebox[origin=c]{90}{VQ-VAE}} & \multirow{9}{*}{1} & \multirow{1}{*}{-} & - & 0.0028 +- 8.8e-09 & 0.0101 +- 4.7e-07 \\
 \cline{4-6}
- &  &  & Uniform sampling, SoftAdapt & 0.0024 +- 3.6e-08 & 0.0042 +- 2.4e-07 \\
+\cline{3-6}
+ &  & \multirow{4}{*}{Multi Decoder} & Exact sampling & 0.0025 +- 6.5e-09 & 0.0082 +- 1.9e-07 \\
+\cline{4-6}
+ &  &  & Exact sampling, SoftAdapt & 0.0123 +- 3.9e-04 & 0.0035 +- 2.3e-06 \\
 \cline{4-6}
  &  &  & Uniform sampling & \textbf{0.0023 +- 2.4e-09} & 0.0076 +- 2.8e-07 \\
 \cline{4-6}
- &  &  & Exact sampling, SoftAdapt & 0.0123 +- 3.9e-04 & 0.0035 +- 2.3e-06 \\
+ &  &  & Uniform sampling, SoftAdapt & 0.0024 +- 3.6e-08 & 0.0042 +- 2.4e-07 \\
 \cline{4-6}
 \cline{3-6}
  &  & \multirow{4}{*}{Single Decoder} & Gaussian sampling, Exponent=40 & 0.0028 +- 7.4e-08 & 0.0028 +- 2.0e-07 \\
 \cline{4-6}
  &  &  & Gaussian sampling, Exponent=60 & 0.0029 +- 7.2e-08 & 0.0029 +- 1.3e-07 \\
 \cline{4-6}
- &  &  & Uniform sampling, Exponent=60 & 0.0030 +- 7.2e-08 & \textbf{0.0024 +- 2.4e-08} \\
-\cline{4-6}
  &  &  & Uniform sampling, Exponent=40 & 0.0029 +- 6.4e-08 & 0.0030 +- 4.2e-07 \\
 \cline{4-6}
-\cline{3-6}
- &  & \multirow{1}{*}{-} & - & 0.0028 +- 8.8e-09 & 0.0101 +- 4.7e-07 \\
+ &  &  & Uniform sampling, Exponent=60 & 0.0030 +- 7.2e-08 & \textbf{0.0024 +- 2.4e-08} \\
 \cline{4-6}
 \cline{3-6}
 \cline{2-6}
- & \multirow{9}{*}{3} & \multirow{4}{*}{Single Decoder} & Uniform sampling, Exponent=40 & 0.0039 +- 1.1e-07 & 0.0007 +- 1.8e-08 \\
-\cline{4-6}
- &  &  & Gaussian sampling, Exponent=60 & 0.0037 +- 5.7e-08 & \textbf{0.0005 +- 1.1e-07} \\
-\cline{4-6}
- &  &  & Uniform sampling, Exponent=60 & 0.0038 +- 2.4e-08 & 0.0007 +- 4.0e-08 \\
-\cline{4-6}
- &  &  & Gaussian sampling, Exponent=40 & 0.0038 +- 8.7e-08 & 0.0008 +- 2.4e-07 \\
+ & \multirow{9}{*}{3} & \multirow{1}{*}{-} & - & 0.0019 +- 1.3e-08 & 0.0024 +- 4.3e-08 \\
 \cline{4-6}
 \cline{3-6}
- &  & \multirow{4}{*}{Multi Decoder} & Exact sampling, SoftAdapt & 0.0173 +- 6.9e-04 & 0.0011 +- 2.2e-07 \\
+ &  & \multirow{4}{*}{Multi Decoder} & Exact sampling & 0.0017 +- 8.4e-09 & 0.0028 +- 1.2e-07 \\
 \cline{4-6}
- &  &  & Exact sampling & 0.0017 +- 8.4e-09 & 0.0028 +- 1.2e-07 \\
+ &  &  & Exact sampling, SoftAdapt & 0.0173 +- 6.9e-04 & 0.0011 +- 2.2e-07 \\
 \cline{4-6}
  &  &  & Uniform sampling & \textbf{0.0017 +- 2.4e-08} & 0.0024 +- 1.2e-07 \\
 \cline{4-6}
  &  &  & Uniform sampling, SoftAdapt & 0.0178 +- 6.5e-04 & 0.0009 +- 2.8e-07 \\
 \cline{4-6}
 \cline{3-6}
- &  & \multirow{1}{*}{-} & - & 0.0019 +- 1.3e-08 & 0.0024 +- 4.3e-08 \\
+ &  & \multirow{4}{*}{Single Decoder} & Gaussian sampling, Exponent=40 & 0.0038 +- 8.7e-08 & 0.0008 +- 2.4e-07 \\
+\cline{4-6}
+ &  &  & Gaussian sampling, Exponent=60 & 0.0037 +- 5.7e-08 & \textbf{0.0005 +- 1.1e-07} \\
+\cline{4-6}
+ &  &  & Uniform sampling, Exponent=40 & 0.0039 +- 1.1e-07 & 0.0007 +- 1.8e-08 \\
+\cline{4-6}
+ &  &  & Uniform sampling, Exponent=60 & 0.0038 +- 2.4e-08 & 0.0007 +- 4.0e-08 \\
 \cline{4-6}
 \cline{3-6}
 \cline{2-6}
  & \multirow{9}{*}{2} & \multirow{1}{*}{-} & - & 0.0017 +- 1.6e-09 & 0.0022 +- 2.0e-08 \\
 \cline{4-6}
 \cline{3-6}
- &  & \multirow{4}{*}{Single Decoder} & Uniform sampling, Exponent=60 & 0.0035 +- 3.3e-07 & 0.0012 +- 4.3e-07 \\
+ &  & \multirow{4}{*}{Multi Decoder} & Exact sampling & \textbf{0.0014 +- 2.8e-09} & 0.0028 +- 3.3e-08 \\
 \cline{4-6}
- &  &  & Gaussian sampling, Exponent=40 & 0.0031 +- 1.6e-07 & 0.0014 +- 3.5e-07 \\
+ &  &  & Exact sampling, SoftAdapt & 0.0155 +- 7.9e-04 & 0.0013 +- 3.6e-07 \\
+\cline{4-6}
+ &  &  & Uniform sampling & 0.0015 +- 2.7e-09 & 0.0030 +- 2.5e-08 \\
+\cline{4-6}
+ &  &  & Uniform sampling, SoftAdapt & 0.0422 +- 1.1e-03 & \textbf{0.0009 +- 3.2e-07} \\
+\cline{4-6}
+\cline{3-6}
+ &  & \multirow{4}{*}{Single Decoder} & Gaussian sampling, Exponent=40 & 0.0031 +- 1.6e-07 & 0.0014 +- 3.5e-07 \\
 \cline{4-6}
  &  &  & Gaussian sampling, Exponent=60 & 0.0031 +- 2.1e-07 & 0.0013 +- 2.6e-07 \\
 \cline{4-6}
  &  &  & Uniform sampling, Exponent=40 & 0.0029 +- 1.4e-07 & 0.0017 +- 5.6e-08 \\
 \cline{4-6}
-\cline{3-6}
- &  & \multirow{4}{*}{Multi Decoder} & Exact sampling, SoftAdapt & 0.0155 +- 7.9e-04 & 0.0013 +- 3.6e-07 \\
-\cline{4-6}
- &  &  & Uniform sampling, SoftAdapt & 0.0422 +- 1.1e-03 & \textbf{0.0009 +- 3.2e-07} \\
-\cline{4-6}
- &  &  & Uniform sampling & 0.0015 +- 2.7e-09 & 0.0030 +- 2.5e-08 \\
-\cline{4-6}
- &  &  & Exact sampling & \textbf{0.0014 +- 2.8e-09} & 0.0028 +- 3.3e-08 \\
+ &  &  & Uniform sampling, Exponent=60 & 0.0035 +- 3.3e-07 & 0.0012 +- 4.3e-07 \\
 \cline{4-6}
 \cline{3-6}
 \cline{2-6}
 \hline
-\multirow{18}{*}{\rotatebox[origin=c]{90}{Gaussian VAE}} & \multirow{9}{*}{1} & \multirow{4}{*}{Multi Decoder} & Exact sampling, SoftAdapt & 13.1405 +- 1.0e+00 & 14.5518 +- 1.1e+01 \\
+\multirow{18}{*}{\rotatebox[origin=c]{90}{Gaussian VAE}} & \multirow{9}{*}{1} & \multirow{1}{*}{-} & - & 13.9709 +- 9.2e-01 & 12.9533 +- 3.5e+00 \\
 \cline{4-6}
- &  &  & Exact sampling & 11.4000 +- 1.8e+00 & 17.3971 +- 9.5e+00 \\
+\cline{3-6}
+ &  & \multirow{4}{*}{Multi Decoder} & Exact sampling & 11.4000 +- 1.8e+00 & 17.3971 +- 9.5e+00 \\
 \cline{4-6}
- &  &  & Uniform sampling, SoftAdapt & 12.4119 +- 2.6e+00 & 15.3202 +- 3.1e+00 \\
+ &  &  & Exact sampling, SoftAdapt & 13.1405 +- 1.0e+00 & 14.5518 +- 1.1e+01 \\
 \cline{4-6}
  &  &  & Uniform sampling & \textbf{10.4693 +- 4.2e+00} & 18.3315 +- 2.0e+01 \\
 \cline{4-6}
-\cline{3-6}
- &  & \multirow{1}{*}{-} & - & 13.9709 +- 9.2e-01 & 12.9533 +- 3.5e+00 \\
+ &  &  & Uniform sampling, SoftAdapt & 12.4119 +- 2.6e+00 & 15.3202 +- 3.1e+00 \\
 \cline{4-6}
 \cline{3-6}
- &  & \multirow{4}{*}{Single Decoder} & Uniform sampling, Exponent=60 & 15.8018 +- 2.1e+01 & 11.5618 +- 2.4e+00 \\
+ &  & \multirow{4}{*}{Single Decoder} & Gaussian sampling, Exponent=40 & 16.0320 +- 2.1e+01 & 9.8522 +- 5.3e+00 \\
 \cline{4-6}
  &  &  & Gaussian sampling, Exponent=60 & 15.9364 +- 1.4e+01 & \textbf{9.6976 +- 2.2e+00} \\
 \cline{4-6}
  &  &  & Uniform sampling, Exponent=40 & 15.7948 +- 7.5e+00 & 11.5982 +- 1.9e+00 \\
 \cline{4-6}
- &  &  & Gaussian sampling, Exponent=40 & 16.0320 +- 2.1e+01 & 9.8522 +- 5.3e+00 \\
+ &  &  & Uniform sampling, Exponent=60 & 15.8018 +- 2.1e+01 & 11.5618 +- 2.4e+00 \\
 \cline{4-6}
 \cline{3-6}
 \cline{2-6}
- & \multirow{9}{*}{2} & \multirow{4}{*}{Multi Decoder} & Uniform sampling, SoftAdapt & 12.3718 +- 1.8e+00 & 15.2931 +- 3.7e+00 \\
+ & \multirow{9}{*}{2} & \multirow{1}{*}{-} & - & 14.2267 +- 6.8e+00 & 12.6536 +- 7.4e+00 \\
 \cline{4-6}
- &  &  & Uniform sampling & \textbf{10.6324 +- 6.9e+00} & 18.3894 +- 1.8e+01 \\
-\cline{4-6}
- &  &  & Exact sampling & 11.5855 +- 6.6e+00 & 17.2068 +- 5.9e+00 \\
+\cline{3-6}
+ &  & \multirow{4}{*}{Multi Decoder} & Exact sampling & 11.5855 +- 6.6e+00 & 17.2068 +- 5.9e+00 \\
 \cline{4-6}
  &  &  & Exact sampling, SoftAdapt & 13.1291 +- 8.9e+00 & 14.7237 +- 2.9e+00 \\
 \cline{4-6}
-\cline{3-6}
- &  & \multirow{1}{*}{-} & - & 14.2267 +- 6.8e+00 & 12.6536 +- 7.4e+00 \\
+ &  &  & Uniform sampling & \textbf{10.6324 +- 6.9e+00} & 18.3894 +- 1.8e+01 \\
+\cline{4-6}
+ &  &  & Uniform sampling, SoftAdapt & 12.3718 +- 1.8e+00 & 15.2931 +- 3.7e+00 \\
 \cline{4-6}
 \cline{3-6}
- &  & \multirow{4}{*}{Single Decoder} & Gaussian sampling, Exponent=60 & 16.2399 +- 2.1e+01 & \textbf{9.7985 +- 3.1e+00} \\
+ &  & \multirow{4}{*}{Single Decoder} & Gaussian sampling, Exponent=40 & 16.3881 +- 4.2e+01 & 9.8226 +- 7.9e-01 \\
+\cline{4-6}
+ &  &  & Gaussian sampling, Exponent=60 & 16.2399 +- 2.1e+01 & \textbf{9.7985 +- 3.1e+00} \\
 \cline{4-6}
  &  &  & Uniform sampling, Exponent=40 & 15.9913 +- 2.7e+01 & 11.5080 +- 3.4e+00 \\
-\cline{4-6}
- &  &  & Gaussian sampling, Exponent=40 & 16.3881 +- 4.2e+01 & 9.8226 +- 7.9e-01 \\
 \cline{4-6}
  &  &  & Uniform sampling, Exponent=60 & 15.9794 +- 2.2e+01 & 11.6502 +- 4.2e+00 \\
 \cline{4-6}
