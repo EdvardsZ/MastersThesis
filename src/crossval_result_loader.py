@@ -66,6 +66,43 @@ class Result:
                 raise Exception("Unknown bracket_text:" + latent_dim)
         raise Exception("Unknown model type")
     
+    def get_model_name(self) -> str:
+        if "VQVAE" in self.filename:
+            return "VQ-VAE"
+        else:
+            return "Gaussian VAE"
+    
+    def get_method(self) -> str:
+        if "VQVAE(" in self.filename or "VAE(" in self.filename:
+            return "-"
+        name = self.filename.split("(")[0]
+        if "SC" in name:
+            if "1D" in name:
+                return "Single Decoder"
+            else: 
+                if "2D" in name:
+                    return "Multi Decoder"
+                else:
+                    raise Exception("Unknown Decoder method")   
+        raise Exception("Unknown model type")
+    
+    def get_parameters(self) -> str:
+        if "VQVAE(" in self.filename or "VAE(" in self.filename:
+            return "-"
+        bracket_text = self.filename.split("(")[1].split(")")[0]
+        name = self.filename.split("(")[0]
+        
+        res = ""
+        if "2D" in name:
+            if "SOFT" in bracket_text:
+                res += ", SoftAdapt"
+                
+        pixel_sampling = self.filename.split("pixel_sampling=")[1].split("&")[0]
+        if pixel_sampling != "":
+            res += f", {pixel_sampling}"
+        
+        return res
+    
     def get_method_name(self) -> str:
         if "VQVAE(" in self.filename or "VAE(" in self.filename:
             return "-"
