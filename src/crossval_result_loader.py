@@ -243,3 +243,12 @@ def remove_pending(full_model_name, project_name):
     
     os.remove(path)
     return
+
+def get_reduction_factor(file_path: str):
+    if "MNIST" in file_path:
+        return 128 * 28 * 28
+    if "CIFAR10" in file_path:
+        return 128 * 32 * 32 * 3
+    if "CelebA" in file_path:
+        return 128 * 64 * 64 * 3
+    raise ValueError("Unknown dataset")
