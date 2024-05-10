@@ -68,17 +68,21 @@ class Result:
     
     def get_method_name(self) -> str:
         name = self.filename.split("(")[0]
+        bracket_text = self.filename.split("(")[1].split(")")[0]
         
         res = ""
         if "SC" in name:
             if "1D" in name:
-                res += "Single Decoder method"
+                res += "Single Decoder"
             else: 
                 if "2D" in name:
-                    res += "Multi Decoder method"
+                    res += "Multi Decoder"
                 else:
                     raise Exception("Unknown Decoder method")
                 
+        if "2D" in name:
+            if "SOFT" in bracket_text:
+                res += ", SoftAdapt"
         if res == "":
             res = "-"
         
