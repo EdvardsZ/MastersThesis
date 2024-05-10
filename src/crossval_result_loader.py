@@ -1,5 +1,8 @@
 import torch
 import os
+import matplotlib.pyplot as plt
+import pandas as pd
+from seaborn import lineplot
 
 class Loss:
     def __init__(self, loss_name: str, average: float, std: float):
@@ -252,3 +255,26 @@ def get_reduction_factor(file_path: str):
     if "CelebA" in file_path:
         return 128 * 64 * 64 * 3
     raise ValueError("Unknown dataset")
+
+def get_main_columns(df):
+    main = []
+    for column_0 in df.columns:
+        for column_1 in df.columns:
+            if column_0 in column_1 and column_0 != column_1 and column_0 not in main and column_0 != "epoch":
+                main.append(column_0)
+                print(column_0)
+    return main
+def plot_csv_crossval(df, title, y_label, save_name):
+    
+    path = "../paper/figures/results/scvae2d/"
+    os.makedirs(path, exist_ok=True)
+    
+    plt.title(title)
+    plt.ylabel(y_label)
+    plt.xlabel("Epoch")
+    for main_column in get_main_columns(df):
+        ax = lineplot(data=df, x=df["epoch"], y=main_column, errorbar=None)
+        ax.fill_between(df["epoch"], df[main_column + "__MIN"], df[main_column + "__MAX"], alpha=0.2)
+
+    plt.savefig(path + save_name+".pgf")
+    plt.show()
