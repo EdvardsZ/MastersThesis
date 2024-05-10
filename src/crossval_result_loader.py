@@ -12,21 +12,21 @@ class Result:
         self.filename = filename
         self.data = data
         
-    def get_unconditioned_losses(self) -> dict[str, Loss]:
+    def get_unconditioned_losses(self) -> list[Loss]:
         
         recon = self.get_unconditioned_reconstruction()
         
         if "VQVAE" in self.filename:
             if "test_vq_loss" in self.data:
                 vq = self.data["test_vq_loss"]
-                return {"Reconstruction loss": recon, "VQ objective loss": vq}
+                return [ recon, vq]
             else:
                 raise Exception("No VQ loss found")
             
         if "VAE" in self.filename:
             if "test_kl_loss" in self.data:
                 kl = self.data["test_kl_loss"]
-                return {"Reconstruction loss": recon, "KL divergence loss": kl}
+                return [recon, kl]
             else:
                 raise Exception("No KL loss found")
             
@@ -92,16 +92,30 @@ class Result:
         bracket_text = self.filename.split("(")[1].split(")")[0]
         name = self.filename.split("(")[0]
         
-        res = ""
+        res = ""           
+        pixel_sampling = self.filename.split("pixel_sampling=")[1].split("&")[0]
+        if pixel_sampling != "":
+            res += f"{self.get_sampling_name(pixel_sampling)}"
+            
         if "2D" in name:
             if "SOFT" in bracket_text:
                 res += ", SoftAdapt"
                 
-        pixel_sampling = self.filename.split("pixel_sampling=")[1].split("&")[0]
-        if pixel_sampling != "":
-            res += f", {pixel_sampling}"
+        if "1D" in name:
+            exponent = self.filename.split("exponent=")[1].split("&")[0]
+            res += f", Exponent={exponent}"
         
         return res
+    
+    def get_sampling_name(self, sampling: str) -> str:
+        if sampling == "UNIFORM":
+            return "Uniform sampling"
+        if sampling == "GAUSSIAN":
+            return "Gaussian sampling"
+        if sampling == "EXACT":
+            return "Exact sampling"
+        else:
+            return sampling
     
     def get_method_name(self) -> str:
         if "VQVAE(" in self.filename or "VAE(" in self.filename:
