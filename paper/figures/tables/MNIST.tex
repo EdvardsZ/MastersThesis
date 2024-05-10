@@ -3,59 +3,59 @@
 \hline
  & Config. & Method & Reconstruction loss & VQ loss \\
 \hline
-\multirow{27}{*}{\rotatebox[origin=c]{90}{VQ-VAE}} & \multirow{9}{*}{1} & Multi Decoder & 0.0025 +- 0.000000006 & 0.0082 +- 0.000000187 \\
+\multirow{27}{*}{\rotatebox[origin=c]{90}{VQ-VAE}} & \multirow{9}{*}{1} & - & 0.0028 +- 8.8e-09 & 0.0101 +- 4.7e-07 \\
 \cline{3-5}
- &  & Single Decoder & 0.0028 +- 0.000000074 & 0.0028 +- 0.000000196 \\
+ &  & Multi Decoder, EXACT & 0.0025 +- 6.5e-09 & 0.0082 +- 1.9e-07 \\
 \cline{3-5}
- &  & Single Decoder & 0.0029 +- 0.000000072 & 0.0029 +- 0.000000130 \\
+ &  & Multi Decoder, SoftAdapt, EXACT & 0.0123 +- 3.9e-04 & 0.0035 +- 2.3e-06 \\
 \cline{3-5}
- &  & - & 0.0028 +- 0.000000009 & 0.0101 +- 0.000000467 \\
+ &  & Multi Decoder, SoftAdapt, UNIFORM & 0.0024 +- 3.6e-08 & 0.0042 +- 2.4e-07 \\
 \cline{3-5}
- &  & Single Decoder & 0.0030 +- 0.000000072 & 0.0024 +- 0.000000024 \\
+ &  & Multi Decoder, UNIFORM & 0.0023 +- 2.4e-09 & 0.0076 +- 2.8e-07 \\
 \cline{3-5}
- &  & Multi Decoder, SoftAdapt & 0.0024 +- 0.000000036 & 0.0042 +- 0.000000239 \\
+ &  & Single Decoder, GAUSSIAN & 0.0028 +- 7.4e-08 & 0.0028 +- 2.0e-07 \\
 \cline{3-5}
- &  & Single Decoder & 0.0029 +- 0.000000064 & 0.0030 +- 0.000000422 \\
+ &  & Single Decoder, GAUSSIAN & 0.0029 +- 7.2e-08 & 0.0029 +- 1.3e-07 \\
 \cline{3-5}
- &  & Multi Decoder & 0.0023 +- 0.000000002 & 0.0076 +- 0.000000279 \\
+ &  & Single Decoder, UNIFORM & 0.0030 +- 7.2e-08 & 0.0024 +- 2.4e-08 \\
 \cline{3-5}
- &  & Multi Decoder, SoftAdapt & 0.0123 +- 0.000385269 & 0.0035 +- 0.000002346 \\
+ &  & Single Decoder, UNIFORM & 0.0029 +- 6.4e-08 & 0.0030 +- 4.2e-07 \\
 \cline{2-5}
- & \multirow{9}{*}{2} & - & 0.0017 +- 0.000000002 & 0.0022 +- 0.000000020 \\
+ & \multirow{9}{*}{2} & - & 0.0017 +- 1.6e-09 & 0.0022 +- 2.0e-08 \\
 \cline{3-5}
- &  & Single Decoder & 0.0035 +- 0.000000332 & 0.0012 +- 0.000000431 \\
+ &  & Multi Decoder, EXACT & 0.0014 +- 2.8e-09 & 0.0028 +- 3.3e-08 \\
 \cline{3-5}
- &  & Multi Decoder, SoftAdapt & 0.0155 +- 0.000790976 & 0.0013 +- 0.000000359 \\
+ &  & Multi Decoder, SoftAdapt, EXACT & 0.0155 +- 7.9e-04 & 0.0013 +- 3.6e-07 \\
 \cline{3-5}
- &  & Single Decoder & 0.0031 +- 0.000000158 & 0.0014 +- 0.000000350 \\
+ &  & Multi Decoder, SoftAdapt, UNIFORM & 0.0422 +- 1.1e-03 & 0.0009 +- 3.2e-07 \\
 \cline{3-5}
- &  & Single Decoder & 0.0031 +- 0.000000206 & 0.0013 +- 0.000000262 \\
+ &  & Multi Decoder, UNIFORM & 0.0015 +- 2.7e-09 & 0.0030 +- 2.5e-08 \\
 \cline{3-5}
- &  & Multi Decoder, SoftAdapt & 0.0422 +- 0.001123360 & 0.0009 +- 0.000000319 \\
+ &  & Single Decoder, GAUSSIAN & 0.0031 +- 1.6e-07 & 0.0014 +- 3.5e-07 \\
 \cline{3-5}
- &  & Multi Decoder & 0.0015 +- 0.000000003 & 0.0030 +- 0.000000025 \\
+ &  & Single Decoder, GAUSSIAN & 0.0031 +- 2.1e-07 & 0.0013 +- 2.6e-07 \\
 \cline{3-5}
- &  & Multi Decoder & 0.0014 +- 0.000000003 & 0.0028 +- 0.000000033 \\
+ &  & Single Decoder, UNIFORM & 0.0035 +- 3.3e-07 & 0.0012 +- 4.3e-07 \\
 \cline{3-5}
- &  & Single Decoder & 0.0029 +- 0.000000136 & 0.0017 +- 0.000000056 \\
+ &  & Single Decoder, UNIFORM & 0.0029 +- 1.4e-07 & 0.0017 +- 5.6e-08 \\
 \cline{2-5}
- & \multirow{9}{*}{3} & Single Decoder & 0.0039 +- 0.000000105 & 0.0007 +- 0.000000018 \\
+ & \multirow{9}{*}{3} & - & 0.0019 +- 1.3e-08 & 0.0024 +- 4.3e-08 \\
 \cline{3-5}
- &  & Single Decoder & 0.0037 +- 0.000000057 & 0.0005 +- 0.000000112 \\
+ &  & Multi Decoder, EXACT & 0.0017 +- 8.4e-09 & 0.0028 +- 1.2e-07 \\
 \cline{3-5}
- &  & Multi Decoder, SoftAdapt & 0.0173 +- 0.000691791 & 0.0011 +- 0.000000218 \\
+ &  & Multi Decoder, SoftAdapt, EXACT & 0.0173 +- 6.9e-04 & 0.0011 +- 2.2e-07 \\
 \cline{3-5}
- &  & Single Decoder & 0.0038 +- 0.000000024 & 0.0007 +- 0.000000040 \\
+ &  & Multi Decoder, SoftAdapt, UNIFORM & 0.0178 +- 6.5e-04 & 0.0009 +- 2.8e-07 \\
 \cline{3-5}
- &  & Single Decoder & 0.0038 +- 0.000000087 & 0.0008 +- 0.000000245 \\
+ &  & Multi Decoder, UNIFORM & 0.0017 +- 2.4e-08 & 0.0024 +- 1.2e-07 \\
 \cline{3-5}
- &  & - & 0.0019 +- 0.000000013 & 0.0024 +- 0.000000043 \\
+ &  & Single Decoder, GAUSSIAN & 0.0037 +- 5.7e-08 & 0.0005 +- 1.1e-07 \\
 \cline{3-5}
- &  & Multi Decoder & 0.0017 +- 0.000000008 & 0.0028 +- 0.000000119 \\
+ &  & Single Decoder, GAUSSIAN & 0.0038 +- 8.7e-08 & 0.0008 +- 2.4e-07 \\
 \cline{3-5}
- &  & Multi Decoder & 0.0017 +- 0.000000024 & 0.0024 +- 0.000000124 \\
+ &  & Single Decoder, UNIFORM & 0.0039 +- 1.1e-07 & 0.0007 +- 1.8e-08 \\
 \cline{3-5}
- &  & Multi Decoder, SoftAdapt & 0.0178 +- 0.000648406 & 0.0009 +- 0.000000278 \\
+ &  & Single Decoder, UNIFORM & 0.0038 +- 2.4e-08 & 0.0007 +- 4.0e-08 \\
 \cline{2-5}
 \hline
 \end{tabular}

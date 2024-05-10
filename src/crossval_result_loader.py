@@ -67,6 +67,10 @@ class Result:
         raise Exception("Unknown model type")
     
     def get_method_name(self) -> str:
+        if "VQVAE(" in self.filename or "VAE(" in self.filename:
+            return "-"
+            
+            
         name = self.filename.split("(")[0]
         bracket_text = self.filename.split("(")[1].split(")")[0]
         
@@ -79,12 +83,14 @@ class Result:
                     res += "Multi Decoder"
                 else:
                     raise Exception("Unknown Decoder method")
-                
+        
         if "2D" in name:
             if "SOFT" in bracket_text:
                 res += ", SoftAdapt"
-        if res == "":
-            res = "-"
+                
+        pixel_sampling = self.filename.split("pixel_sampling=")[1].split("&")[0]
+        if pixel_sampling != "":
+            res += f", {pixel_sampling}"
         
         return res
         
