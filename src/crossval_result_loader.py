@@ -278,3 +278,40 @@ def plot_csv_crossval(df, title, y_label, save_name):
 
     plt.savefig(path + save_name+".pgf")
     plt.show()
+    
+def drop_unnecessary_columns(df):
+    for column in df.columns:
+        if "step" in column:
+            df = df.drop(column, axis=1)
+    return df
+
+def get_method_name(filename) -> str:
+    if "VQVAE(" in filename or "VAE(" in filename:
+        if "VQVAE" in filename:
+            return "VQ-VAE"
+        else:
+            return "Gaussian VAE"
+        
+        
+    name = filename.split("(")[0]
+    bracket_text = filename.split("(")[1].split(")")[0]
+    
+    res = ""
+    if "SC" in name:
+        if "1D" in name:
+            res += "Single Decoder"
+        else: 
+            if "2D" in name:
+                res += "Multi Decoder"
+            else:
+                raise Exception("Unknown Decoder method")
+    
+    if "2D" in name:
+        if "SOFT" in bracket_text:
+            res += ", SoftAdapt"
+            
+    pixel_sampling = filename.split("pixel_sampling=")[1].split("&")[0]
+    if pixel_sampling != "":
+        res += f", {pixel_sampling}"
+    
+    return res
