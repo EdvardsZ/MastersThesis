@@ -79,7 +79,7 @@ def get_full_display_name(model_name: str) -> str:
     res = get_model_name(model_name)
     method = get_method(model_name)
     if method != "":
-        res += ", " + method + " method"
+        res += ", " + method 
     
     parameters = get_parameters(model_name)
     if parameters != "":

@@ -1030,16 +1030,16 @@
 \pgfsetstrokecolor{currentstroke}%
 \pgfsetstrokeopacity{0.800000}%
 \pgfsetdash{}{0pt}%
-\pgfpathmoveto{\pgfqpoint{1.138947in}{3.705174in}}%
+\pgfpathmoveto{\pgfqpoint{1.719459in}{3.705174in}}%
 \pgfpathlineto{\pgfqpoint{5.662778in}{3.705174in}}%
 \pgfpathquadraticcurveto{\pgfqpoint{5.690556in}{3.705174in}}{\pgfqpoint{5.690556in}{3.732952in}}%
 \pgfpathlineto{\pgfqpoint{5.690556in}{4.126778in}}%
 \pgfpathquadraticcurveto{\pgfqpoint{5.690556in}{4.154556in}}{\pgfqpoint{5.662778in}{4.154556in}}%
-\pgfpathlineto{\pgfqpoint{1.138947in}{4.154556in}}%
-\pgfpathquadraticcurveto{\pgfqpoint{1.111169in}{4.154556in}}{\pgfqpoint{1.111169in}{4.126778in}}%
-\pgfpathlineto{\pgfqpoint{1.111169in}{3.732952in}}%
-\pgfpathquadraticcurveto{\pgfqpoint{1.111169in}{3.705174in}}{\pgfqpoint{1.138947in}{3.705174in}}%
-\pgfpathlineto{\pgfqpoint{1.138947in}{3.705174in}}%
+\pgfpathlineto{\pgfqpoint{1.719459in}{4.154556in}}%
+\pgfpathquadraticcurveto{\pgfqpoint{1.691681in}{4.154556in}}{\pgfqpoint{1.691681in}{4.126778in}}%
+\pgfpathlineto{\pgfqpoint{1.691681in}{3.732952in}}%
+\pgfpathquadraticcurveto{\pgfqpoint{1.691681in}{3.705174in}}{\pgfqpoint{1.719459in}{3.705174in}}%
+\pgfpathlineto{\pgfqpoint{1.719459in}{3.705174in}}%
 \pgfpathclose%
 \pgfusepath{stroke,fill}%
 \end{pgfscope}%
@@ -1050,16 +1050,16 @@
 \definecolor{currentstroke}{rgb}{0.121569,0.466667,0.705882}%
 \pgfsetstrokecolor{currentstroke}%
 \pgfsetdash{}{0pt}%
-\pgfpathmoveto{\pgfqpoint{1.166725in}{4.042088in}}%
-\pgfpathlineto{\pgfqpoint{1.305614in}{4.042088in}}%
-\pgfpathlineto{\pgfqpoint{1.444503in}{4.042088in}}%
+\pgfpathmoveto{\pgfqpoint{1.747237in}{4.042088in}}%
+\pgfpathlineto{\pgfqpoint{1.886126in}{4.042088in}}%
+\pgfpathlineto{\pgfqpoint{2.025015in}{4.042088in}}%
 \pgfusepath{stroke}%
 \end{pgfscope}%
 \begin{pgfscope}%
 \definecolor{textcolor}{rgb}{0.000000,0.000000,0.000000}%
 \pgfsetstrokecolor{textcolor}%
 \pgfsetfillcolor{textcolor}%
-\pgftext[x=1.555614in,y=3.993477in,left,base]{\color{textcolor}\sffamily\fontsize{10.000000}{12.000000}\selectfont VQ-VAE, Multi Decoder method, Exact sampling, SoftAdapt}%
+\pgftext[x=2.136126in,y=3.993477in,left,base]{\color{textcolor}\sffamily\fontsize{10.000000}{12.000000}\selectfont VQ-VAE, Multi Decoder, Exact sampling, SoftAdapt}%
 \end{pgfscope}%
 \begin{pgfscope}%
 \pgfsetrectcap%
@@ -1068,16 +1068,16 @@
 \definecolor{currentstroke}{rgb}{1.000000,0.498039,0.054902}%
 \pgfsetstrokecolor{currentstroke}%
 \pgfsetdash{}{0pt}%
-\pgfpathmoveto{\pgfqpoint{1.166725in}{3.838231in}}%
-\pgfpathlineto{\pgfqpoint{1.305614in}{3.838231in}}%
-\pgfpathlineto{\pgfqpoint{1.444503in}{3.838231in}}%
+\pgfpathmoveto{\pgfqpoint{1.747237in}{3.838231in}}%
+\pgfpathlineto{\pgfqpoint{1.886126in}{3.838231in}}%
+\pgfpathlineto{\pgfqpoint{2.025015in}{3.838231in}}%
 \pgfusepath{stroke}%
 \end{pgfscope}%
 \begin{pgfscope}%
 \definecolor{textcolor}{rgb}{0.000000,0.000000,0.000000}%
 \pgfsetstrokecolor{textcolor}%
 \pgfsetfillcolor{textcolor}%
-\pgftext[x=1.555614in,y=3.789620in,left,base]{\color{textcolor}\sffamily\fontsize{10.000000}{12.000000}\selectfont VQ-VAE}%
+\pgftext[x=2.136126in,y=3.789620in,left,base]{\color{textcolor}\sffamily\fontsize{10.000000}{12.000000}\selectfont VQ-VAE}%
 \end{pgfscope}%
 \end{pgfpicture}%
 \makeatother%
