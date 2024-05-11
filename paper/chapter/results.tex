@@ -37,7 +37,7 @@ When trying to use deeper neural networks on the Gaussian VAEs, I observed that 
     \scalebox{0.48}{\input{figures/results/SCVAE2D_EXACT/recon_loss.pgf}}
     \caption[Validation loss during training of a Gaussian VAE.]
     {
-        Validation losses during training with and without \methodOne{1} applied on Gaussian VAE.
+        Validation losses during training with and without \methodOne{1} applied on Gaussian VAE. The results are shown for the non-conditioned decoder - $Decoder_1$, and Exact Sampling. The dataset used is CelebA.
         Left: KL divergence loss of the latent space comparison. Right: Reconstruction loss comparison of the $Decoder_1$ - non-conditioned decoder.
     }
     \label{fig:results_method1_gaussian_vae}
@@ -69,7 +69,7 @@ Same as previously mentioned the method was applied with the SoftAdapt loss bala
     \scalebox{0.48}{\input{figures/results/SCVQVAE2D_EXACT/recon_loss.pgf}}
     \caption[Validation loss comparison during training of a Gaussian VAE.]
     {
-        Validation losses during training with and without \methodOne{1} applied on VQ-VAE Configuration 3. The results of \methodOne{1} in the plot shown for the non-conditioned decoder - $Decoder_1$, and Exact Sampling is used with SoftAdapt.
+        Validation losses during training with and without \methodOne{1} applied on VQ-VAE Configuration 3. The results of \methodOne{1} in the plot shown for the non-conditioned decoder - $Decoder_1$, and Exact Sampling is used with SoftAdapt. The dataset used is CelebA.
         Left: VQ objective loss comparison. Right: Reconstruction loss comparison.
     }
     \label{fig:results_method1_vq_vae}
