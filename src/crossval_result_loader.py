@@ -3,6 +3,7 @@ import os
 import matplotlib.pyplot as plt
 import pandas as pd
 from seaborn import lineplot
+from model_name import get_config_number, get_model_name, get_pixel_sampling_name, get_method
 
 class Loss:
     def __init__(self, loss_name: str, average: float, std: float):
@@ -47,47 +48,16 @@ class Result:
         return recon      
         
     def get_config_number(self) -> int:
-        bracket_text = self.filename.split("(")[1].split(")")[0]
-        if "VQVAE" in self.filename:
-            embedding_dim = bracket_text.split("_")[1]
-            
-            if embedding_dim == "16":
-                return 1
-            if embedding_dim == "32":
-                return 2
-            if embedding_dim == "64":
-                return 3
-            else :
-                raise Exception("Unknown embedding_dim:" + embedding_dim)
-        if "VAE" in self.filename:
-            latent_dim = bracket_text.split("_")[0]
-            if latent_dim == "16":
-                return 1
-            if latent_dim == "64":
-                return 2
-            else:
-                raise Exception("Unknown bracket_text:" + latent_dim)
-        raise Exception("Unknown model type")
+        return get_config_number(self.filename)
     
     def get_model_name(self) -> str:
-        if "VQVAE" in self.filename:
-            return "VQ-VAE"
-        else:
-            return "Gaussian VAE"
+        return get_model_name(self.filename)
     
     def get_method(self) -> str:
-        if "VQVAE(" in self.filename or "VAE(" in self.filename:
+        method = get_method(self.filename)
+        if method == "":
             return "-"
-        name = self.filename.split("(")[0]
-        if "SC" in name:
-            if "1D" in name:
-                return "Single Decoder"
-            else: 
-                if "2D" in name:
-                    return "Multi Decoder"
-                else:
-                    raise Exception("Unknown Decoder method")   
-        raise Exception("Unknown model type")
+        return method
     
     def get_parameters(self) -> str:
         if "VQVAE(" in self.filename or "VAE(" in self.filename:
@@ -96,9 +66,8 @@ class Result:
         name = self.filename.split("(")[0]
         
         res = ""           
-        pixel_sampling = self.filename.split("pixel_sampling=")[1].split("&")[0]
-        if pixel_sampling != "":
-            res += f"{self.get_sampling_name(pixel_sampling)}"
+        
+        res += get_pixel_sampling_name(self.filename)
             
         if "2D" in name:
             if "SOFT" in bracket_text:
@@ -109,16 +78,6 @@ class Result:
             res += f", Exponent={exponent}"
         
         return res
-    
-    def get_sampling_name(self, sampling: str) -> str:
-        if sampling == "UNIFORM":
-            return "Uniform sampling"
-        if sampling == "GAUSSIAN":
-            return "Gaussian sampling"
-        if sampling == "EXACT":
-            return "Exact sampling"
-        else:
-            return sampling
     
     def get_method_name(self) -> str:
         if "VQVAE(" in self.filename or "VAE(" in self.filename:

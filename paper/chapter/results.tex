@@ -3,13 +3,6 @@
 This chapter presents the findings of the experiments conducted in this master's thesis. The chapter is divided into two sections.
 The first section presents the results of \methodOne{1}, and the second section presents the results of \methodTwo{2}, where both methods will be evaluated in the context of both Gaussian VAEs and VQ-VAEs. In the final section, I will present the cross-validation results of both methods.
 
-\begin{figure}[h]
-    \centering
-    \scalebox{0.47}{\input{figures/results/SCVAE2D_EXACT/kl_loss.pgf}}
-    \scalebox{0.47}{\input{figures/results/SCVAE2D_EXACT/kl_loss.pgf}}
-    \caption{A PGFs histogram from \texttt{matplotlib}.}
-\end{figure}
-
 \section{Results of \methodOne{1}}
 
 In this section, I will present the results of \methodOne{1} on both Gaussian VAEs and VQ-VAEs.
@@ -40,7 +33,8 @@ When trying to use deeper neural networks on the Gaussian VAEs, I observed that 
 
 \begin{figure}[H]
     \centering
-    \includegraphics[width=0.8\textwidth]{figures/results/KL_and_RECON.png}
+    \scalebox{0.48}{\input{figures/results/SCVAE2D_EXACT/kl_loss.pgf}}
+    \scalebox{0.48}{\input{figures/results/SCVAE2D_EXACT/recon_loss.pgf}}
     \caption[Validation loss during training of a Gaussian VAE.]
     {
         Validation losses during training with and without \methodOne{1} applied on Gaussian VAE.
