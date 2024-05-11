@@ -3,7 +3,7 @@ import os
 import matplotlib.pyplot as plt
 import pandas as pd
 from seaborn import lineplot
-from model_name import get_config_number, get_model_name, get_pixel_sampling_name, get_method
+from model_name import get_config_number, get_model_name, get_method, get_parameters
 
 class Loss:
     def __init__(self, loss_name: str, average: float, std: float):
@@ -60,24 +60,12 @@ class Result:
         return method
     
     def get_parameters(self) -> str:
-        if "VQVAE(" in self.filename or "VAE(" in self.filename:
+        parameters = get_parameters(self.filename)
+        if parameters == "":
             return "-"
-        bracket_text = self.filename.split("(")[1].split(")")[0]
-        name = self.filename.split("(")[0]
+        return parameters
         
-        res = ""           
         
-        res += get_pixel_sampling_name(self.filename)
-            
-        if "2D" in name:
-            if "SOFT" in bracket_text:
-                res += ", SoftAdapt"
-                
-        if "1D" in name:
-            exponent = self.filename.split("exponent=")[1].split("&")[0]
-            res += f", Exponent={exponent}"
-        
-        return res
     
     def get_method_name(self) -> str:
         if "VQVAE(" in self.filename or "VAE(" in self.filename:
@@ -243,34 +231,3 @@ def drop_unnecessary_columns(df):
         if "step" in column:
             df = df.drop(column, axis=1)
     return df
-
-def get_method_name(filename) -> str:
-    if "VQVAE(" in filename or "VAE(" in filename:
-        if "VQVAE" in filename:
-            return "VQ-VAE"
-        else:
-            return "Gaussian VAE"
-        
-        
-    name = filename.split("(")[0]
-    bracket_text = filename.split("(")[1].split(")")[0]
-    
-    res = ""
-    if "SC" in name:
-        if "1D" in name:
-            res += "Single Decoder"
-        else: 
-            if "2D" in name:
-                res += "Multi Decoder"
-            else:
-                raise Exception("Unknown Decoder method")
-    
-    if "2D" in name:
-        if "SOFT" in bracket_text:
-            res += ", SoftAdapt"
-            
-    pixel_sampling = filename.split("pixel_sampling=")[1].split("&")[0]
-    if pixel_sampling != "":
-        res += f", {pixel_sampling}"
-    
-    return res
