@@ -268,7 +268,10 @@ One example of the power law distribution could be the function $ f(x) = \alpha 
 
 \subsection{SoftAdapt: Adaptive loss weighting}
 
-Multipart loss functions are common in machine learning, where the loss function is a sum of loss terms. 
+SoftAdapt is a novel approach to address the challenge of dynamically adjusting weights for multipart loss functions in deep learning. 
+In machine learning, multipart loss functions are common, wherein the loss function is composed of a sum of loss terms. Traditionally, the loss terms of multipart loss function are weighted equally, or their weights are determined through heuristic methods. Whilst this approach can work well in practice, it is not optimal because the importance of the loss terms can vary during the training process and the optimal weights can be hard to determine~\cite{softadapt}.
+
+The approach of the SoftAdapt algorithm which was published in 2020 is to mathematically determine the optimal weights of the loss terms given a short loss history. By evaluating the rate of change for each loss term, it tries to dynamically learn the optimal weights for the loss terms and adapt them during the training process~\cite{softadapt}. The SoftAdapt algorithm since its publication has been shown to be effective in various machine learning applications, such as generative models, model compression and physics-informed neural networks.
 
 
 
