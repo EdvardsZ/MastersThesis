@@ -31,8 +31,7 @@ Sampling from $q_{\phi}(z|x)$ enables the Monte Carlo estimation
 where $z^{(l)} \sim q_{\phi}(z|x)$ and $L$ is the number of samples and the first term is the Kullback-Leibler divergence term and the second term is the reconstruction term~\cite{Kingma_2019}. 
 
 
-The individual data-point ELBO and i gradients are in general intractable to compute. However, unbiased estimates of the ELBO and its gradients can be obtained using the reparameterization trick, which is described in the next section~\cite{Kingma_2019}.
-
+The individual data-point ELBO and its gradients are in general intractable to compute. However, unbiased estimates of the ELBO and its gradients can be obtained using the reparameterization trick, which is described in the next section~\cite{Kingma_2019}.
 
 \subsection{The reparameterization Trick}
 
@@ -152,7 +151,7 @@ The decoder distribution $p_{\theta}(x|z)$ is assumed to be a Gaussian distribut
 
 As mentioned earlier, the VQ-VAEs introduce learning the prior distribution separately from the posterior distribution. The prior distribution is defined as a categorical distribution $p_{\omega}(z)$, where $z$ is a discrete latent variable~\cite{vqvae}.
 
-Since the proposed posterior distribution $q_{\phi}(z|x)$ is a deterministic by applying it to ELBO objective, we get the following expression:
+Since the proposed posterior distribution $q_{\phi}(z|x)$ is deterministic by applying it to the ELBO objective, we get the following expression:
 \begin{equation}
     \begin{split}
         L_{\theta, \phi, \omega}(x) &= - D_{KL}(q_{\phi}(z = k|x) || p_{\omega}(z)) + \mathbb{E}_{q_{\phi}(z=k|x)} [\log p_{\theta}(x|z = k)],\\
@@ -166,15 +165,15 @@ The VQVAE learning process is then divided into two stages, where in the first s
 
 \subsubsection{First stage}
 
-In the first stage the log likelihood of posterior distribution is \textbf{maximized}, which means the encoder and the decoder are trained with the prior distribution being arbitrary. The training objective in first stages reduces to 
+In the first stage, the log-likelihood of the posterior distribution is \textbf{maximized}, which means the encoder and the decoder are trained with the prior distribution being arbitrary. The training objective in the first stages was reduced to 
 \[ L_{\theta, \phi}(x) = \log p_{\theta}(x|z = k), \]
 where $k$ is the index of the nearest embedding vector in the embedding space, which is defined in equation~\ref{eqVQVAEPosterior}. We can look at the first stage as training a regular autoencoder with a quantization step in the middle, which inherently makes the latent space distribution categorical~\cite{vqvae}.
     
-However, the expression $k = \argmin_{k} || z_e(x) - e_k ||^2$ is not differentiable with respect to the parameters of the network. To make the training process differentiable, the authors of the VQ-VAEs propose to use the straight-through estimator, which is a way of estimating the gradients of the non-differentiable function, and copy the gradients of $z_q(x)$ to $z_e(x)$~\cite{vqvae}. The straight through estimator only works if the difference between $z_e(x)$ and $e_k$ is small, which can be achieved by adding extra loss terms to the training objective.~\cite{straight_through}
+However, the expression $k = \argmin_{k} || z_e(x) - e_k ||^2$ is not differentiable with respect to the parameters of the network. To make the training process differentiable, the authors of the VQ-VAEs propose to use the straight-through estimator, which is a way of estimating the gradients of the non-differentiable function, and copy the gradients of $z_q(x)$ to $z_e(x)$~\cite{vqvae}. The straight-through estimator only works if the difference between $z_e(x)$ and $e_k$ is small, which can be achieved by adding extra loss terms to the training objective.~\cite{straight_through}
 
 This is where the VQ objective comes in. The VQ objective uses the second term of equation~\ref{eqVQVAEObjective} to encourage the encoder to produce representations that are close to the embedding vectors in the embedding space, which is called the commitment loss~\cite{vqvae}.
 
-However, since the embedding space can be arbitrary large the embedding vectors can be arbitrary far from the encoder output. To prevent this, the authors of the VQ-VAEs propose to add another term to the training objective, which is called the codebook loss. The codebook loss encourages the embedding vectors to be close to the encoder output. The codebook loss has $\beta$ as a hyperparameter, which controls the importance of the codebook loss~\cite{vqvae}.
+However, since the embedding space can be arbitrarily large the embedding vectors can be arbitrarily far from the encoder output. To prevent this, the authors of the VQ-VAEs propose to add another term to the training objective, which is called codebook loss. The codebook loss encourages the embedding vectors to be close to the encoder output. The codebook loss has $\beta$ as a hyperparameter, which controls the importance of the codebook loss~\cite{vqvae}.
 
 Thus, the resulting training objective becomes
 \begin{equation} \label{eqVQVAEObjective}
@@ -198,7 +197,7 @@ In the figure below~\ref{VQVAEFigure} there is a visualization of the architectu
     \caption[Architecture of VQ-VAEs.]%
     { 
         Architecture of VQ-VAEs. The input $x$ is passed through the encoder convolutional neural network producing the output $z_e(x)$. For each output vector in $z_e(x)$, the nearest embedding vector in the embedding table $e$ is found. The indices of the nearest embedding vectors are then used as the discrete latent variables $z$. The discrete latent variables $z$ are then used to look up and retrieve the corresponding embedding vectors. The retrieved embedding vectors are then used as input to the decoder convolutional neural network producing the output $\hat{x}$. During the backward pass the gradients of the gradients of $z_q(x)$ are copied to $z_e(x)$ using the straight-through estimator, which is illustrated with a red arrow.
-        Upper Left: The visualization of the embedding space during training.  The encoder output vector is shown as a dark green dot and the nearest embedding vector is shown as a dark purple dot. The commitment and codebook loss encourage the both the encoder output vector and the nearest embedding vector to be close to each other~\cite{vqvae}.
+        Upper Left: The visualization of the embedding space during training.  The encoder output vector is shown as a dark green dot and the nearest embedding vector is shown as a dark purple dot. The commitment and codebook loss encourage both the encoder output vector and the nearest embedding vector to be close to each other~\cite{vqvae}.
     }
   	\medskip 
 	\hspace*{15pt}\hbox{\scriptsize Credit: Adapted from Aäron van den Oord et al.~\cite{vqvae}.}\label{VQVAEFigure}
@@ -212,23 +211,23 @@ The prior distribution $p_{\omega}(z)$ is then trained to match the distribution
 
 \section{Semi-Conditioned VAEs}
 
-Semi-conditional VAEs were first introduced in 2020~\cite{Gundersen_2021}. Semi-conditional VAEs (SCVAEs) are a variant of VAEs that first designed for the reconstruction of non-linear dynamic processes based on sparse observations. The semi-conditional VAEs extend the standard VAEs framework by adding an additional input $m$ to the decoder network $p_{\theta}(x|z, m)$, which is used to condition the decoder on the additional information. 
+Semi-conditional VAEs were first introduced in 2020~\cite{Gundersen_2021}. Semi-conditional VAEs (SCVAEs) are a variant of VAEs that were first designed for the reconstruction of non-linear dynamic processes based on sparse observations. The semi-conditional VAEs extend the standard VAEs framework by adding an additional input $m$ to the decoder network $p_{\theta}(x|z, m)$, which is used to condition the decoder on the additional information. 
 
 The additional information $m$ can be any type of information that is available at the time of the reconstruction and can be used to improve the reconstruction of the data. In the original paper, the authors used the SCVAEs to reconstruct fluid flow data. The additional information $m$ was the sparse measurements of the flow data. The method was showcased on two different datasets, velocity data from simulations of 2D flow around a cylinder, and bottom currents~\cite{Gundersen_2021}.
 
-Natural applications for the SCVAEs are related to domains where there is often sparse measurements, such as environmental data. However, the SCVAEs can also be used, for instance, in computer vision to generate new image based on sparse pixel representations~\cite{Gundersen_2021}.
+Natural applications for the SCVAEs are related to domains where there are often sparse measurements, such as environmental data. However, the SCVAEs can also be used, for instance, in computer vision to generate new images based on sparse pixel representations~\cite{Gundersen_2021}.
 
 The semi-conditional property of the SCVAEs could also be applied to the VQ-VAEs, which has not been explored yet in the literature. Also, the potential of combining non-conditioned and semi-conditioned VAEs through multitask learning has not been explored yet.
 
 \section{Multitask Learning}
 
-Multitask learning is a machine learning paradigm where multiple tasks are learned at the same time, which has the aim of leveraging the shared information between the tasks to improve the performance of the individual tasks. Unlike the traditional single task learning, where each task is learned independently, multitask learning allows taking advantage of task relationships and to learn a shared representation that is useful for all tasks~\cite{multitasklearning}.
+Multitask learning is a machine learning paradigm where multiple tasks are learned at the same time, which has the aim of leveraging the shared information between the tasks to improve the performance of the individual tasks. Unlike traditional single-task learning, where each task is learned independently, multitask learning allows taking advantage of task relationships and learning a shared representation that is useful for all tasks~\cite{multitasklearning}.
 
-The notion of using multitask learning comes from the observation that the tasks are often related and depend on the same underlying features. This can be beneficial is scenarios where the data is limited, which is often the case for medical data~\cite{medicalMultiTask}.
+The notion of using multitask learning comes from the observation that the tasks are often related and depend on the same underlying features. This can be beneficial in scenarios where the data is limited, which is often the case for medical data~\cite{medicalMultiTask}.
 
-For example, in medical image-analysis, in a scenario where the task is to develop a system for identifying and classifying different types of abnormalities in medical images. Traditionally this could be done by training a separate model for each type of abnormality. However, this approach is not optimal due to limited data and the shared features that could be used to identify and classify multiple types of abnormalities~\cite{multitasklearning}.
+For example, in medical image analysis, in a scenario where the task is to develop a system for identifying and classifying different types of abnormalities in medical images. Traditionally this could be done by training a separate model for each type of abnormality. However, this approach is not optimal due to limited data and the shared features that could be used to identify and classify multiple types of abnormalities~\cite{multitasklearning}.
 
-Multitask learning is an approach in which a single model is trained to perform multiple tasks. In the context of medical image-analysis, this could involve training multitask VAE or VQVAE model capable simultaneously learning to reconstruct images, whilst also learning to classify different types of conditions. 
+Multitask learning is an approach in which a single model is trained to perform multiple tasks. In the context of medical image analysis, this could involve training multitask VAE or VQVAE models capable of simultaneously learning to reconstruct images, whilst also learning to classify different types of conditions. 
 
 Multitask learning has been shown to be most effective when the tasks are related and data is limited. The potential and flexibility of multitask learning for improving the model performance make it a very valuable technique in machine learning. It has an unexplored potential in the context of VAEs and VQ-VAEs, which is the main motivation for this thesis.
 
@@ -236,9 +235,9 @@ Multitask learning has been shown to be most effective when the tasks are relate
 
 \subsection{PixelCNN}\label{background:pixelcnn}
 
-The PixelCNNs are a prominent autoregressive architecture used in the field of pixel-level prediction. These models operate on images at the level of each individual pixels, learning to generate images or predict missing pixels one at a time. Deep autoregressive models have been shown to be very effective at modeling the full distribution and generating relatively low-resolution images. Generating high-resolution images with merely autoregressive models is challenging, because the size of the network increases rapidly with the size of the image~\cite{pixelcnn, pixelrnn}.
+The PixelCNNs are a prominent autoregressive architecture used in the field of pixel-level prediction. These models operate on images at the level of each individual pixel, learning to generate images or predict missing pixels one at a time. Deep autoregressive models have been shown to be very effective at modeling the full distribution and generating relatively low-resolution images. Generating high-resolution images with merely autoregressive models is challenging because the size of the network increases rapidly with the size of the image~\cite{pixelcnn, pixelrnn}.
 
-Autoregressive models treat and image as a sequence of pixels and the goal is to model the conditional distribution of each pixel given the previous pixels.
+Autoregressive models treat an image as a sequence of pixels and the goal is to model the conditional distribution of each pixel given the previous pixels.
 Image $x$ is represented as a one-dimensional sequence of pixels $x = (x_1, x_2, \dots, x_N)$, where $x_i$ is the $i$-th pixel in the image and $N$ is the number of pixels in the image. The estimate of the joint distribution of the pixels over an image $x$ is given by the product of the conditional distributions of each pixel given the previous pixels
 \[ p(x) = \prod_{i=1}^{N} p(x_i|x_1, x_2, \dots, x_{i-1}),\]
 where $p(x_i|x_1, x_2, \dots, x_{i-1})$ is the conditional distribution of the $i$-th pixel given the previous pixels. The generational process of the image is then done by sampling each pixel sequentially from the conditional distribution of the pixel given the previous pixels, which is shown in the figure~\ref{PixelCNNFigure}~\cite{pixelcnn}.
@@ -248,24 +247,30 @@ where $p(x_i|x_1, x_2, \dots, x_{i-1})$ is the conditional distribution of the $
     \centering 
     \includegraphics[scale=0.20]{figures/pixelcnn.png}
     \caption[Conditional generation in autoregressive models]%
-    {Conditional generation in autoregressive models. The model generates the pixels of the image one at a time, conditioning on the previous pixels. The model is autoregressive, because the distribution of each pixel is conditioned on the previous pixels.}
+    {Conditional generation in autoregressive models. The model generates the pixels of the image one at a time, conditioning on the previous pixels. The model is autoregressive because the distribution of each pixel is conditioned on the previous pixels.}
   	\medskip 
     \hspace*{15pt}\hbox{\scriptsize Credit: Adapted from the original PixelCNN paper~\cite{pixelcnn}.}\label{PixelCNNFigure}
 \end{figure}
 
-The PixelCNN in the original architecture is a stack of fifteen fully convolutional network layers with masked convolutions. The masked convolutions are used to ensure that the model can only access the previous pixels, which is crucial for model to be autoregressive. The model is trained to minimize the negative log likelihood of the training data. The PixelCNNs have been shown to be very effective at capturing the distribution of the data. Most current state-of-the-art models use the PixelCNNs as a building block for example PixelCNN++ and PixelSNAIL~\cite{pixelcnn, pixelcnnpp,pixelsnail}.
+The PixelCNN in the original architecture is a stack of fifteen fully convolutional network layers with masked convolutions. The masked convolutions are used to ensure that the model can only access the previous pixels, which is crucial for the model to be autoregressive. The model is trained to minimize the negative log-likelihood of the training data. The PixelCNNs have been shown to be very effective at capturing the distribution of the data. Most current state-of-the-art models use the PixelCNNs as a building block for example PixelCNN++ and PixelSNAIL~\cite{pixelcnn, pixelcnnpp,pixelsnail}.
 
 \subsubsection{Application in VQ-VAEs}
 
-The PixelCNNs are used in the VQ-VAEs to model the prior distribution $p_{\omega}(z)$ over the discrete latent variables. The prior distribution is trained to match the distribution of the latent variables $z$ sampled from the posterior distribution $q_{\phi}(z|x)$. The PixelCNN in combination with the VQ-VAEs has been shown to be exceptional at capturing the distribution of the latent variables and generating high resolution samples~\cite{vqvae}.
+The PixelCNNs are used in the VQ-VAEs to model the prior distribution $p_{\omega}(z)$ over the discrete latent variables. The prior distribution is trained to match the distribution of the latent variables $z$ sampled from the posterior distribution $q_{\phi}(z|x)$. The PixelCNN in combination with the VQ-VAEs has been shown to be exceptional at capturing the distribution of the latent variables and generating high-resolution samples~\cite{vqvae}.
 
 
 \subsection{Random number generation using Power law distribution}
 
-Power law distribution in probability theory and statistics is a distribution in which one variable is proportional to a power of the other, i.e., 
+Power law distribution in probability theory and statistics is a distribution in which one variable is proportional to the power of the other, i.e., 
 $p(x) \propto x^{\alpha}$, where $x$ is the random variable and $\alpha$ is the exponent parameter, where $\alpha$ determines the shape of the distribution. The power law distribution is a heavy-tailed distribution, which means that the probability of the large values is higher than in the normal distribution. The power law distribution is used in various fields, such as physics, biology, economics, and computer science~\cite{powerlaw}. 
 
 One example of the power law distribution could be the function $ f(x) = \alpha x^{\alpha - 1} $ for $ 0 \leq x \leq 1 $, $a > 0$. One advantage to this distribution is that this distribution has a finite range and is easy to scale to any range. This fact will be used when power law distribution is used to sample the number of pixels to be conditioned on in the semi-conditional VAEs.
+
+\subsection{SoftAdapt: Adaptive loss weighting}
+
+Multipart loss functions are common in machine learning, where the loss function is a sum of loss terms. 
+
+
 
 
 

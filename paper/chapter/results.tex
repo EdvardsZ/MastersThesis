@@ -122,11 +122,25 @@ When comparing Uniform and Gaussian sampling, the results showed that Gaussian s
 \section{Cross-validation results}
 
 In this section, I will present the cross-validation results of both methods. The cross-validation was conducted on both Gaussian VAEs and VQ-VAEs. The cross-validation was conducted with 5 folds, where the data was split into 80\% training and 20\% validation.
-The final cross-validation results are presented in table \ref{tab:cross_val_results}.
+The final cross-validation results are presented in tables \ref{tab:cross_val_results_celeba}, \ref{tab:cross_val_results_cifar10}, and \ref{tab:cross_val_results_mnist}.
+
+% Create a table with description
+\pagebreak
+\begin{table}[H]
+    WIP: there should be a table but results are not just in yet
+    \caption{Cross-validation results of \methodOne{1} and \methodTwo{2} on the CelebA dataset.}
+    \label{tab:cross_val_results_celeba}
+\end{table}
+% Create a table with description
+\begin{table}
+    \input{figures/tables/CIFAR10.tex}
+    \caption{Cross-validation results of \methodOne{1} and \methodTwo{2} on the CIFAR10 dataset.}
+    \label{tab:cross_val_results_cifar10}
+\end{table}
 
 % Create a table with description
 \begin{table}
     \input{figures/tables/MNIST.tex}
     \caption{Cross-validation results of \methodOne{1} and \methodTwo{2} on the MNIST dataset.}
-    \label{tab:cross_val_results}
+    \label{tab:cross_val_results_mnist}
 \end{table}
