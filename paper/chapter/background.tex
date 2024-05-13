@@ -31,7 +31,7 @@ Sampling from $q_{\phi}(z|x)$ enables the Monte Carlo estimation
 where $z^{(l)} \sim q_{\phi}(z|x)$ and $L$ is the number of samples and the first term is the Kullback-Leibler divergence term and the second term is the reconstruction term~\cite{Kingma_2019}. 
 
 
-The individual data-point ELBO and its gradients are in general intractable to compute. However, unbiased estimates of the ELBO and its gradients can be obtained using the reparameterization trick, which is described in the next section~\cite{Kingma_2019}.
+The individual data point ELBO and its gradients are in general intractable to compute. However, unbiased estimates of the ELBO and its gradients can be obtained using the reparameterization trick, which is described in the next section~\cite{Kingma_2019}.
 
 \subsection{The reparameterization Trick}
 
@@ -53,7 +53,7 @@ This is the reparameterization trick, which is further explained and illustrated
     \centering
     \input{figures/reparametrization.tex}
     \caption[Illustration diagram of the reparameterization trick]%
-    {Illustration diagram of the reparameterization trick. The input of a function $f$ is $x$. The parameters $\theta$ affect the objective of the function $f$ through a random variable $z$. In the original form we can not compute the gradients $\nabla_{\phi} f$, because a direct backpropagation is not possible through a random variable. In the reparameterized form, the randomness is seperated from the parameters $\phi$, which enables the gradients to be computed. This is done by reparameterizing the random variable $z$ as a deterministic function and differentiable function  of $\phi$, $x$ and a new random variable $\epsilon$~\cite{Kingma_2019}}.
+    {Illustration diagram of the reparameterization trick. The input of a function $f$ is $x$. The parameters $\theta$ affect the objective of the function $f$ through a random variable $z$. In the original form, we can not compute the gradients $\nabla_{\phi} f$, because direct backpropagation is not possible through a random variable. In the reparameterized form, the randomness is separated from the parameters $\phi$, which enables the gradients to be computed. This is done by reparameterizing the random variable $z$ as a deterministic function and differentiable function of $\phi$, $x$ and a new random variable $\epsilon$~\cite{Kingma_2019}}.
 
     \hspace*{15pt}\hbox{\scriptsize Credit: Adapted from Kingma and Welling\cite{Kingma_2019}  }\label{reparametrization}
 
@@ -128,7 +128,7 @@ process consists of two stages. In the first stage, the encoder and the decoder 
 
 \subsection{Discrete Latent Variables}
 
-VQ-VAEs focus on discrete latent variables, which is a more natural fit for many types of data. Language and speech naturally is a stream of discrete units, such as words or phonemes. Images can be often well described by language, which can the discrete representations well suited for images as well. Moreover, discrete representations work very well with complex reasoning, decision-making~\cite{vqvae}.
+VQ-VAEs focus on discrete latent variables, which is a more natural fit for many types of data. Language and speech naturally is a stream of discrete units, such as words or phonemes. Images can be often well described by language, which can the discrete representations well-suited for images as well. Moreover, discrete representations work very well with complex reasoning, and decision-making~\cite{vqvae}.
 
 VQ-VAEs define a latent embedding space $ e \in \mathbb{R}^{K \times D} $, where $K$ is the number of embeddings and $D$ is the dimension of each latent embedding vector. The model takes an input $x$, which is passed through the encoder producing output $z_e(x)$, as shown in figure~\ref{VQVAEFigure}. 
 The discrete latent variables $z$ are then calculated by nearest neighbor lookup in the embedding space
@@ -181,9 +181,9 @@ Thus, the resulting training objective becomes
         L &= \log p_{\theta}(x|z = k) - \biggl( || sg(z_e(x)) - e_k ||^2 + \beta || z_q(x) - sg(e_k) ||^2 \biggr),\\
     \end{split}
 \end{equation}
-where $sg$ is the stop gradient operation, which is defined as identity function, but with the gradients of the output set to zero.
+where $sg$ is the stop gradient operation, which is defined as an identity function, but with the gradients of the output set to zero.
 
-The loss function to be \textbf{minimized} for VQ-VAE's usually used in practice is the sum of the VQ objective and the MSE reconstruction loss.
+The loss function to be \textbf{minimized} for VQ-VAEs usually used in practice is the sum of the VQ objective and the MSE reconstruction loss.
 The first term in the function is the MSE reconstruction loss because maximizing the Gaussian likelihood is approximately equivalent to minimizing the MSE reconstruction loss. This is shown in the equation~\ref{eqMSE}. 
 Thus, the resulting training objective to be minimized becomes
 \[ L = \frac{1}{D} \sum_{i=1}^{D} ||x_i - \hat{x}_i ||^2 + \frac{1}{Z} \sum_{i=1}^{Z} \biggl( || sg(z_e(x))_i - e_{k_{i}} ||^2 + \beta || z_q(x)_i -  sg(e_{k{i}}) ||^2 \biggr), \]
@@ -247,7 +247,7 @@ where $p(x_i|x_1, x_2, \dots, x_{i-1})$ is the conditional distribution of the $
     \centering 
     \includegraphics[scale=0.20]{figures/pixelcnn.png}
     \caption[Conditional generation in autoregressive models]%
-    {Conditional generation in autoregressive models. The model generates the pixels of the image one at a time, conditioning on the previous pixels. The model is autoregressive because the distribution of each pixel is conditioned on the previous pixels.}
+    {Conditional generation in autoregressive models. The model generates the pixels of the image one at a time, conditioning the previous pixels. The model is autoregressive because the distribution of each pixel is conditioned on the previous pixels.}
   	\medskip 
     \hspace*{15pt}\hbox{\scriptsize Credit: Adapted from the original PixelCNN paper~\cite{pixelcnn}.}\label{PixelCNNFigure}
 \end{figure}
