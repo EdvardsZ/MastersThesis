@@ -13,7 +13,7 @@ The experiments showed similar results for both exact sampling and uniform sampl
 
 The reconstruction loss of the conditioned decoder was improved when compared to the non-conditioned decoder \ref{fig:res_val}.
 
-To validate and verify that the results are not influenced due to the architecture of the neural network, I applied a range of loss-balancing techniques such as coefficient balancing and the SoftAdapt algorithm. After applying these techniques it could still be observed that the quality of the reconstruction was improved at the expense of a slightly higher KL divergence loss of the latent space. When comparing the results of the Exact Same Sampling and Uniform Sampling it showed little difference to each other.
+To validate and verify that the results are not influenced due to the architecture of the neural network, I applied a range of loss-balancing techniques such as coefficient balancing and the SoftAdapt algorithm. After applying these techniques it could still be observed that the quality of the reconstruction was improved at the expense of a slightly higher KL divergence loss of the latent space. When comparing the results of the Exact Sampling and Uniform Sampling it showed little difference to each other.
 
 When trying to use deeper neural networks on the Gaussian VAEs, I observed that the posterior collapse was more likely to happen, which is a common problem in Gaussian VAEs~\cite{wang2023posterior}.
 % Think about Coefficients the number of pixels to be sampled. How it changes the results.
@@ -23,7 +23,7 @@ When trying to use deeper neural networks on the Gaussian VAEs, I observed that 
     \input{figures/results/scvae2d.tex}
     \caption[Trained neural network with \methodOne{1} applied to a Gaussian VAE.]
     { 
-        Trained neural network with \methodOne{1} with Exact Same Sampling applied to a Gaussian VAE on CelebA dataset and latent space 16. 
+        Trained neural network with \methodOne{1} with Exact Sampling applied to a Gaussian VAE on CelebA dataset and latent space 16. 
         On the left side as input is the original image, on the right side there are two outputs of the decoders. 
         The image from the conditioned decoder is reconstructed with higher quality compared to the non-conditioned decoder because the conditioned decoder $Decoder_2$ uses conditioning information $m$ to improve the quality of the reconstruction.
     }
@@ -45,18 +45,18 @@ When trying to use deeper neural networks on the Gaussian VAEs, I observed that 
 
 \subsection{Results on VQ-VAEs}
 
-When applying \methodOne{1} to VQ-VAEs, the results showed that both the quality of the reconstruction and the VQ objective loss improved, which could be observed for both Exact Same Sampling and Uniform Sampling, as shown in figure \ref{fig:results_method1_vq_vae}. This could be explained by the fact that the VQ-VAEs are more robust and stable compared to Gaussian VAEs.
+When applying \methodOne{1} to VQ-VAEs, the results showed that both the quality of the reconstruction and the VQ objective loss improved, which could be observed for both Exact Sampling and Uniform Sampling, as shown in figure \ref{fig:results_method1_vq_vae}. This could be explained by the fact that the VQ-VAEs are more robust and stable compared to Gaussian VAEs.
 
 The conditioned decoder was able to reconstruct the image with a higher quality compared to the non-conditioned decoder, however, the difference observed was not as significant as in the Gaussian VAEs. The reasoning behind this lies in the fact that the VQ-VAEs already have a high-quality reconstruction, which makes it harder to improve the quality of the reconstruction.
 
-Same as previously mentioned the method was applied with the SoftAdapt loss balancing technique and without it. The results showed little to no difference between the two. However, the training stability was improved when using SoftAdapt with fewer fluctuations in the loss. When looking at the differences between the Exact Same Sampling and Uniform sampling it showed very little difference between the two, however, the Uniform sampling showed slightly better results.
+Same as previously mentioned the method was applied with the SoftAdapt loss balancing technique and without it. The results showed little to no difference between the two. However, the training stability was improved when using SoftAdapt with fewer fluctuations in the loss. When looking at the differences between the Exact Sampling and Uniform sampling it showed very little difference between the two, however, the Uniform sampling showed slightly better results.
 
 \begin{figure}[H]
     \centering
     \input{figures/results/scvqvae2d.tex}
     \caption[Trained neural network with \methodOne{1} applied to a VQ-VAE.]
     {
-        Trained neural network with \methodOne{1} and with the Exact Same Sampling applied to a VQ-VAE on the CelebA dataset. The neural network has a latent space of 32 and a table of 128 embeddings, with both the encoder having 4 residual layers and the decoder having 4 residual layers.
+        Trained neural network with \methodOne{1} and with the Exact Sampling applied to a VQ-VAE on the CelebA dataset. The neural network has a latent space of 32 and a table of 128 embeddings, with both the encoder having 4 residual layers and the decoder having 4 residual layers.
         On the left side as input is the original image, on the right side there are two outputs of the decoders. 
         The image from the conditioned decoder is reconstructed with higher quality compared to the non-conditioned decoder because the conditioned decoder $Decoder_2$ uses conditioning information $m$.
     }

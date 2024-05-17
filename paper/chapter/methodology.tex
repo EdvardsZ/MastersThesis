@@ -62,7 +62,7 @@ I will explore two-pixel sampling types for this method,
 which can be seen in Figure~\ref{SamplingFigure} and are described as follows:
 
 \begin{enumerate}
-    \item \textbf{Exact Same Sampling:} In this sampling type, the conditioning information $m$ is sampled from the input image $x$ by sampling the same sparse pixels from the input image $x$. In this work, the pixels that will be sampled from the input image will be a sparse grid of pixels.
+    \item \textbf{Exact Sampling:} In this sampling type, the conditioning information $m$ is sampled from the input image $x$ by sampling the same sparse pixels from the input image $x$. In this work, the pixels that will be sampled from the input image will be a sparse grid of pixels.
     \item \textbf{Uniform Random Sampling:} In this sampling type, the conditioning information $m$ is sampled from the input image $x$ by sampling the exact number of pixels from the input image $x$ uniformly at random.
 \end{enumerate}
 
@@ -242,7 +242,7 @@ variable conditioning is illustrated in Figure~\ref{SCVQVAE1DFigure}.
     \input{figures/sampling.tex}
     \caption[Table of pixel sampling types for conditioning.]%
     {
-        Table of pixel sampling types for conditioning. The table has 3 rows each representing a different sampling type. The first row represents the Exact Same Sampling type, the second row represents the uniform random sampling type and the third row represents the Gaussian sampling type where the pixels are more likely to be sampled from the center of the image. The first column represents the original image, the second column represents the mask and the third column represents the result of the sampling operation.
+        Table of pixel sampling types for conditioning. The table has 3 rows each representing a different sampling type. The first row represents the Exact Sampling type, the second row represents the uniform random sampling type and the third row represents the Gaussian sampling type where the pixels are more likely to be sampled from the center of the image. The first column represents the original image, the second column represents the mask and the third column represents the result of the sampling operation.
     }\label{SamplingFigure}
 \end{figure}
 
