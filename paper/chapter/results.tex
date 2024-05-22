@@ -5,7 +5,7 @@ The first section presents the results of \methodOne{1}, and the second section 
 
 \section{Results of \methodOne{1}}
 
-In this section, I will present the results of \methodOne{1} on both Gaussian VAEs and VQ-VAEs. However, the results presented will be of the experiments conducted only on the CelebA dataset and Config. 2 for Gaussian VAEs and Config. 3 for VQ-VAEs. The experiments were conducted with both Exact Sampling and Uniform Sampling and tested with the SoftAdapt loss balancing technique and without it.
+In this section, I will present the results of \methodOne{1} on both Gaussian VAEs and VQ-VAEs. However, the results presented will be of the experiments conducted only on the CelebA dataset and Config. 2 for Gaussian VAEs and Config. 3 for VQ-VAEs. The experiments were conducted with both Exact Sampling and Uniform Sampling and tested with the SoftAdapt loss balancing technique and without it. The results on other configurations showed similar results with minor differences and can be found in the last section of this chapter~\ref{sec:cross_val_results}.
 
 \subsection{Results on Gaussian VAEs}
 
@@ -119,10 +119,9 @@ When comparing Uniform and Gaussian sampling, the results showed that Gaussian s
     \label{fig:results_method2_vq_vae}
 \end{figure}
 
-\section{Cross-validation results}
+\section{Cross-validation results} \label{sec:cross_val_results}
 
-In this section, I will present the cross-validation results of both methods. The cross-validation was conducted on both Gaussian VAEs and VQ-VAEs. The cross-validation was conducted with 5 folds, where the data was split into 80\% training and 20\% validation.
-The final cross-validation results are presented in tables \ref{tab:cross_val_results_celeba}, \ref{tab:cross_val_results_cifar10}, and \ref{tab:cross_val_results_mnist}.
+This section presents the cross-validation results of both methods on all datasets and configurations in this thesis. The cross-validation was conducted with 5 folds, where the data was split into 80\% training and 20\% validation. The final cross-validation results are presented in tables \ref{tab:cross_val_results_celeba}, \ref{tab:cross_val_results_cifar10}, and \ref{tab:cross_val_results_mnist}.
 
 % Create a table with description
 \begin{table}[H]
