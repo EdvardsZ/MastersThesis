@@ -8,7 +8,7 @@ condition the VAEs. In the following section, I will describe the method of
 merging SCVAEs with non-conditioned VAEs using two decoders, where one is
 conditioned, and the other is not. This method will be referred to as
 \methodOne{1}. In the following section, I describe another method of merging
-SCVAEs with non-conditioned VAEs by utilizing the same encoder and decoder for
+SCVAEs with non-conditioned VAEs utilizing the same encoder and decoder for
 both models by employing novel training strategies, which will be referred to
 as \methodTwo{2}. Both methods will be applied to both Gaussian VAEs and VQ-VAEs.
 
@@ -280,4 +280,4 @@ For VQ-VAEs experiments were conducted in 3 configurations:
 
 \subsection{Training}
 
-The models will be trained using the AdamW optimizer with a learning rate of $10^{-3}$ and a batch size of 128 for 100 epochs. The models will be trained on the training set and evaluated on the validation set. The best model will be selected based on the validation loss. The models will be trained on a single GPU.
+The models will be trained using the AdamW optimizer with a learning rate of $10^{-3}$ and a batch size of 128 for 100 epochs. The models will be trained on the training set and evaluated on the validation set. The best models will be evaluated based on the cross-validation results. The models will be trained on a single GPU.
