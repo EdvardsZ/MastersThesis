@@ -1,11 +1,17 @@
 \centering
 \scriptsize
-\begin{tabular}{ |c|c|c| } 
-    \hline
-    cell1 & cell2 & cell3 \\ 
-    cell4 & cell5 & cell6 \\ 
-    cell7 & cell8 & cell9 \\ 
-    \hline
+\begin{tabular}{||c|c|c|c||}
+\hline
+ Method & Parameters & Reconstruction loss & KL loss \\
+\hline
+- & - & 0.0042 +- 1.2e-03 & 0.0018 +- 6.3e-04 \\
+\hline
+Multi Decoder & Exact sampling & 0.0036 +- 8.3e-04 & 0.0027 +- 8.7e-04 \\
+\hline
+Multi Decoder & Exact sampling, SoftAdapt & 0.0034 +- 1.9e-04 & 0.0029 +- 2.8e-03 \\
+\hline
+Multi Decoder & Uniform sampling & 0.0035 +- 6.5e-04 & 0.0026 +- 1.7e-03 \\
+\hline
+Multi Decoder & Uniform sampling, SoftAdapt & 0.0034 +- 7.3e-03 & 0.0029 +- 2.0e-02 \\
+\hline
 \end{tabular}
-    
-    
