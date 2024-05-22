@@ -5,7 +5,9 @@ The first section presents the results of \methodOne{1}, and the second section 
 
 \section{Results of \methodOne{1}}
 
-In this section, I will present the results of \methodOne{1} on both Gaussian VAEs and VQ-VAEs. However, the results presented will be of the experiments conducted only on the CelebA dataset and Config. 2 for Gaussian VAEs and Config. 3 for VQ-VAEs. The experiments were conducted with both Exact Sampling and Uniform Sampling and tested with the SoftAdapt loss balancing technique and without it. The results on other configurations showed similar results with minor differences and can be found in the last section of this chapter~\ref{sec:cross_val_results}.
+In this section, I will present the results of applying \methodOne{1} on both Gaussian VAEs and VQ-VAEs, with a comparative analysis of the baseline models without the method applied. The primary performance metrics that we will focus on are the reconstruction loss and the KL divergence loss of the latent space in the case of Gaussian VAEs and the VQ objective loss in the case of VQ-VAEs. 
+
+The results presented in this section are based on the experiments conducted on the CelebA dataset with Config. 2 for Gaussian VAEs and Config. 3 for VQ-VAEs. The results on other configurations showed similar results with minor differences and can be found in the last section of this chapter~\ref{sec:cross_val_results}. The experiments were conducted with both Exact Sampling and Uniform Sampling and tested with the SoftAdapt loss balancing technique and without it. 
 
 \subsection{Results on Gaussian VAEs}
 
