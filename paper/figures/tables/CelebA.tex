@@ -4,7 +4,7 @@
 \hline
  & Config. & Method & Parameters & Reconstruction loss & VQ/KL loss \\
 \hline
-\multirow{28}{*}{\rotatebox[origin=c]{90}{VQ-VAE}} & \multirow{9}{*}{1} & \multirow{1}{*}{-} & - & 0.0034 +- 2.7e-08 & 0.0030 +- 1.7e-06 \\
+\multirow{31}{*}{\rotatebox[origin=c]{90}{VQ-VAE}} & \multirow{9}{*}{1} & \multirow{1}{*}{-} & - & 0.0034 +- 2.7e-08 & 0.0030 +- 1.7e-06 \\
 \cline{4-6}
 \cline{3-6}
  &  & \multirow{4}{*}{Multi Decoder} & Exact sampling & 0.0035 +- 2.6e-08 & 0.0048 +- 4.3e-07 \\
@@ -26,14 +26,16 @@
 \cline{4-6}
 \cline{3-6}
 \cline{2-6}
- & \multirow{12}{*}{2} & \multirow{1}{*}{-} & - & 0.0022 +- 4.2e-08 & 0.0048 +- 8.3e-07 \\
+ & \multirow{13}{*}{2} & \multirow{1}{*}{-} & - & 0.0022 +- 4.2e-08 & 0.0048 +- 8.3e-07 \\
 \cline{4-6}
 \cline{3-6}
- &  & \multirow{3}{*}{Multi Decoder} & Exact sampling & 0.0017 +- 3.2e-08 & 0.0054 +- 2.3e-06 \\
+ &  & \multirow{4}{*}{Multi Decoder} & Exact sampling & 0.0017 +- 3.2e-08 & 0.0054 +- 2.3e-06 \\
 \cline{4-6}
  &  &  & Exact sampling, SoftAdapt & \textbf{0.0017 +- 1.0e-08} & 0.0027 +- 1.9e-09 \\
 \cline{4-6}
  &  &  & Uniform sampling & 0.0018 +- 4.7e-09 & 0.0046 +- 1.3e-06 \\
+\cline{4-6}
+ &  &  & Uniform sampling, SoftAdapt & 0.0018 +- 1.6e-08 & 0.0026 +- 1.2e-07 \\
 \cline{4-6}
 \cline{3-6}
  &  & \multirow{8}{*}{Single Decoder} & Gaussian sampling, Exponent=40 & 0.0027 +- 1.8e-07 & 0.0028 +- 2.3e-06 \\
@@ -54,12 +56,16 @@
 \cline{4-6}
 \cline{3-6}
 \cline{2-6}
- & \multirow{7}{*}{3} & \multirow{1}{*}{-} & - & 0.0022 +- 7.4e-08 & 0.0029 +- 4.1e-07 \\
+ & \multirow{9}{*}{3} & \multirow{1}{*}{-} & - & 0.0022 +- 7.4e-08 & 0.0029 +- 4.1e-07 \\
 \cline{4-6}
 \cline{3-6}
- &  & \multirow{2}{*}{Multi Decoder} & Exact sampling & 0.0017 +- 6.9e-09 & 0.0039 +- 9.8e-07 \\
+ &  & \multirow{4}{*}{Multi Decoder} & Exact sampling & 0.0017 +- 6.9e-09 & 0.0039 +- 9.8e-07 \\
 \cline{4-6}
- &  &  & Uniform sampling, SoftAdapt & \textbf{0.0017 +- 6.6e-08} & 0.0021 +- 3.1e-07 \\
+ &  &  & Exact sampling, SoftAdapt & \textbf{0.0013 +- 2.4e-09} & 0.0016 +- 6.8e-08 \\
+\cline{4-6}
+ &  &  & Uniform sampling & 0.0018 +- 1.3e-07 & 0.0036 +- 3.5e-07 \\
+\cline{4-6}
+ &  &  & Uniform sampling, SoftAdapt & 0.0017 +- 6.6e-08 & 0.0021 +- 3.1e-07 \\
 \cline{4-6}
 \cline{3-6}
  &  & \multirow{4}{*}{Single Decoder} & Gaussian sampling, Exponent=40 & 0.0019 +- 7.2e-08 & 0.0009 +- 1.7e-07 \\
@@ -73,14 +79,20 @@
 \cline{3-6}
 \cline{2-6}
 \hline
-\multirow{6}{*}{\rotatebox[origin=c]{90}{Gaussian VAE}} & \multirow{2}{*}{1} & \multirow{1}{*}{-} & - & 0.0165 +- 4.0e-03 & 0.0027 +- 6.1e-04 \\
+\multirow{11}{*}{\rotatebox[origin=c]{90}{Gaussian VAE}} & \multirow{5}{*}{1} & \multirow{1}{*}{-} & - & 0.0165 +- 4.0e-03 & 0.0027 +- 6.1e-04 \\
 \cline{4-6}
 \cline{3-6}
- &  & \multirow{1}{*}{Single Decoder} & Gaussian sampling, Exponent=60 & \textbf{0.0142 +- 1.3e-03} & \textbf{0.0024 +- 9.0e-04} \\
+ &  & \multirow{4}{*}{Single Decoder} & Gaussian sampling, Exponent=40 & 0.0142 +- 5.9e-03 & 0.0024 +- 9.6e-04 \\
+\cline{4-6}
+ &  &  & Gaussian sampling, Exponent=60 & 0.0142 +- 1.3e-03 & 0.0024 +- 9.0e-04 \\
+\cline{4-6}
+ &  &  & Uniform sampling, Exponent=40 & \textbf{0.0133 +- 6.8e-03} & 0.0022 +- 6.1e-04 \\
+\cline{4-6}
+ &  &  & Uniform sampling, Exponent=60 & 0.0134 +- 1.7e-03 & \textbf{0.0022 +- 3.4e-04} \\
 \cline{4-6}
 \cline{3-6}
 \cline{2-6}
- & \multirow{4}{*}{2} & \multirow{1}{*}{-} & - & 0.0097 +- 4.2e-03 & \textbf{0.0051 +- 1.9e-03} \\
+ & \multirow{6}{*}{2} & \multirow{1}{*}{-} & - & 0.0097 +- 4.2e-03 & 0.0051 +- 1.9e-03 \\
 \cline{4-6}
 \cline{3-6}
  &  & \multirow{3}{*}{Multi Decoder} & Exact sampling & 0.0091 +- 1.5e-03 & 0.0061 +- 3.4e-04 \\
@@ -88,6 +100,11 @@
  &  &  & Uniform sampling & 0.0089 +- 6.4e-04 & 0.0063 +- 2.6e-03 \\
 \cline{4-6}
  &  &  & Uniform sampling, SoftAdapt & \textbf{0.0087 +- 1.9e-02} & 0.0066 +- 3.1e-02 \\
+\cline{4-6}
+\cline{3-6}
+ &  & \multirow{2}{*}{Single Decoder} & Gaussian sampling, Exponent=40 & 0.0100 +- 6.8e-03 & 0.0045 +- 5.9e-03 \\
+\cline{4-6}
+ &  &  & Gaussian sampling, Exponent=60 & 0.0101 +- 3.1e-03 & \textbf{0.0045 +- 3.6e-03} \\
 \cline{4-6}
 \cline{3-6}
 \cline{2-6}
