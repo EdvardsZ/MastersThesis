@@ -11,27 +11,21 @@ The results presented in this section are based on the experiments conducted on 
 
 \subsection{Results on Gaussian VAEs}
 
-The experiments showed similar results for both exact sampling and uniform sampling. The results showed that \methodOne{1} can be used not only to obtain a conditioned decoder but also to improve the quality of non-conditioned decoder reconstruction when compared to non-conditioned Gaussian VAEs. However, KL divergence loss of the latent space increased when \methodOne{1} was applied. This can be explained by the fact that there is a trade-off between the quality of the reconstruction and the KL divergence of the latent space. An example of this can be seen in figure \ref{fig:results_method1_gaussian_vae}. 
+The experiments showed that Gaussian VAEs \methodOne{1} was successful in its core task to train 2 decoders with a shared encoder. Upon examining the results, it was observed that the initial idea that this method would reduce the reconstruction loss of both the conditioned and non-conditioned decoders was confirmed. However, the KL divergence loss of the latent space increased with the application of \methodOne{1}, which can be seen in figure \ref{fig:results_method1_gaussian_vae} and table \ref{tab:results_method1_gaussian_vae}.
 
-The reconstruction loss of the conditioned decoder was improved when compared to the non-conditioned decoder \ref{fig:res_val}.
+The conditioned decoder produced outputs with much higher quality when compared to the non-conditioned decoder. This can be observed in figure~\ref{fig:rec_gaussian}. When comparing the results of the Exact Sampling and Uniform Sampling, in this case, the analysis revealed little difference between the two, which can be seen in table \ref{tab:results_method1_gaussian_vae}.
 
-To validate and verify that the results are not influenced due to the architecture of the neural network, I applied a range of loss-balancing techniques such as coefficient balancing and the SoftAdapt algorithm. After applying these techniques it could still be observed that the quality of the reconstruction was improved at the expense of a slightly higher KL divergence loss of the latent space. When comparing the results of the Exact Sampling and Uniform Sampling it showed little difference to each other.
+The experiments were also run with the SoftAdapt loss balancing technique and without it. In this case, the results showed
+that there was little to no difference between the two. However, the training validation loss looked more stable when using SoftAdapt, with fewer fluctuations in the losses.
 
-When trying to use deeper neural networks on the Gaussian VAEs, I observed that the posterior collapse was more likely to happen, which is a common problem in Gaussian VAEs~\cite{wang2023posterior}.
-% Think about Coefficients the number of pixels to be sampled. How it changes the results.
+The experiments were also run with deeper neural networks, which showed that training instability in the form of posterior collapse was more likely to happen. This is a common problem in Gaussian VAEs~\cite{wang2023posterior}. That is why a more sophisticated configuration of a Gaussian VAE was not used in the experiments. 
 
-\begin{figure}[H]
+\begin{table}[H]
     \centering
-    \input{figures/results/scvae2d.tex}
-    \caption[Trained neural network with \methodOne{1} applied to a Gaussian VAE.]
-    { 
-        Trained neural network with \methodOne{1} with Exact Sampling applied to a Gaussian VAE on CelebA dataset and latent space 16. 
-        On the left side as input is the original image, on the right side there are two outputs of the decoders. 
-        The image from the conditioned decoder is reconstructed with higher quality compared to the non-conditioned decoder because the conditioned decoder $Decoder_2$ uses conditioning information $m$ to improve the quality of the reconstruction.
-    }
-    \label{fig:res_val}
-\end{figure}
-
+    \input{figures/tables/scvae2d.tex}
+    \caption{Cross-validation results of \methodOne{1} applied to a Gaussian VAE(Config. 2) on the CelebA dataset.}
+    \label{tab:results_method1_gaussian_vae}
+\end{table}
 
 \begin{figure}[H]
     \centering
@@ -39,10 +33,21 @@ When trying to use deeper neural networks on the Gaussian VAEs, I observed that 
     \scalebox{0.48}{\input{figures/results/SCVAE2D_EXACT/recon_loss.pgf}}
     \caption[Validation loss during training of a Gaussian VAE.]
     {
-        Validation losses during training with and without \methodOne{1} applied on Gaussian VAE. The results are shown for the non-conditioned decoder - $Decoder_1$, and Exact Sampling. The dataset used is CelebA.
+        Validation losses during training with and without \methodOne{1} applied on Gaussian VAE(Config. 2). The results are shown for the non-conditioned decoder - $Decoder_1$, and Exact Sampling. The dataset used is CelebA.
         Left: KL divergence loss of the latent space comparison. Right: Reconstruction loss comparison of the $Decoder_1$ - non-conditioned decoder.
     }
     \label{fig:results_method1_gaussian_vae}
+\end{figure}
+
+
+\begin{figure}[H]
+    \centering
+    \input{figures/results/scvae2d.tex}
+    \caption[Trained neural network with \methodOne{1} applied to a Gaussian VAE.]
+    { 
+        Outputs of a trained Gaussian VAE with \methodOne{1} Exact Sampling applied to a Gaussian VAE(Config. 1) on CelebA dataset. The image from the conditioned decoder is reconstructed with higher quality compared to the non-conditioned decoder because the conditioned decoder $Decoder_2$ uses conditioning information $m$ to improve the quality of the reconstruction.
+    }
+    \label{fig:rec_gaussian}
 \end{figure}
 
 \subsection{Results on VQ-VAEs}
