@@ -20,6 +20,9 @@ that there was little to no difference between the two. However, the training va
 
 The experiments were also run with deeper neural networks, which showed that training instability in the form of posterior collapse was more likely to happen. This is a common problem in Gaussian VAEs~\cite{wang2023posterior}. That is why a more sophisticated configuration of a Gaussian VAE was not used in the experiments. 
 
+% TODO: Add this to the discussion
+% This can be explained by the fact that there is a trade-off between the quality of the reconstruction and the KL divergence of the latent space. %
+
 \begin{table}[H]
     \centering
     \input{figures/tables/scvae2d.tex}
@@ -33,7 +36,7 @@ The experiments were also run with deeper neural networks, which showed that tra
     \scalebox{0.48}{\input{figures/results/SCVAE2D_EXACT/recon_loss.pgf}}
     \caption[Validation loss during training of a Gaussian VAE.]
     {
-        Validation losses during training with and without \methodOne{1} applied on Gaussian VAE(Config. 2). The results are shown for the non-conditioned decoder - $Decoder_1$, and Exact Sampling. The dataset used is CelebA.
+        (Average) Validation losses during training with and without \methodOne{1} applied on Gaussian VAE(Config. 2). The results are shown for the non-conditioned decoder - $Decoder_1$, and Exact Sampling. The dataset used is CelebA.
         Left: KL divergence loss of the latent space comparison. Right: Reconstruction loss comparison of the $Decoder_1$ - non-conditioned decoder.
     }
     \label{fig:results_method1_gaussian_vae}
@@ -52,23 +55,24 @@ The experiments were also run with deeper neural networks, which showed that tra
 
 \subsection{Results on VQ-VAEs}
 
-When applying \methodOne{1} to VQ-VAEs, the results showed that both the quality of the reconstruction and the VQ objective loss improved, which could be observed for both Exact Sampling and Uniform Sampling, as shown in figure \ref{fig:results_method1_vq_vae}. This could be explained by the fact that the VQ-VAEs are more robust and stable compared to Gaussian VAEs.
+Overall, upon examining the results on VQ-VAEs, it was observed that when applying \methodOne{1} with default weight settings, the reconstruction loss was reduced for both the conditioned and non-conditioned decoders, which means an overall improvement in the quality of the reconstruction, which was observed for both sampling methods. However, the VQ objective loss increased when SoftAdapt was not used, which can be seen in Table \ref{tab:results_method1_vq_vae}.
 
-The conditioned decoder was able to reconstruct the image with a higher quality compared to the non-conditioned decoder, however, the difference observed was not as significant as in the Gaussian VAEs. The reasoning behind this lies in the fact that the VQ-VAEs already have a high-quality reconstruction, which makes it harder to improve the quality of the reconstruction.
+Furthermore, incorporating SoftAdapt, which uses adaptive weight balancing, resulted in notable improvements, see section \ref{background:softadapt}. More specifically, both the reconstruction loss and the VQ objective loss decreased when SoftAdapt was utilized, as compared to the baseline configuration. This shows that the model's performance was enhanced with the application of our method and SoftAdapt technique, leading to an overall better-performing model, which can be seen in table \ref{tab:results_method1_vq_vae} and figure \ref{fig:results_method1_vq_vae}. 
 
-Same as previously mentioned the method was applied with the SoftAdapt loss balancing technique and without it. The results showed little to no difference between the two. However, the training stability was improved when using SoftAdapt with fewer fluctuations in the loss. When looking at the differences between the Exact Sampling and Uniform sampling it showed very little difference between the two, however, the Uniform sampling showed slightly better results.
+When SoftAdapt was incorporated into the training, the training stability was improved, with fewer fluctuations in the loss. The results showed that the model was able to learn the optimal weights for the loss functions, which resulted in a more stable training process, which can be seen in figure \ref{fig:results_method1_vq_vae}.
 
-\begin{figure}[H]
+The conditioned decoder was able to reconstruct the image with a higher quality compared to the non-conditioned decoder, however, the difference observed was not as significant as with Gaussian VAEs, which can also be seen in figure \ref{fig:rec_vqvae}. 
+
+% Move to discussion %
+%This could be explained by the fact that the VQ-VAEs are more robust and stable compared to Gaussian VAEs.
+%The reasoning behind this lies in the fact that the VQ-VAEs already have a high-quality reconstruction, which makes it harder to improve the quality of the reconstruction.
+
+\begin{table}[H]
     \centering
-    \input{figures/results/scvqvae2d.tex}
-    \caption[Trained neural network with \methodOne{1} applied to a VQ-VAE.]
-    {
-        Trained neural network with \methodOne{1} and with the Exact Sampling applied to a VQ-VAE on the CelebA dataset. The neural network has a latent space of 32 and a table of 128 embeddings, with both the encoder having 4 residual layers and the decoder having 4 residual layers.
-        On the left side as input is the original image, on the right side there are two outputs of the decoders. 
-        The image from the conditioned decoder is reconstructed with higher quality compared to the non-conditioned decoder because the conditioned decoder $Decoder_2$ uses conditioning information $m$.
-    }
-    \label{fig:res_val_vqvae}
-\end{figure}
+    \input{figures/tables/scvqvae2d.tex}
+    \caption{Cross-validation results of \methodOne{1} applied to a VQ-VAE(Config. Nr. 3) on the CelebA dataset.}
+    \label{tab:results_method1_vq_vae}
+\end{table}
 
 \begin{figure}[H]
     \centering
@@ -76,11 +80,22 @@ Same as previously mentioned the method was applied with the SoftAdapt loss bala
     \scalebox{0.48}{\input{figures/results/SCVQVAE2D_EXACT/recon_loss.pgf}}
     \caption[Validation loss comparison during training of a Gaussian VAE.]
     {
-        Validation losses during training with and without \methodOne{1} applied on VQ-VAE Configuration 3. The results of \methodOne{1} in the plot shown for the non-conditioned decoder - $Decoder_1$, and Exact Sampling is used with SoftAdapt. The dataset used is CelebA.
+        (Average) Validation losses during training with and without \methodOne{1} applied on VQ-VAE (Config. 3) and CelebA dataset. The results of \methodOne{1} in the plot shown for the non-conditioned decoder - $Decoder_1$, and Exact Sampling is used with SoftAdapt enabled.
         Left: VQ objective loss comparison. Right: Reconstruction loss comparison.
     }
     \label{fig:results_method1_vq_vae}
 \end{figure}
+
+\begin{figure}[H]
+    \centering
+    \input{figures/results/scvqvae2d.tex}
+    \caption[Trained neural network with \methodOne{1} applied to a VQ-VAE.]
+    {
+        Outputs of a trained VQ-VAE with \methodOne{1} and Exact Sampling applied to a VQ-VAE (Config. 3). The image from the conditioned decoder is reconstructed with higher quality compared to the non-conditioned decoder because the conditioned decoder $Decoder_2$ uses the extra conditioning information $m$ and tries to improve the quality of the reconstruction.
+    }
+    \label{fig:rec_vqvae}
+\end{figure}
+
 
 \section{Results of \methodTwo{2}}
 

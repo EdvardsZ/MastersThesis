@@ -269,7 +269,7 @@ $p(x) \propto x^{\alpha}$, where $x$ is the random variable and $\alpha$ is the 
 
 One example of the power law distribution could be the function $ f(x) = \alpha x^{\alpha - 1} $ for $ 0 \leq x \leq 1 $, $a > 0$. One advantage to this distribution is that this distribution has a finite range and is easy to scale to any range. This fact will be used when power law distribution is used to sample the number of pixels to be conditioned on in the semi-conditional VAEs.
 
-\subsection{SoftAdapt: Adaptive loss weighting}
+\subsection{SoftAdapt: Adaptive loss weighting} \label{background:softadapt}
 
 SoftAdapt is a novel approach to address the challenge of dynamically adjusting weights for multipart loss functions in deep learning. 
 In machine learning, multipart loss functions are common, wherein the loss function is composed of a sum of loss terms. Traditionally, the loss terms of multipart loss function are weighted equally, or their weights are determined through heuristic methods. Whilst this approach can work well in practice, it is not optimal because the importance of the loss terms can vary during the training process and the optimal weights can be hard to determine~\cite{softadapt}.
