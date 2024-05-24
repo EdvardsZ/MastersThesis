@@ -224,7 +224,13 @@ def drop_unnecessary_columns(df):
     return df
 
 
-def get_reduction_factor(file_path: str):
+def get_reduction_factor(file_path: str, is_recon: bool):
+    if "VQVAE" in file_path:
+        return 1
+    
+    if not is_recon:
+        return 128
+    
     if "MNIST" in file_path:
         return 128 * 28 * 28
     if "CIFAR10" in file_path:
