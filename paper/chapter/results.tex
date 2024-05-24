@@ -101,6 +101,10 @@ The conditioned decoder was able to reconstruct the image with a higher quality 
 
 In this section, I will present the results of \methodTwo{2} on both Gaussian VAEs and VQ-VAEs, which will be compared against baseline models without the method applied. Although in the training process of \methodTwo{2}, the reconstruction loss that is minimized uses the conditioning information, the primary performance metrics that we will focus on and evaluate are the reconstruction loss in a non-conditioned setting and the KL divergence loss of the latent space in the case of Gaussian VAEs and the VQ objective loss in the case of VQ-VAEs.
 
+The results presented in this section are based on the experiments conducted on the CelebA dataset with Config. 2 for Gaussian VAEs and Config. 3 for VQ-VAEs, however, the rest of the configurations showed similar results with minor differences and can be found in the last section of this chapter~\ref{sec:cross_val_results}. The analysis will be done with respect to both Uniform Sampling and Gaussian Sampling and tested with the Power law distribution with different exponent values.
+
+% TODO: MENTION in the methodology the different exponent values for the power-law distribution
+
 \subsection{Results on Gaussian VAEs}
 
 The results showed that \methodTwo{2} can be used for unifying two decoders into one. The experiments were conducted with both Uniform and Gaussian sampling. The results showed that for both methods this comes at a cost of slightly lower quality of the reconstruction when no conditioning information is given compared to a standard Gaussian VAE. However, the findings showed that this approach can substantially reduce the KL divergence loss of the latent space, which can be seen in figure \ref{fig:results_method2_gaussian_vae}.
@@ -120,7 +124,7 @@ Although, for both Uniform and Gaussian sampling findings showed that this metho
     \scalebox{0.48}{\input{figures/results/SCVAE1D_UNIFORM/recon_loss.pgf}}
     \caption[Validation loss during training with \methodTwo{2} applied on Gaussian VAE.]
     {
-        Validation losses during training with and without \methodTwo{2} applied on Gaussian VAE Configuration 2.
+        (Average) Validation losses during training with and without \methodTwo{2} applied on Gaussian VAE Configuration 2.
         Left: KL loss comparison. Right: Reconstruction loss comparison of the $Decoder_1$ - non-conditioned decoder with a standard Gaussian VAE.
     }
     \label{fig:results_method2_gaussian_vae}
