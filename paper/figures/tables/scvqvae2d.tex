@@ -2,16 +2,16 @@
 \scriptsize
 \begin{tabular}{||c|c|c|c||}
 \hline
- Method & Parameters & Reconstruction loss & KL loss \\
+ Method & Parameters & Reconstruction loss & VQ loss \\
 \hline
-\textit{Baseline} & - & 0.0089 +- 2.2e-06 & 0.0074 +- 6.6e-06 \\
+\textit{Baseline} & - & 0.0022 +- 7.4e-08 & 0.0029 +- 4.1e-07 \\
 \hline
-Multi Decoder & Exact sampling & 0.0064 +- 6.5e-07  $\downarrow$ & 0.0088 +- 3.1e-06  $\uparrow$ \\
+Multi Decoder & Exact sampling & 0.0017 +- 6.9e-09  $\downarrow$ & 0.0039 +- 9.8e-07  $\uparrow$ \\
 \hline
-Multi Decoder & Exact sampling, SoftAdapt & 0.0292 +- 7.4e-04  $\uparrow$ & 0.0031 +- 9.7e-06  $\downarrow$ \\
+Multi Decoder & Exact sampling, SoftAdapt & 0.0013 +- 2.4e-09  $\downarrow$ & 0.0016 +- 6.8e-08  $\downarrow$ \\
 \hline
-Multi Decoder & Uniform sampling & 0.0063 +- 6.1e-08  $\downarrow$ & 0.0099 +- 4.0e-07  $\uparrow$ \\
+Multi Decoder & Uniform sampling & 0.0018 +- 1.3e-07  $\downarrow$ & 0.0036 +- 3.5e-07  $\uparrow$ \\
 \hline
-Multi Decoder & Uniform sampling, SoftAdapt & 0.0277 +- 4.5e-04  $\uparrow$ & 0.0026 +- 6.8e-06  $\downarrow$ \\
+Multi Decoder & Uniform sampling, SoftAdapt & 0.0017 +- 6.6e-08  $\downarrow$ & 0.0021 +- 3.1e-07  $\downarrow$ \\
 \hline
 \end{tabular}
