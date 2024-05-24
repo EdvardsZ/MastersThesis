@@ -16,6 +16,11 @@ class Result:
         self.filename = filename
         self.data = data
         
+        
+    def print_all_data(self):
+        for key in self.data.keys():
+            print(f"{key}: {self.data[key].average} ({self.data[key].std})")
+        
     def get_unconditioned_losses(self) -> list[Loss]:
         
         recon = self.get_unconditioned_reconstruction()
@@ -38,14 +43,11 @@ class Result:
             
     def get_unconditioned_reconstruction(self) -> Loss:
         if "test_recon_loss_0(MASKED)" in self.data:
-            recon = self.data["test_recon_loss_0(MASKED)"]
+            return self.data["test_recon_loss_0(MASKED)"]
         if "test_recon_loss_0" in self.data:
-            recon = self.data["test_recon_loss_0"]
-            
-        if recon is None:
-            raise Exception("No recon loss found")
+            return self.data["test_recon_loss_0"]
         
-        return recon      
+        raise Exception("No recon loss found") 
         
     def get_config_number(self) -> int:
         return get_config_number(self.filename)

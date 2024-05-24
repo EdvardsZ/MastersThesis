@@ -7,7 +7,7 @@ The first section presents the results of \methodOne{1}, and the second section 
 
 In this section, I will present the results of applying \methodOne{1} on both Gaussian VAEs and VQ-VAEs, with a comparative analysis of the baseline models without the method applied. The primary performance metrics that we will focus on are the reconstruction loss and the KL divergence loss of the latent space in the case of Gaussian VAEs and the VQ objective loss in the case of VQ-VAEs. 
 
-The results presented in this section are based on the experiments conducted on the CelebA dataset with Config. 2 for Gaussian VAEs and Config. 3 for VQ-VAEs. The results on other configurations showed similar results with minor differences and can be found in the last section of this chapter~\ref{sec:cross_val_results}. The experiments were conducted with both Exact Sampling and Uniform Sampling and tested with the SoftAdapt loss balancing technique and without it. 
+The results presented in this section are based on the experiments conducted on the CelebA dataset with Config. 2 for Gaussian VAEs and Config. 3 for VQ-VAEs. The results on other configurations showed similar results with minor differences and can be found in the last section of this chapter~\ref{sec:cross_val_results}. The experiments will be compared and analyzed with respect to both Exact Sampling and Uniform Sampling and tested with the SoftAdapt loss balancing technique and without it. 
 
 \subsection{Results on Gaussian VAEs}
 
@@ -99,7 +99,7 @@ The conditioned decoder was able to reconstruct the image with a higher quality 
 
 \section{Results of \methodTwo{2}}
 
-In this section, I will present the results of \methodTwo{2} on both Gaussian VAEs and VQ-VAEs. The method was applied to the same datasets as the previous method. For this method, I ran the experiments with both Uniform and Gaussian sampling. The count sampling was done with Power law distribution with different exponent values.
+In this section, I will present the results of \methodTwo{2} on both Gaussian VAEs and VQ-VAEs, which will be compared against baseline models without the method applied. Although in the training process of \methodTwo{2}, the reconstruction loss that is minimized uses the conditioning information, the primary performance metrics that we will focus on and evaluate are the reconstruction loss in a non-conditioned setting and the KL divergence loss of the latent space in the case of Gaussian VAEs and the VQ objective loss in the case of VQ-VAEs.
 
 \subsection{Results on Gaussian VAEs}
 
@@ -107,7 +107,12 @@ The results showed that \methodTwo{2} can be used for unifying two decoders into
 
 Although, for both Uniform and Gaussian sampling findings showed that this method results in a slightly lower quality of the reconstruction compared to a standard Gaussian VAE. This approach reduced the KL divergence loss of the latent space for both of the sampling methods. For Uniform sampling, the results showed that the KL divergence loss of the latent space was reduced more compared to Gaussian sampling. One possible explanation for this could be that with Gaussian sampling, there is a higher probability of sampling the same pixel multiple times, which can be less informative for the decoder.
 
-Experiments were also conducted with a range of different exponent values for the power-law distribution. The findings showed that the higher the exponent value the more the model was able to reduce the reconstruction loss of the scenario, where no conditioning information is given. However, the KL divergence loss of the latent space increased with higher exponent values.
+\begin{table}[H]
+    \centering
+    \input{figures/tables/scvae1d.tex}
+    \caption{Cross-validation results of \methodTwo{2} applied to a Gaussian VAE(Config. 2) on the CelebA dataset.}
+    \label{tab:results_method2_gaussian_vae}
+\end{table}
 
 \begin{figure}[H]
     \centering
@@ -129,6 +134,13 @@ The experiments were run with a range of different exponent values: 20, 30, 40, 
 
 When comparing Uniform and Gaussian sampling, the results showed that Gaussian sampling performed slightly better than Uniform sampling. This can be explained by the fact that the information around the center of the image is more important for the reconstruction, which is more likely to be sampled with Gaussian sampling.
 
+
+\begin{table}[H]
+    \centering
+    \input{figures/tables/scvqvae1d.tex}
+    \caption{Cross-validation results of \methodTwo{2} applied to a VQ-VAE(Config. Nr. 3) on the CelebA dataset.}
+    \label{tab:results_method2_vq_vae}
+\end{table}
 \begin{figure}[H]
     \centering
     \scalebox{0.48}{\input{figures/results/SCVQVAE1D_GAUSSIAN/vq_loss.pgf}}
