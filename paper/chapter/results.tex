@@ -107,9 +107,13 @@ The results presented in this section are based on the experiments conducted on 
 
 \subsection{Results on Gaussian VAEs}
 
-The results showed that \methodTwo{2} can be used for unifying two decoders into one. The experiments were conducted with both Uniform and Gaussian sampling. The results showed that for both methods this comes at a cost of slightly lower quality of the reconstruction when no conditioning information is given compared to a standard Gaussian VAE. However, the findings showed that this approach can substantially reduce the KL divergence loss of the latent space, which can be seen in figure \ref{fig:results_method2_gaussian_vae}.
+The results indicated that \methodTwo{2} yielded promising outcomes with Gaussian VAEs. Upon examining the results, it was observed and noted the application of this method led to a substantial reduction in the KL divergence loss of the latent space. However, when no conditioning information was provided, there was an increase in the reconstruction loss compared to the baseline model. These findings can be seen in table \ref{tab:results_method2_gaussian_vae} and figure \ref{fig:results_method2_gaussian_vae}. This held for both Uniform and Gaussian sampling methods.
 
-Although, for both Uniform and Gaussian sampling findings showed that this method results in a slightly lower quality of the reconstruction compared to a standard Gaussian VAE. This approach reduced the KL divergence loss of the latent space for both of the sampling methods. For Uniform sampling, the results showed that the KL divergence loss of the latent space was reduced more compared to Gaussian sampling. One possible explanation for this could be that with Gaussian sampling, there is a higher probability of sampling the same pixel multiple times, which can be less informative for the decoder.
+In addition to this, experiments with a range of different exponent values for the power-law distribution were conducted. The findings showed that the higher the exponent value the more the model was able to reduce the reconstruction loss of the scenario, where no conditioning information is given. However, the KL divergence loss of the latent space increased with higher exponent values.
+% TODO: Make a graph showing this !!!
+
+%For Uniform sampling, the results showed that the KL divergence loss of the latent space was reduced more compared to Gaussian sampling. One possible explanation for this could be that with Gaussian sampling, there is a higher probability of sampling the same pixel multiple times, which can be less informative for the decoder.
+% Move this to the discussion
 
 \begin{table}[H]
     \centering
