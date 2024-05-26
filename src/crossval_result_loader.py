@@ -201,8 +201,9 @@ def get_main_columns(df):
     for column_0 in df.columns:
         for column_1 in df.columns:
             if column_0 in column_1 and column_0 != column_1 and column_0 not in main and column_0 != "epoch":
-                main.append(column_0)
-                print(column_0)
+                if "VAE1D" not in column_0 or "(MASKED)" not in column_0:
+                    main.append(column_0)
+                    print(column_0)
     return main
 def plot_csv_crossval(df, title, y_label, save_name):
     
