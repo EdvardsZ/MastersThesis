@@ -54,7 +54,9 @@ It was discovered that the Gaussian Sampling showed slightly better results than
 In the context of comparing the two methods, one must first and foremost consider the complexity of the model. The \methodOne{1} requires a second decoder,
 which increases the complexity of the model and the computational cost. This can be a problem for high-resolution and large-scale models, as it could mean that the model is too slow to train or too computationally expensive to use. On the other hand, \methodTwo{2} does not require a second decoder, which does not introduce a lot of extra complexity to the model. This makes it more suitable for real-world applications.
 
-For both of the methods applied to Gaussian VAEs with deeper encoder and decoder networks, the training instability in the form of the posterior collapse was observed, which means that latent variables have become uninformative, leading the model to ignore them~\cite{lucas2019dont}. This is a common problem in Gaussian VAEs and can be hard to avoid. However, this is something that is not a problem by design in VQ-VAEs, which makes them more stable and easier to train.
+In both approaches applied to Gaussian VAEs with deeper encoder and decoder networks, the training instability in the form of the posterior collapse was observed, which means that latent variables have become uninformative, leading the model to ignore them~\cite{lucas2019dont}. This is a common problem in Gaussian VAEs and can be hard to avoid. However, this is something that is not a problem by design in VQ-VAEs, which makes them more stable and easier to train.
+
+In both of the methods and implementations, it was decided to use a fully connected layer to use the conditioned information as input to the decoder. This was done to keep the model simple and avoid introducing too much complexity to the models. However, it could have been done differently, for example, by using convolutional layers to use the conditioned information as input to the decoder.
 
 %Try to compare the results of the two methods
 Both methods brought improvements to the quality of the reconstruction and the generalization capabilities when applied to VQ-VAEs. However, the \methodTwo{2} showed better results in terms of the VQ objective loss, while \methodOne{1} showed better results in terms of the reconstruction quality. This could be explained by the fact that \methodOne{1} has two decoders, which can make it better at the core task of the VQ-VAE, which is to reconstruct the image.
@@ -66,16 +68,16 @@ Both methods brought improvements to the quality of the reconstruction and the g
 % Tell about the risk of posterior collapse in Gaussian VAEs and how it is not a problem in VQ-VAEs
 % SoftAdapt overall?.
 
-\section{Limitations and Future Work}
+\section{Limitations}
 
-% Tell about 
-One of the limitations of this research is that the experiments could have been conducted on a much wider range of hyperparameters and datasets. This could have given a better understanding of the methods and their capabilities and limitations. Another limitation is that the experiments were conducted on relatively small datasets, which could have affected the results.
+One of the limitations of this research is that the experthe conditioned information as input to iments could have been conducted on a much wider range of hyperparameters and datasets. This could have given a better understanding of the methods and their capabilities and limitations. Another limitation is that the experiments were conducted on relatively small datasets, which could have affected the results.
 
-One limitation of this research is that there could have been more experiments comparing different sampling methods. This could have given a better insight into the differences between the sampling methods and how they affect the results of the model.
+Another limitation of this research is that there could have been more experiments comparing different sampling methods. This could have given a better insight into the differences between the sampling methods and how they affect the results of the model.
+
+\section{Future Work}
 
 One possible future direction for this research could be to investigate the possibility of using a training schedule where the model is initially trained with \methodOne{1} and then later switched to a regular VQ-VAE or Gaussian VAE. This could potentially improve the results of the model for unconditional generation tasks.
 
+As previously mentioned for both methods and implementations in this thesis it was decided to use a fully connected layer to employ the conditioned information as input to the decoder. A possible future direction could be to use convolutional layers to use the conditioned information as input to the decoder.
 
-
-% Tell about comparing the sampling types more...
-% Tell that something sort of a training scheduling could be used to improve the training stability of the model.
+This research explored the possibilities of combining semi-conditional and non-conditional VAEs. However, this could also be for other generational models, such as GANs or diffusion models. This could be an interesting direction for future research and could potentially lead to new insights.
