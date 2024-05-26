@@ -47,7 +47,7 @@ $p_\xi(x|z,m)$, which is conditioned on an additional property $m$ of the input
 data. This approach involves utilizing two decoders within the VAE framework:
 one for reconstructing the input data solely based on a trained neural network with \methodOne{1} latent variable $z$,
 and the other for reconstructing the input data based on both the latent
-variable $z$ and the additional conditioning information $m$.
+variable $z$ and the additional conditioning information $m$ see Figures \ref{SCVAE2DFigure} and \ref{SCVQVAE2DFigure}.
 
 \subsection{Conditioning strategy}
 
@@ -256,7 +256,7 @@ The proposed methods will be evaluated on the MNIST, CIFAR-10 and CelebA dataset
 The CelebA dataset consists of 202,599 images of celebrities with 10,177 identities and 40 binary attributes. In these experiments, the CelebA dataset images will be resized to 64x64 pixels to reduce the computational complexity.
 The datasets will be split into training, validation and test sets, where the training set will be used to train the models and the validation set will be used to evaluate.
 
-\subsection{Network architecture}
+\subsection{Network architecture and hyperparameters}
 
 The encoder and the decoder of the models will be convolutional neural networks. The number of layers and the number of filters in each layer will be hyperparameters of the model. Both the encoder and the decoder will have a similar architecture of convolutional layers followed by batch normalization layers and LeakyReLU activation functions. However, the encoder and the decoder for the Gaussian VAEs will be more shallow compared to the VQ-VAEs, because the Gaussian VAEs suffer from the posterior collapse if the neural network is too deep. 
 
@@ -274,6 +274,13 @@ For VQ-VAEs experiments were conducted in 3 configurations:
     \item Config. 2: 128 embeddings and 32 the embedding dimension, hidden dimensions for both encoder and decoder were set to 128 and 256 and 2 residual layers.
     \item Config. 3: 256 embeddings and 64 the embedding dimension, hidden dimensions for both encoder and decoder were set to 128 and 256 and 4 residual layers.
 \end{itemize}
+
+\subsection{Hyperparameters}
+
+I will run both methods on all listed configurations on 
+
+I will train models with \methodOne{1} using the AdamW optimizer with a learning rate of $10^{-3}$ and a batch size of 128 for 100 epochs. The models will be trained with Exact Sampling and Uniform Random Sampling. The models will be run with both SoftAdapt and without SoftAdapt. 
+\subsection{Hyperparameters of \methodTwo{2}}
 
 
 
