@@ -72,6 +72,8 @@ def get_parameters(model_name: str) -> str:
     if "1D" in name:
         exponent = model_name.split("exponent=")[1].split("&")[0]
         res += f", Exponent={exponent}"
+        
+        res += ", Masked"
     
     return res
 
