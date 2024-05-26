@@ -106,10 +106,7 @@ encoder, respectively. The resulting loss has also extra weight parameters $W_1$
 
 During the training process, the encoder is trained to produce an accurate mean
 and standard deviation of the Gaussian distribution, and the decoders are
-trained to produce accurate reconstructions of the input data. The KL
-divergence term is used to regularize the latent space to be close to a
-standard Gaussian distribution. The optimizer used to minimize the overall loss
-objective is the AdamW optimizer~\cite{AdamW}.
+trained to produce accurate reconstructions of the input data.
 
 As a result of the integration of the second conditioned decoder, the model has
 the ability to reconstruct the input data based just on the latent variable $z$
@@ -202,7 +199,7 @@ In Gaussian VAEs, applying the second method involves modifying the decoder to
 be capable of reconstructing the input data under variable conditioning. The
 modified decoder $p_\xi(x|z,m)$ is capable of reconstructing the input data
 based on the latent variable $z$ and the conditioning information $m$ or just
-the latent variable $z$.
+the latent variable $z$ if the conditioning information is not available and is just an empty mask filled with zeros.
 
 This is achieved by using a fully connected layer to merge the latent variable
 $z$ and the conditioning information $m$ before passing it through the
@@ -248,12 +245,12 @@ variable conditioning is illustrated in Figure~\ref{SCVQVAE1DFigure}.
 
 \section{Experimental setup}
 
-In this section, I will describe the experimental setup that will be used to evaluate the proposed methods. The full code for experiments was implemented in Python using Pytorch and is available on GitHub\footnote{\url{https://github.com/EdvardsZ/MastersThesis}}
+In this section, I will describe the experimental setup that was used to evaluate the proposed methods. The full code for experiments was implemented in Python using Pytorch library and is available on GitHub\footnote{\url{https://github.com/EdvardsZ/MastersThesis}}.
 
 \subsection{Datasets}
 
-The proposed methods will be evaluated on the MNIST, CIFAR-10 and CelebA datasets. The MNIST dataset consists of 60,000 images of the size 28x28 pixels with 10 classes. The CIFAR-10 dataset consists of 60,000 colored images of the size 32x32 pixels with 10 classes.
-The CelebA dataset consists of 202,599 images of celebrities with 10,177 identities and 40 binary attributes. In these experiments, the CelebA dataset images will be resized to 64x64 pixels to reduce the computational complexity.
+The proposed methods were evaluated on the MNIST, CIFAR-10 and CelebA datasets. The MNIST dataset consists of 60,000 images of the size 28x28 pixels with 10 classes. The CIFAR-10 dataset consists of 60,000 colored images of the size 32x32 pixels with 10 classes.
+The CelebA dataset consists of 202,599 images of celebrities with 10,177 identities and 40 binary attributes. In these experiments, the CelebA dataset images were resized to 64x64 pixels to reduce the computational complexity.
 The datasets will be split into training, validation and test sets, where the training set will be used to train the models and the validation set will be used to evaluate.
 
 \subsection{Network architecture and hyperparameters}
@@ -275,16 +272,6 @@ For VQ-VAEs experiments were conducted in 3 configurations:
     \item Config. 3: 256 embeddings and 64 the embedding dimension, hidden dimensions for both encoder and decoder were set to 128 and 256 and 4 residual layers.
 \end{itemize}
 
-\subsection{Hyperparameters}
-
-I will run both methods on all listed configurations on 
-
-I will train models with \methodOne{1} using the AdamW optimizer with a learning rate of $10^{-3}$ and a batch size of 128 for 100 epochs. The models will be trained with Exact Sampling and Uniform Random Sampling. The models will be run with both SoftAdapt and without SoftAdapt. 
-\subsection{Hyperparameters of \methodTwo{2}}
-
-
-
-
 \subsection{Training}
 
-The models will be trained using the AdamW optimizer with a learning rate of $10^{-3}$ and a batch size of 128 for 100 epochs. The models will be trained on the training set and evaluated on the validation set. The best models will be evaluated based on the cross-validation results. The models will be trained on a single GPU.
+The models were trained using the AdamW optimizer with a learning rate of $10^{-3}$ and a batch size of 128 for 100 epochs. The best models were selected based on the cross-validation results. The models were trained on a single GPU.
