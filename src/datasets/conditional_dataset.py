@@ -6,6 +6,7 @@ from .observations import PartialObservation
 from torchvision import transforms
 from datasets.observations import CountSamplingMethod, PixelSamplingMethod
 import os
+import numpy as np
 
 
 from typing import Tuple
@@ -20,10 +21,10 @@ class CelebACached(VisionDataset):
         
         self.path = os.path.join(root, "celeba")
         
-        self.image_paths, self.labels = self.load_celeba_transformed_cached(self.path, train, transform)
+        self.images, self.labels = self.load_celeba_transformed_cached(self.path, train, transform)
         
     def __getitem__(self, index) -> Tuple[torch.Tensor, torch.Tensor]:
-        x = torch.load(self.image_paths[index])
+        x = torch.tensor(self.images[index])
         y = self.labels[index]
         
         return x, y
@@ -32,34 +33,32 @@ class CelebACached(VisionDataset):
         return len(self.labels)
     
     def get_image_shape(self) -> Tuple[int, int, int]:
-        return torch.load(self.image_paths[0]).shape
+        return self.images[0].shape
     
-    def load_celeba_transformed_cached(self, path, train, transform) -> Tuple[list, list]:
+    def load_celeba_transformed_cached(self, path, train, transform) -> Tuple[np.memmap, list]:
         # check if the transformed dataset is already cached
-        cache_file_image_paths = os.path.join(path, "celeba_transformed" + ("_train" if train else "_test") + ".pt")
-        cache_file_labels = os.path.join(path, "celeba_transformed_labels" + ("_train" if train else "_test") + ".pt")
+        cache_file_images = os.path.join(path, "images_celeba_transformed" + ("_train" if train else "_test") + ".np")
+        cache_file_labels = os.path.join(path, "labels_celeba_transformed" + ("_train" if train else "_test") + ".pt")
         
-        if os.path.exists(cache_file_image_paths) and os.path.exists(cache_file_labels):
-            return torch.load(cache_file_image_paths), torch.load(cache_file_labels)
-        
-        # if not cached, load the original dataset and transform it
+        if os.path.exists(cache_file_images) and os.path.exists(cache_file_labels):
+            return np.load(cache_file_images, mmap_mode='r', allow_pickle=True), torch.load(cache_file_labels)
         
         transform.transforms.insert(0, transforms.Resize((64, 64)))
         dataset = CelebA(self.root, split='train' if train else 'test', transform=transform, download=False)
-        
-        image_paths = []
+        # lets create np.memmap for the images
+        images = np.memmap(cache_file_images, dtype='float32', mode='w+', shape=(len(dataset), 3, 64, 64))
         labels = []
-        
         for i in range(len(dataset)):
-            image_path = os.path.join(path, "celeba_transformed_" + str(i) + ".pt")
-            image_paths.append(image_path)
+            if i % 1000 == 0:
+                print(f"Processing image {i}/{len(dataset)}")
+            images[i] = dataset[i][0].numpy()
             labels.append(dataset[i][1])
-            torch.save(dataset[i][0], image_path)
             
-        torch.save(image_paths, cache_file_image_paths)
         torch.save(labels, cache_file_labels)
+        # save the images
+        np.save(cache_file_images, images)
         
-        return image_paths, labels
+        return images, labels
         
         
             
