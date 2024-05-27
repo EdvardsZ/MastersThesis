@@ -14,7 +14,7 @@ from typing import Tuple
 
 
 class CelebACached(VisionDataset):
-    def __init__(self, root: str, train: bool, transform=None, target_transform=None, download: bool = False):
+    def __init__(self, root: str, train: bool, transform=None, target_transform=None, download: bool = False, load_in_memory: bool = True):
         
         self.root = root
         self.train = train
@@ -22,6 +22,9 @@ class CelebACached(VisionDataset):
         self.path = os.path.join(root, "celeba")
         
         self.images, self.labels = self.load_celeba_transformed_cached(self.path, train, transform)
+        
+        if load_in_memory:
+            self.images = self.images[:]
         
     def __getitem__(self, index) -> Tuple[torch.Tensor, torch.Tensor]:
         x = torch.tensor(self.images[index])
