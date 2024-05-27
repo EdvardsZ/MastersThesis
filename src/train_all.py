@@ -52,6 +52,22 @@ def add_extra_configs(configs):
                
         if "1D" in config["model_name"]:
             # here play around with different exponential values
+            # if "VQ" in config["model_name"] and config["model_params"]["embedding_dim"] == 32 or "VQ" not in config["model_name"] and config["model_params"]["latent_dim"] == 64:
+            #     copy = create_copy_of_config_with_exponent_and_power_law(config, 20)
+            #     res.append(copy)
+                
+            #     copy = create_copy_of_config_with_exponent_and_power_law(config, 30)
+            #     res.append(copy)
+                
+            #     copy = create_copy_of_config_with_exponent_and_power_law(config, 50)
+            #     res.append(copy)
+                
+            #     copy = create_copy_of_config_with_exponent_and_power_law(config, 10)
+            #     res.append(copy)
+                
+            #     copy = create_copy_of_config_with_exponent_and_power_law(config, 70)
+            #     res.append(copy)
+                
             copy = create_copy_of_config_with_exponent_and_power_law(config, 60)
             res.append(copy)      
             
