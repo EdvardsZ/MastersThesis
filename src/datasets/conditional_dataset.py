@@ -37,11 +37,11 @@ class CelebACached(VisionDataset):
     
     def load_celeba_transformed_cached(self, path, train, transform) -> Tuple[np.memmap, list]:
         # check if the transformed dataset is already cached
-        cache_file_images = os.path.join(path, "images_celeba_transformed" + ("_train" if train else "_test") + ".np")
+        cache_file_images = os.path.join(path, "images_celeba_transformed" + ("_train" if train else "_test") + ".dat")
         cache_file_labels = os.path.join(path, "labels_celeba_transformed" + ("_train" if train else "_test") + ".pt")
         
         if os.path.exists(cache_file_images) and os.path.exists(cache_file_labels):
-            return np.load(cache_file_images, mmap_mode='r', allow_pickle=True), torch.load(cache_file_labels)
+            return np.memmap(cache_file_images, dtype='float32', mode='r', shape=(len(torch.load(cache_file_labels)), 3, 64, 64)), torch.load(cache_file_labels)
         
         transform.transforms.insert(0, transforms.Resize((64, 64)))
         dataset = CelebA(self.root, split='train' if train else 'test', transform=transform, download=False)
@@ -56,8 +56,10 @@ class CelebACached(VisionDataset):
             
         torch.save(labels, cache_file_labels)
         # save the images
-        np.save(cache_file_images, images)
+        images.flush()
+        del images
         
+        images = np.memmap(cache_file_images, dtype='float32', mode='r', shape=(len(labels), 3, 64, 64))
         return images, labels
         
         
