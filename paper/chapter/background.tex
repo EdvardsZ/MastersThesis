@@ -229,11 +229,11 @@ Multitask learning is a machine learning paradigm where multiple tasks are learn
 
 The notion of using multitask learning comes from the observation that the tasks are often related and depend on the same underlying features. This can be beneficial in scenarios where the data is limited, which is often the case for medical data~\cite{medicalMultiTask}.
 
-For example, in medical image analysis, in a scenario where the task is to develop a system for identifying and classifying different types of abnormalities in medical images. Traditionally this could be done by training a separate model for each type of abnormality. However, this approach is not optimal due to limited data and the shared features that could be used to identify and classify multiple types of abnormalities~\cite{multitasklearning}.
+For example, let's consider medical image analysis, where the objective is to develop a system for identifying and classifying different types of abnormalities in medical images. Traditionally this could be done by training a separate model for each type of abnormality. However, this approach is suboptimal due to limited data and the shared features that could be used to identify and classify multiple types of abnormalities~\cite{multitasklearning}.
 
-Multitask learning is an approach in which a single model is trained to perform multiple tasks. In the context of medical image analysis, this could involve training multitask VAE or VQVAE models capable of simultaneously learning to reconstruct images, whilst also learning to classify different types of conditions. 
+In this scenario, multitask learning emerges as a promising approach. Instead of training separate models for each type of abnormality, a single model is trained to perform all tasks simultaneously. This model could encompass tasks such as image reconstruction and classification of different conditions.
 
-Multitask learning has been shown to be most effective when the tasks are related and data is limited. The potential and flexibility of multitask learning for improving the model performance make it a very valuable technique in machine learning. It has an unexplored potential in the context of VAEs and VQ-VAEs, which is the main motivation for this thesis.
+Multitask learning proves particularly effective when the tasks show interrelatedness and data availability is limited. The potential to enhance model performance underscores its significance in machine learning. Moreover, its application has an unexplored potential in the context of VAEs and VQ-VAEs, which is the main motivation for this thesis.
 
 \section{Additional concepts}
 
@@ -268,7 +268,7 @@ The PixelCNNs are used in the VQ-VAEs to model the prior distribution $p_{\omega
 Power law distribution in probability theory and statistics is a distribution in which one variable is proportional to the power of the other, i.e., 
 $p(x) \propto x^{\alpha}$, where $x$ is the random variable and $\alpha$ is the exponent parameter, where $\alpha$ determines the shape of the distribution. The power law distribution is a heavy-tailed distribution, which means that the probability of the large values is higher than in the normal distribution. The power law distribution is used in various fields, such as physics, biology, economics, and computer science~\cite{powerlaw}. 
 
-One example of the power law distribution could be the function $ f(x) = \alpha x^{\alpha - 1} $ for $ 0 \leq x \leq 1 $, $a > 0$. One advantage to this distribution is that this distribution has a finite range and is easy to scale to any range. This fact will be used when power law distribution is used to sample the number of pixels to be conditioned on in the semi-conditional VAEs.
+One example of the power law distribution could be the function $ f(x) = a x^{\alpha - 1} $ for $ 0 \leq x \leq 1 $, $a > 0$. One advantage to this distribution is that this distribution has a finite range and is easy to scale to any range. This fact will be used when power law distribution is used to sample the number of pixels to be conditioned on in the semi-conditional VAEs.
 
 \subsection{SoftAdapt: Adaptive loss weighting} \label{background:softadapt}
 
