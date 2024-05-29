@@ -141,8 +141,8 @@ previously defined in the background \autoref{background:vqvae}.
 
 After the first stage of the training, the model has the ability to reconstruct
 the input data based just on the latent variable $z$ and as well as the
-conditioning information $m$. To generate the latent variable $z$, one must be
-trained a separate autoregressive model, which will be used to generate the
+conditioning information $m$. To generate the latent variable $z$, one must
+train a separate autoregressive model, which will be used to generate the
 latent variable $z$.
 
 \begin{figure}[H]
@@ -203,7 +203,7 @@ in Figure~\ref{SCVAE1DFigure}.
     \input{figures/scvae1d.tex}
     \caption[\methodTwo{2} applied to Gaussian VAEs.]%
     {
-        \methodTwo\ applied to Gaussian VAEs. The Gaussian VAEs framework is modified by allowing the decoder to be conditioned on a variable amount of information and to dynamically adjust its behavior based on the amount of information present in the variable $m$. The input $x$ is passed through the encoder with parameters $\phi$ producing the mean $\mu$ and the standard deviation $\sigma$ of the Gaussian distribution. The random variable $\epsilon$ is sampled from a standard Gaussian distribution and is used to sample $ z = \mu + \sigma \odot \epsilon$. The sampled $z$ is then used as input to the decoder as well as the extra conditioning information $m$. With this approach, there is no need for a second decoder, as the single decoder is capable of reconstructing the data based on the latent variable $z$ and the conditioning information $m$ or just the latent variable $z$.
+        \methodTwo{2} applied to Gaussian VAEs. The Gaussian VAEs framework is modified by allowing the decoder to be conditioned on a variable amount of information and to dynamically adjust its behavior based on the amount of information present in the variable $m$. The input $x$ is passed through the encoder with parameters $\phi$ producing the mean $\mu$ and the standard deviation $\sigma$ of the Gaussian distribution. The random variable $\epsilon$ is sampled from a standard Gaussian distribution and is used to sample $ z = \mu + \sigma \odot \epsilon$. The sampled $z$ is then used as input to the decoder as well as the extra conditioning information $m$. With this approach, there is no need for a second decoder, as the single decoder is capable of reconstructing the data based on the latent variable $z$ and the conditioning information $m$ or just the latent variable $z$.
     }\label{SCVAE1DFigure}
 \end{figure}
 
