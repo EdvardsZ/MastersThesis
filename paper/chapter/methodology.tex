@@ -1,16 +1,10 @@
 \chapter{Methods}
 
-This chapter will outline the methods of how SCVAEs and non-conditioned VAEs are
-integrated using multitask learning in this thesis, which will be explored in
-the context of images. The chapter will be divided into three sections. The first
-section will describe the conditioning strategies, which will be used to
-condition the VAEs. In the following section, I will describe the method of
-merging SCVAEs with non-conditioned VAEs using two decoders, where one is
-conditioned, and the other is not. This method will be referred to as
-\methodOne{1}. In the following section, I describe another method of merging
-SCVAEs with non-conditioned VAEs utilizing the same encoder and decoder for
-both models by employing novel training strategies, which will be referred to
-as \methodTwo{2}. Both methods will be applied to both Gaussian VAEs and VQ-VAEs.
+This chapter will detail the methods employed in this thesis to integrate SCVAEs and non-conditioned VAEs using multitask learning, focusing specifically on image data. For clarity, the chapter will be divided into four sections.
+
+The initial section will describe the various conditioning strategies that were employed in this thesis. Following this, the subsequent section will delve into the methodology of combining SCVAEs with non-conditioned VAEs utilizing dual decoders - one conditioned and the other unconditioned. This method will be referred to as \methodOne{1}. Subsequently, another method of merging SCVAEs with non-conditioned VAEs will be presented in the subsequent section. This approach involves utilizing a single decoder for both tasks by employing novel training strategies, which will be referred to as \methodTwo{2}. It is important to note that both methods will be applied to both Gaussian VAEs and VQ-VAEs.
+
+The final section outlines the experimental setup that was used to evaluate the proposed methods, whilst also providing a brief overview of the datasets, network architecture, and hyperparameters used in the experiments.
 
 \section{Conditioning information}
 
