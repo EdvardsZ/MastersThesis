@@ -17,20 +17,20 @@ Semi-conditional Variational Autoencoders (SC-VAEs) are a type of VAEs in which 
 
 Multitask learning is a paradigm that aims to improve model generalization and performance by simultaneously learning multiple related tasks. The concept of combining VAEs with multitask learning has undergone some experimental exploration in the research community, although it has not been thoroughly investigated~\cite{multitaskvib}. Multitask Variational Autoencoders (MT-VAEs) extend the VAE model to take advantage of the extra information or tasks that are available in the data. This approach holds the promise of improving the reconstruction accuracy and generalization capabilities of VAEs, as well as enhancing their interpretability~\cite{multitasklearning}.
 
-The research in this thesis aims to investigate the effectiveness and potential of integrating semi-conditional and standard VAEs within a single model through multitask learning. The investigation will explore the potential of this approach in the context of both standard VAEs and VQ-VAEs. The research will introduce two methods for combining semi-conditional and non-conditioned VAEs:\methodOne{1} and \methodTwo{2}.
+The research in this thesis aims to investigate the effectiveness and potential of integrating semi-conditional and standard VAEs within a single model through multitask learning. The investigation will explore the potential of this approach in the context of both standard VAEs and VQ-VAEs. The research will introduce two methods for combining semi-conditional and non-conditioned VAEs: \methodOne{1} and \methodTwo{2}.
 
-In \methodOne{1}, the semi-conditional and non-conditioned VAEs are combined with two decoders, where one decoder is conditioned, and the other is not. In \methodTwo{2}, the semi-conditional and non-conditioned VAEs are combined with a single decoder, which can be conditioned or non-conditioned by masking the input data.
+In the \methodOne{1}, the semi-conditional and non-conditioned VAEs are combined with two decoders, where one decoder is conditioned, and the other is not. In \methodTwo{2}, the semi-conditional and non-conditioned VAEs are combined with a single decoder, which can be conditioned or non-conditioned by masking the input data.
 
 The main goal of this research is to investigate the potential of these methods to improve the reconstruction accuracy and generalization capabilities of VAEs and VQ-VAEs and by performing a thorough analysis and experimentation, the aim is to shed light on the advantages and limitations of these methods.
 
 \section{Objective}
 
-In this thesis, I aim to investigate and explore the integration of SCVAEs that can be combined with standard non-conditioned VAEs through multitask learning. My objective is to determine whether my proposed methods:\methodOne{1} and \methodTwo{2} which leverage multitask learning can enhance the performance of VAEs compared to traditional ones, and if so, under what conditions. Additionally, I will explore the applicability of these methods to VQ-VAEs.
+In this thesis, I aim to investigate and explore the integration of SCVAEs that can be combined with standard non-conditioned VAEs through multitask learning. My objective is to determine whether my proposed methods: \methodOne{1} and \methodTwo{2} which leverage multitask learning can enhance the performance of VAEs compared to traditional ones, and if so, under what conditions. Additionally, I will explore the applicability of these methods to VQ-VAEs.
 
 More specifically, I will attempt to answer the following questions:
 
 \begin{itemize}
-    \item How can \methodOne{1} and \methodTwo{2} be implemented and integrated with Gaussian VAEs?
+    \item How can the \methodOne{1} and the \methodTwo{2} be implemented and integrated with Gaussian VAEs?
     \item Can the combination of semi-conditional and non-conditional VAEs be used to improve the reconstruction accuracy and generalization capabilities of VAEs on non-conditioned tasks?
     \item Could the same approaches be applied to VQ-VAEs?
     \item What are the limitations of these methods?
