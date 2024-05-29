@@ -73,7 +73,7 @@ This is the key to training VAEs using stochastic gradient descent. The resultin
 
 Although Gaussian VAEs are just a special case of VAEs, they are the most common type of VAEs. Gaussian VAEs assume that the prior distribution $p(z)$ is a centered Gaussian distribution $ p(z) = \mathcal{N}(0, I)$. They also assume that the decoder distribution $p_{\theta}(x|z)$ is a Gaussian distribution whose distribution parameters are computed from z by the decoder network. The decoder distribution is given by
 \[ p_{\theta}(x|z) = \mathcal{N}(f_{\theta}(z), I) \]
-where $f_{\theta}(z)$ is the mean and $\sigma_{\theta}(z)$ is the standard deviation of the Gaussian distribution. Whilst there is a lot of freedom in the form $q_{\phi}(z|x)$ can take, Gaussian VAEs assume that $q_{\phi}(z|x)$ is also a Gaussian distribution with an approximately diagonal covariance matrix: 
+where $f_{\theta}(z)$ represents the mean of the Gaussian distribution, and $I$ denotes the identity matrix, ensuring a constant standard deviation. Whilst there is a lot of freedom in the form $q_{\phi}(z|x)$ can take, Gaussian VAEs assume that $q_{\phi}(z|x)$ is also a Gaussian distribution with an approximately diagonal covariance matrix: 
 \[ q_{\phi}(z|x) = \mathcal{N}(\mu_{\phi}(x), \sigma_{\phi}(x)) \]
 where $\mu_{\phi}(x)$ and $\sigma_{\phi}(x)$ are the mean and standard deviation of the Gaussian distribution, which are computed by the encoder network.
 
@@ -126,11 +126,13 @@ VQ-VAEs have found extensive application across various domains, showcasing thei
 
 Additionally, VQ-VAEs have been applied in speech synthesis, music generation, and text-to-image synthesis tasks, further highlighting their broad utility and effectiveness in various creative and generative tasks~\cite{vqvae2,vqvaespeechsynthesis, musicvqvae,dalle}.
 
-The VQVAEs fundamentally differ in two key ways from VAEs. Firstly, the latent representation is discrete instead of continuous. Secondly, the prior distribution is learned rather than being fixed. The posterior and prior distributions are categorical and the samples taken from these distributions are the indices of the embeddings in the embedding space. These matched indices are then used to look up the embeddings in the embedding space and then used as input to the decoder~\cite{vqvae}. VQ-VAE learning process consists of two stages. In the first stage, the encoder and the decoder are trained. In the second stage a prior over these discrete latent variables is trained~\cite{vqvae}.
+The VQ-VAEs fundamentally differ in two key ways from VAEs. Firstly, the latent representation is discrete instead of continuous. Secondly, the prior distribution is learned rather than being fixed. The posterior and prior distributions are categorical and the samples taken from these distributions are the indices of the embeddings in the embedding space. These matched indices are then used to look up the embeddings in the embedding space and then used as input to the decoder~\cite{vqvae}. 
+
+The VQ-VAE learning process consists of two stages. In the first stage, the encoder and the decoder are trained. In the second stage a prior over these discrete latent variables is trained~\cite{vqvae}.
 
 \subsection{Discrete Latent Variables}
 
-VQ-VAEs focus on discrete latent variables, which is a more natural fit for many types of data. Language and speech naturally is a stream of discrete units, such as words or phonemes. Images can be often well described by language, which can the discrete representations well-suited for images as well. Moreover, discrete representations work very well with complex reasoning, and decision-making~\cite{vqvae}.
+VQ-VAEs focus on discrete latent variables, which is a more natural fit for many types of data. Language and speech naturally is a stream of discrete units, such as words or phonemes. Images can be often well described by language, which can make the discrete representations well-suited for images as well. Moreover, discrete representations work very well with complex reasoning, and decision-making~\cite{vqvae}.
 
 VQ-VAEs define a latent embedding space $ e \in \mathbb{R}^{K \times D} $, where $K$ is the number of embeddings and $D$ is the dimension of each latent embedding vector. The model takes an input $x$, which is passed through the encoder producing output $z_e(x)$, as shown in figure~\ref{VQVAEFigure}. 
 The discrete latent variables $z$ are then calculated by nearest neighbor lookup in the embedding space
@@ -167,7 +169,7 @@ The VQVAE learning process is then divided into two stages, where in the first s
 
 \subsubsection{First stage}
 
-In the first stage, the log-likelihood of the posterior distribution is \textbf{maximized}, which means the encoder and the decoder are trained with the prior distribution being arbitrary. The training objective in the first stages was reduced to 
+In the first stage, the log-likelihood of the posterior distribution is \textbf{maximized}, which means the encoder and the decoder are trained with the prior distribution being arbitrary. The training objective in the first stage is reduced to 
 \[ L_{\theta, \phi}(x) = \log p_{\theta}(x|z = k), \]
 where $k$ is the index of the nearest embedding vector in the embedding space, which is defined in equation~\ref{eqVQVAEPosterior}. We can look at the first stage as training a regular autoencoder with a quantization step in the middle, which inherently makes the latent space distribution categorical~\cite{vqvae}.
     
