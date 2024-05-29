@@ -9,7 +9,7 @@ The final section outlines the experimental setup that was used to evaluate the 
 \section{Conditioning information}
 
 In this thesis, I will obtain the conditioning information $m$ from the input
-image $x$ by sampling pixels some pixels from the input image $x$. In this
+image $x$ by sampling some pixels from the input image $x$. In this
 process, the first step is to obtain a mask which will be used to sample
 the pixels from the input image $x$. The mask will be a binary matrix of the
 same size as the input image $x$, where a value of 1 represents the sampled
@@ -41,7 +41,7 @@ $p_\xi(x|z,m)$, which is conditioned on an additional property $m$ of the input
 data. This approach involves utilizing two decoders within the VAE framework:
 one for reconstructing the input data solely based on a trained neural network with \methodOne{1} latent variable $z$,
 and the other for reconstructing the input data based on both the latent
-variable $z$ and the additional conditioning information $m$ see Figures \ref{SCVAE2DFigure} and \ref{SCVQVAE2DFigure}.
+variable $z$ and the additional conditioning information $m$, see Figures \ref{SCVAE2DFigure} and \ref{SCVQVAE2DFigure}.
 
 \subsection{Conditioning strategy}
 
@@ -66,11 +66,10 @@ The sampling process will be done every time the input image $x$ is passed throu
 
 In Gaussian VAEs, the integration of a second conditioned decoder
 $p_\xi(x|z,m)$ follows a similar approach as outlined in the general method
-description. However, there are specific adjustments and considerations that
-need to be taken into account when applying this method to Gaussian VAEs.
+description. However, some specific adjustments and considerations need to be taken into account when applying this method to Gaussian VAEs.
 
 The integration of the second conditioned decoder $p_\xi(x|z,m)$ into the
-Gaussian VAEs framework involves flattening on concatenating the latent
+Gaussian VAEs framework involves flattening and concatenating the latent
 variable $z$ and the conditioning information $m$ and passing it through a
 fully connected layer before passing it through the transposed convolutional
 layers of the second decoder. Although a new latent variable could have
@@ -110,7 +109,7 @@ and as well as the conditioning information $m$.
     \input{figures/scvae2d.tex}
     \caption[\methodOne{1} applied to Gaussian VAEs.]%
     {
-        \methodOne\ applied to Gaussian VAEs. The Gaussian VAEs framework is extended by adding a second conditioned decoder $p_\xi(x|z,m)$. The input $x$ is passed through the encoder with parameters $\phi$ producing the mean $\mu$ and the standard deviation $\sigma$ of the Gaussian distribution. The random variable $\epsilon$ is sampled from a standard Gaussian distribution and is used to sample $ z = \mu + \sigma \odot \epsilon$. The sampled $z$ is then used as input to both decoders. As a result, the loss function consists of three components: the MSE reconstruction loss of the first decoder, the MSE reconstruction loss of the second decoder and the KL divergence regularization loss.
+        \methodOne{1} applied to Gaussian VAEs. The Gaussian VAEs framework is extended by adding a second conditioned decoder $p_\xi(x|z,m)$. The input $x$ is passed through the encoder with parameters $\phi$ producing the mean $\mu$ and the standard deviation $\sigma$ of the Gaussian distribution. The random variable $\epsilon$ is sampled from a standard Gaussian distribution and is used to sample $ z = \mu + \sigma \odot \epsilon$. The sampled $z$ is then used as input to both decoders. As a result, the loss function consists of three components: the MSE reconstruction loss of the first decoder, the MSE reconstruction loss of the second decoder and the KL divergence regularization loss.
     }\label{SCVAE2DFigure}
 \end{figure}
 
@@ -124,9 +123,7 @@ this method to VQ-VAEs.
 One of the main differences is that the VQ-VAEs framework uses a discrete
 latent space and the Vector Quantization which is described in \autoref{background:vqvae}. This means that the latent variable $z$ is a discrete variable that represents the indexes of the embedding table vectors. This means that first the corresponding embedding table vectors $z_q(x)$ must be computed for the latent variable $z$ before flattening and concatenating it with the conditioning information $m$ and then using a fully connected layer before the transposed convolutional layers of the second decoder. The architecture of the VQ-VAEs framework with the second conditioned decoder is illustrated in Figure~\ref{SCVQVAE2DFigure}.
 
-The training strategy is the same as in Gaussian VAEs, where both decoders are trained simultaneously. This means that the loss objective must be extended to include the reconstruction loss of the second conditioned decoder. In VQ-VAEs, the loss objective consists of three components: the MSE
-reconstruction loss the commitment loss and the codebook loss. However,
-with the inclusion of the second conditioned decoder, the loss objective is
+The training strategy is the same as in Gaussian VAEs, where both decoders are trained simultaneously. This means that the loss objective must be extended to include the reconstruction loss of the second conditioned decoder. In VQ-VAEs, the loss objective consists of three components: the MSE reconstruction loss, the commitment loss and the codebook loss. However, with the inclusion of the second conditioned decoder, the loss objective is
 extended to include the reconstruction loss of the second conditioned decoder.
 The overall loss objective to be \textbf{minimized} becomes
 
