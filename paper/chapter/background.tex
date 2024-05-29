@@ -32,20 +32,20 @@ where $L$ represents the number of samples drawn, as described in~\cite{Kingma_2
 
 The individual data point ELBO and its gradients are in general intractable to compute. However, unbiased estimates of the ELBO and its gradients can be obtained using the reparameterization trick, which is described in the next section~\cite{Kingma_2019}.
 
-\subsection{The reparameterization Trick}
+\subsection{The reparameterization trick}
 
 The reparameterization trick also is a crucial component of VAEs. It is used to make the ELBO differentiable with respect to the parameters of the encoder $\phi$ and decoder $\theta$ through a change of variables~\cite{Kingma_2019}.
 
 \subsubsection{Change of variables}
 
-The notion is based on the fact that it is possible to express the random variable $z \sim q_{\phi}(z|x)$ as a differentiable function of a random variable $\epsilon$ and the parameters $\phi$ such that $z = g_{\phi}(\epsilon, x)$, where epsilon is a random variable that is independent of $\phi$ and $x$ and $\epsilon \sim p(\epsilon)$. Given this change of variables, the expectation with respect to $q_{\phi}(z|x)$ can be rewritten as an expectation with respect to $p(\epsilon)$
+The notion is based on the fact that it is possible to express the random variable $z \sim q_{\phi}(z|x)$ as a differentiable function of a random variable $\epsilon$ and the parameters $\phi$ such that $z = g_{\phi}(\epsilon, x)$, where $\epsilon$ is a random variable that is independent of $\phi$ and $x$ and $\epsilon \sim p(\epsilon)$. Given this change of variables, the expectation with respect to $q_{\phi}(z|x)$ can be rewritten as an expectation with respect to $p(\epsilon)$
 \[ E_{q_{\phi}(z|x)}[f(z)] = E_{p(\epsilon)}[f(g_{\phi}(\epsilon, x))], \]
 where $f$ is an arbitrary function~\cite{Kingma_2019}.
-As a result, the gradients the expectation and gradient operators become commutative, and there can be formed a Monte Carlo estimate of the gradients
+As a result, the gradients of the expectation and gradient operators become commutative, and there can be formed a Monte Carlo estimate of the gradients
 \[ \nabla_{\phi} E_{q_{\phi}(z|x)}[f(z)] = \nabla_{\phi} E_{p(\epsilon)}[ f(g_{\phi}(\epsilon, x))] \]
 \[ = E_{p(\epsilon)}[\nabla_{\phi} f(g_{\phi}(\epsilon, x))] \]
 \[  \simeq \frac{1}{L} \sum_{l=1}^{L} \nabla_{\phi} f(g_{\phi}(\epsilon^{(l)}, x)) \]
-where $\epsilon^{(l)} \sim p(\epsilon)$ and $L$ is the number of samples.
+where $\epsilon^{(l)} \sim p(\epsilon)$ and $L$ is the number of samples~\cite{Kingma_2019}.
 This is the reparameterization trick, which is further explained and illustrated in the figure~\ref{reparametrization}.
 
 \begin{figure}
