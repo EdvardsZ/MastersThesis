@@ -61,8 +61,8 @@ class Result:
             return "-"
         return method
     
-    def get_parameters(self) -> str:
-        parameters = get_parameters(self.filename)
+    def get_parameters(self, simple=True) -> str:
+        parameters = get_parameters(self.filename, simple)
         if parameters == "":
             return "-"
         return parameters

@@ -57,7 +57,7 @@ def get_method(model_name: str) -> str:
                 raise Exception("Unknown Decoder method")   
     raise Exception("Unknown model type")
 
-def get_parameters(model_name: str) -> str:
+def get_parameters(model_name: str, simple = True) -> str:
     bracket_text = model_name.split("(")[1].split(")")[0]
     name = model_name.split("(")[0]
     
@@ -72,8 +72,8 @@ def get_parameters(model_name: str) -> str:
     if "1D" in name:
         exponent = model_name.split("exponent=")[1].split("&")[0]
         res += f", Exponent={exponent}"
-        
-        res += ", Masked"
+        if not simple:
+            res += ", Masked"
     
     return res
 
