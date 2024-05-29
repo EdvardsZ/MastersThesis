@@ -25,10 +25,9 @@ The Kullback-Leibler divergence term encourages the encoder (posterior) distribu
 
 While the expression of the ELBO might appear different from the original formulation, it remains equivalent, merely using different terms to express the same notion~\cite{Kingma_2019}.
 
-
-Sampling from $q_{\phi}(z|x)$ enables the Monte Carlo estimation
+Sampling from $q_{\phi}(z|x)$ involves drawing samples denoted as $z^{(l)} \sim q_{\phi}(z|x)$, enabling the Monte Carlo estimation—a method for numerical approximation using random sampling—of the following objective function:
 \[ L_{\theta, \phi}(x) = - D_{KL}(q_{\phi}(z|x) || p(z)) + \frac{1}{L} \sum_{l=1}^{L} \log p_{\theta}(x|z^{(l)}) ,\]
-where $z^{(l)} \sim q_{\phi}(z|x)$ and $L$ is the number of samples and the first term is the Kullback-Leibler divergence term and the second term is the reconstruction term~\cite{Kingma_2019}. 
+where $L$ represents the number of samples drawn, as described in~\cite{Kingma_2019}.
 
 
 The individual data point ELBO and its gradients are in general intractable to compute. However, unbiased estimates of the ELBO and its gradients can be obtained using the reparameterization trick, which is described in the next section~\cite{Kingma_2019}.
