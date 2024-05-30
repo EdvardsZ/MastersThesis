@@ -1,6 +1,6 @@
 \chapter{Discussion}
 
-In this chapter, the results in the preceding chapter are analyzed, interpreted and discussed in the context of the objective and research questions. This chapter is divided into four sections. The first section discusses the results of \methodOne{1}, and the second section discusses the results of \methodTwo{2}. The third section provides a comparative analysis of the two methods, and the final section discusses the limitations of the research and potential future work.
+In this chapter, the results in the preceding chapter are analyzed, interpreted and discussed in the context of the objective and research questions. This chapter is divided into five sections. The first section discusses the results of \methodOne{1}, and the second section discusses the results of \methodTwo{2}. The third section provides a comparative analysis of the two methods, and the final two sections discuss the limitations of the research and potential future work.
 
 \section{Analysis of \methodOne{1}}
 
@@ -12,7 +12,7 @@ One of the disadvantages of this method is that it requires a second decoder, wh
 
 The results on Gaussian VAEs showed that a standard Gaussian VAE can be combined with a semi-conditional VAE by using \methodOne{1}. This method improved the reconstruction quality of the non-conditioned decoder and added a second decoder that allows the model to reconstruct or generate images given some pixels. However, the results showed that this meant a slight increase in the KL divergence loss of the latent space. This is expected since the model has to learn two decoders instead of one, and it means it puts less emphasis on the KL divergence loss of the latent space.
 
-It could be observed that the conditioned decoder was able to reconstruct the images with noticeably higher quality than the non-conditioned decoder. This is expected since the conditioned decoder has more information direct information about image pixels, which makes it easier to reconstruct.  
+It could be observed that the conditioned decoder was able to reconstruct the images with noticeably higher quality than the non-conditioned decoder. This is expected since the conditioned decoder has more direct information about image pixels, which makes it easier to reconstruct.  
 
 When comparing Exact and Uniform sampling, I did not see any significant difference in the results. This is something that could be further investigated in future work. One possible explanation for this could be that the model is not able to fully take advantage of both sampling methods because it has already a trade-off between the KL divergence loss of the latent space and the reconstruction loss of both decoders.
 
@@ -42,7 +42,7 @@ It could also be observed that Uniform Sampling showed better results than Gauss
 
 \subsection{Findings on VQ-VAEs}
 
-When applying \methodTwo{2} to VQ-VAEs, the results showed that the model had significantly reduced the VQ objective loss, which means that the model is more accurate a can be used more effectively for image generation. One possible explanation for the improvement in the VQ objective loss is that the conditioning of the decoder gives the encoder more direct and accurate gradients to learn from.
+When applying \methodTwo{2} to VQ-VAEs, the results showed that the model had significantly reduced the VQ objective loss, which means that the model is more accurate a can be used more effectively for image generation. One possible explanation for the improvement in the VQ objective loss is that the conditioning of the decoder gives the encoder more direct and accurate gradients to learn from and this can be beneficial in the early stages of training when the embeddings are very sparse and the gradients are very noisy.
 
 The experiments showed that the reconstruction quality in the case of no conditioning could also be improved if the exponent value of the Power Law distribution was set to a higher value. This is because the higher the exponent value of the Power Law distribution, the fewer pixels on average are sampled, which means that the model more often has to reconstruct the image from scratch.
 
@@ -70,14 +70,14 @@ Both methods brought improvements to the quality of the reconstruction and the g
 
 \section{Limitations}
 
-One of the limitations of this research is that the experthe conditioned information as input to iments could have been conducted on a much wider range of hyperparameters and datasets. This could have given a better understanding of the methods and their capabilities and limitations. Another limitation is that the experiments were conducted on relatively small datasets, which could have affected the results.
+One of the limitations of this research is that the experiments could have been conducted on a much wider range of hyperparameters and datasets. This could have given a better understanding of the methods and their capabilities and limitations. Another limitation is that the experiments were conducted on relatively small datasets, which could have affected the results.
 
 Another limitation of this research is that there could have been more experiments comparing different sampling methods. This could have given a better insight into the differences between the sampling methods and how they affect the results of the model.
 
 \section{Future Work}
 
-One possible future direction for this research could be to investigate the possibility of using a training schedule where the model is initially trained with \methodOne{1} and then later switched to a regular VQ-VAE or Gaussian VAE. This could potentially improve the results of the model for unconditional generation tasks.
+One possible future direction for this research could be to investigate the possibility of employing a training schedule where the model is initially trained with \methodOne{1} and then later switched to a regular VQ-VAE or Gaussian VAE. This could potentially improve the results of the model for unconditional generation tasks.
 
 As previously mentioned for both methods and implementations in this thesis it was decided to use a fully connected layer to employ the conditioned information as input to the decoder. A possible future direction could be to use convolutional layers to use the conditioned information as input to the decoder.
 
-This research explored the possibilities of combining semi-conditional and non-conditional VAEs. However, this could also be for other generational models, such as GANs or diffusion models. Another possible application of this method could be to DALLE architecture, which is a text-to-image generation model based on VQ-VAEs.
+This research explored the possibilities of combining semi-conditional and non-conditional VAEs. However, this could also be for other generational models, such as GANs or diffusion models. Another possible application of this method could be to DALL-E architecture, which is a text-to-image generation model based on VQ-VAEs.
