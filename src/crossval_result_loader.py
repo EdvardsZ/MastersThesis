@@ -48,6 +48,9 @@ class Result:
             return self.data["test_recon_loss_0"]
         
         raise Exception("No recon loss found") 
+    
+    def get_exponential_value(self) -> float:
+        return float(self.filename.split("exponent=")[1].split("&")[0])
         
     def get_config_number(self) -> int:
         return get_config_number(self.filename)

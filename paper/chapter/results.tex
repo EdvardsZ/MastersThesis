@@ -110,7 +110,7 @@ The results presented in this section are based on the experiments conducted on 
 The results indicated that \methodTwo{2} yielded promising outcomes with Gaussian VAEs. Upon examining the results, it was observed and noted that the application of this method led to a substantial reduction in the KL divergence loss of the latent space. However, when no conditioning information was provided, there was an increase in the reconstruction loss compared to the baseline model. These findings can be seen in table \ref{tab:results_method2_gaussian_vae} and figure \ref{fig:results_method2_gaussian_vae}. This held for both Uniform and Gaussian sampling methods.
 
 % ------------ This is important to create a graph for this ------------ %
-In addition to this, experiments with a range of different exponent values for the power-law distribution were conducted. The findings showed that the higher the exponent value the more the model was able to reduce the reconstruction loss of the scenario, where no conditioning information is given. However, the KL divergence loss of the latent space increased with higher exponent values.
+In addition to this, experiments with a range of different exponent values for the power-law distribution were conducted. The findings showed that the higher the exponent value the more the model was able to reduce the reconstruction loss of the scenario, where no conditioning information is given. However, the KL divergence loss of the latent space increased with higher exponent values. This can be seen in figure \ref{fig:reconstruction_loss_vs_exponential_value_gaussian}, however, one should note that the results are not averaged over multiple runs, so this can vary between runs.
 % TODO: Make a graph showing this !!!
 
 %For Uniform sampling, the results showed that the KL divergence loss of the latent space was reduced more compared to Gaussian sampling. One possible explanation for this could be that with Gaussian sampling, there is a higher probability of sampling the same pixel multiple times, which can be less informative for the decoder.
@@ -135,11 +135,23 @@ In addition to this, experiments with a range of different exponent values for t
     \label{fig:results_method2_gaussian_vae}
 \end{figure}
 
+\begin{figure}[H]
+    \centering
+    \scalebox{0.48}{\input{figures/results/CIFAR10/reconstruction_loss_vs_exponential_value_gaussian.pgf}}
+    \caption[Reconstruction loss comparison with different exponent values.]
+    {
+        Reconstruction loss comparison with different exponent values for the power-law distribution. The results are shown for Gaussian VAE Config. 2 on the CIFAR10 dataset. Note the visualization presented should be interpreted with appropriate caution, considering that the results are not averaged over multiple runs, so the results can vary between runs.
+    }
+    \label{fig:reconstruction_loss_vs_exponential_value_gaussian}
+\end{figure}
+
 \subsection{Results on VQ-VAEs}
 
 Upon examining the results on VQ-VAEs, the findings indicated that \methodTwo{2} worked very well with VQ-VAEs. The results showed it can be used to substantially reduce the VQ objective loss and at the same time to improve the quality of the reconstruction in the scenario where no conditioning information is given. 
 
 This showed to be the case in many experiments with both Uniform and Gaussian sampling, with a high enough exponent value for the power-law distribution. However, the results showed that this method worked slightly better with Gaussian sampling compared to Uniform sampling, which can be seen in table \ref{tab:results_method2_vq_vae}.
+
+Same as with Gaussian VAEs, when comparing different exponential values it showed the higher the exponential value the more the model was able to reduce the reconstruction loss of the scenario where no conditioning information is given. This can be seen in figure \ref{fig:reconstruction_loss_vs_exponential_value_vqvae}, however, the results that are presented in the figure should be taken with caution, as they are not averaged over multiple runs, so the results can vary between runs.
 
 % TODO make a graph showing the difference between exponent values
 
@@ -162,6 +174,15 @@ This showed to be the case in many experiments with both Uniform and Gaussian sa
         Left: VQ objective loss comparison.  Reconstruction loss comparison of when conditioning information is masked out.
     }
     \label{fig:results_method2_vq_vae}
+\end{figure}
+\begin{figure}[H]
+    \centering
+    \scalebox{0.48}{\input{figures/results/CIFAR10/reconstruction_loss_vs_exponential_value_vqvae.pgf}}
+    \caption[Reconstruction loss comparison with different exponent values.]
+    {
+        Reconstruction loss comparison with different exponent values for the power-law distribution. The results are shown for VQ-VAE Config. 3 on the CIFAR10 dataset. Note the visualization presented should be interpreted with appropriate caution, considering that the results are not averaged over multiple runs, so the results can vary between runs.
+    }
+    \label{fig:reconstruction_loss_vs_exponential_value_vqvae}
 \end{figure}
 
 \section{Cross-validation results} \label{sec:cross_val_results}
