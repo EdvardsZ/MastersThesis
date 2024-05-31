@@ -21,9 +21,7 @@ The ELBO can be also written as a sum of two terms,
     \item $\mathbb{E}_{q_{\phi}(z|x)} [\log p_{\theta}(x|z)]$ is the reconstruction term
 \end{itemize}
 
-The Kullback-Leibler divergence term encourages the encoder (posterior) distribution to align with the prior distribution, acting as a regularization term. This alignment is crucial for an effective utilization of the latent space. On the other hand, the reconstruction term encourages the decoder to reconstruct the input data as accurately as possible, which encourages the decoder to accurately capture the data distribution.
-
-While the expression of the ELBO might appear different from the original formulation, it remains equivalent, merely using different terms to express the same notion~\cite{Kingma_2019}.
+The Kullback-Leibler divergence term encourages the encoder (posterior) distribution to align with the prior distribution, acting as a regularization term. This alignment is crucial for an effective utilization of the latent space. On the other hand, the reconstruction term encourages the decoder to reconstruct the input data as accurately as possible, which encourages the decoder to accurately capture the data distribution. Whilst the expression of the ELBO might appear different from the original formulation, it remains equivalent, merely using different terms to express the same notion~\cite{Kingma_2019}.
 
 Sampling from $q_{\phi}(z|x)$ involves drawing samples denoted as $z^{(l)} \sim q_{\phi}(z|x)$, enabling the Monte Carlo estimation—a method for numerical approximation using random sampling—of the following objective function:
 \[ L_{\theta, \phi}(x) = - D_{KL}(q_{\phi}(z|x) || p(z)) + \frac{1}{L} \sum_{l=1}^{L} \log p_{\theta}(x|z^{(l)}) ,\]
@@ -34,7 +32,7 @@ The individual data point ELBO and its gradients are in general intractable to c
 
 \subsection{The reparameterization trick}
 
-The reparameterization trick also is a crucial component of VAEs. It is used to make the ELBO differentiable with respect to the parameters of the encoder $\phi$ and decoder $\theta$ through a change of variables~\cite{Kingma_2019}.
+The reparameterization trick is one of the crucial components of VAEs. It is used to make the ELBO differentiable with respect to the parameters of the encoder $\phi$ and decoder $\theta$ through a change of variables~\cite{Kingma_2019}.
 
 \subsubsection{Change of variables}
 
@@ -48,7 +46,15 @@ As a result, the gradients of the expectation and gradient operators become comm
 where $\epsilon^{(l)} \sim p(\epsilon)$ and $L$ is the number of samples~\cite{Kingma_2019}.
 This is the reparameterization trick, which is further explained and illustrated in the figure~\ref{reparametrization}.
 
-\begin{figure}
+\subsubsection{Gradients of the ELBO}
+
+When applying the reparameterization trick to the ELBO it becomes differentiable with respect to both $\phi$ and $\theta$, and it is possible to form a Monte Carlo estimate of the gradients
+\[ \nabla_{\phi, \theta} L_{\theta, \phi}(x) = \nabla_{\phi, \theta} E_{q_{\phi}(z|x)} [\log p_{\theta}(x, z) - \log q_{\phi}(z|x)] \]
+\[ = E_{p(\epsilon)}[\nabla_{\phi, \theta} [\log p_{\theta}(x, g_{\phi}(\epsilon, x)) - \log q_{\phi}(g_{\phi}(\epsilon, x)|x)]] \]
+\[  \simeq \frac{1}{L} \sum_{l=1}^{L} \nabla_{\phi, \theta} [\log p_{\theta}(x, g_{\phi}(\epsilon^{(l)}, x)) - \log q_{\phi}(g_{\phi}(\epsilon^{(l)}, x)|x)] \]
+where $\epsilon^{(l)} \sim p(\epsilon)$ and $L$ is the number of samples. This is the key to training VAEs using stochastic gradient descent. The resulting Monte Carlo gradient estimate is used to update the parameters of the encoder and decoder networks~\cite{Kingma_2019}.
+
+\begin{figure}[H]
     \centering
     \input{figures/reparametrization.tex}
     \caption[Illustration diagram of the reparameterization trick]%
@@ -57,16 +63,6 @@ This is the reparameterization trick, which is further explained and illustrated
     \hspace*{15pt}\hbox{\scriptsize Credit: Adapted from Kingma and Welling\cite{Kingma_2019}  }\label{reparametrization}
 
 \end{figure}
-
-\subsubsection{Gradients of the ELBO}
-
-When applying the reparameterization trick to the ELBO it becomes differentiable with respect to both $\phi$ and $\theta$, and it is possible to form a Monte Carlo estimate of the gradients
-\[ \nabla_{\phi, \theta} L_{\theta, \phi}(x) = \nabla_{\phi, \theta} E_{q_{\phi}(z|x)} [\log p_{\theta}(x, z) - \log q_{\phi}(z|x)] \]
-\[ = E_{p(\epsilon)}[\nabla_{\phi, \theta} [\log p_{\theta}(x, g_{\phi}(\epsilon, x)) - \log q_{\phi}(g_{\phi}(\epsilon, x)|x)]] \]
-\[  \simeq \frac{1}{L} \sum_{l=1}^{L} \nabla_{\phi, \theta} [\log p_{\theta}(x, g_{\phi}(\epsilon^{(l)}, x)) - \log q_{\phi}(g_{\phi}(\epsilon^{(l)}, x)|x)] \]
-where $\epsilon^{(l)} \sim p(\epsilon)$ and $L$ is the number of samples.
-
-This is the key to training VAEs using stochastic gradient descent. The resulting Monte Carlo gradient estimate is used to update the parameters of the encoder and decoder networks~\cite{Kingma_2019}.
 
 
 \subsection{Gaussian VAEs}
