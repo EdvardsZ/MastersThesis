@@ -2,9 +2,12 @@
 
 \begin{abstract} 
 
-\noindent
-This thesis presents two methods for combining the semi-conditional variational autoencoders (SCVAEs) with standard variational autoencoders (VAEs) which could presumably improve the performance of the VAEs. The first method is based on the idea of extending the VAEs with a second conditioned decoder. The notion of the second method is to use the same encoder for both tasks by employing smart training strategies. Both methods are applied to Gaussian VAEs and VQ-VAEs.
-The methods are evaluated on various image datasets, and the results show that in some cases, the proposed methods outperform the standard VAEs.
+Variational autoencoders (VAEs) are widely used for generative modeling and representation learning tasks. This thesis presents two novel approaches aimed at enhancing the performance of VAEs through the integration of semi-conditional variational autoencoders (SCVAEs). The integration of SCVAEs and VAEs is motivated by the potential for improvement in the effectiveness of capturing the underlying data distribution and the improvement in generating high-quality samples.
+
+
+The first method extends the traditional VAEs by incorporating a second conditioned decoder, thereby enabling the model to multi-task and learn better latent representations. The second method utilizes a unified decoder for both tasks by employing sophisticated training strategies. These approaches are implemented and evaluated on Gaussian VAEs and VQ-VAEs.
+
+Extensive experimentation is conducted across diverse image datasets, including MNIST, CIFAR10, and CelebA. The results show that, in certain cases, the proposed methods yield superior performance compared to standard VAE architectures. By bridging the gap between SCVAEs and VAEs, this work gives new insights on how to improve the methods further and opens up new avenues for future research.
 
 \end{abstract}
 
