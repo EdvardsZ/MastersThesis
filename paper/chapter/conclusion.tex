@@ -4,19 +4,18 @@ In this master's thesis, I have proposed 2 methods for combining SCVAEs with a s
 
 Both of the methods were implemented and integrated with both Gaussian VAEs and VQ-VAEs. The implementation of the methods proved to be successful. The methods were tested on the MNIST, CIFAR-10, and CelebA datasets. Both approaches showed interesting results and outperformed the standard VAEs in some cases.
 
-%First method%
-The first method, which I refer to as \methodOne{1} is a method that works in a simple way - which is to combine SCVAE with VAE by adding a second decoder. For this method, whilst on both Gaussian VAEs and VQ-VAEs it was shown that it could improve the reconstruction loss. However, the results showed that overall generalization capabilities were improved just for the VQ-VAEs. 
 
-%Second method%
-The second method, which I refer to as \methodTwo{2} is a method that uses a single decoder for both conditioned and non-conditioned tasks, by taking advantage of smart training techniques. Whilst the results showed that this method improved the KL loss for Gaussian VAEs and VQ objective loss for VQ-VAEs, the reconstruction loss worsened in the case of Gaussian VAEs and slightly improved for VQ-VAEs.
+The first method, \methodOne{1}, demonstrated improvement in reconstruction loss for both Gaussian VAEs and VQ-VAEs. However, the overall generalization capabilities were enhanced mainly for VQ-VAEs. On the other hand, the second method, \methodTwo{2}, showed improvement in KL loss for Gaussian VAEs and VQ objective loss for VQ-VAEs, but it resulted in a deterioration of reconstruction loss for Gaussian VAEs and a slight improvement for VQ-VAEs. Thus, the research question regarding the potential improvement of generalization capabilities was partially confirmed, as overall improvement was observed only for VQ-VAEs.
 
 %Limitations%
-Whilst the \methodOne{1} showed promising results and is the easiest to implement it has a limitation in that it requires two decoders, which can be computationally expensive, which also could be seen when running the experiments. The \methodTwo{2} whilst showing promising results in terms of KL loss and VQ objective loss, showed to perform worse than \method{1} in terms of reconstruction loss.
+Despite the promising results of \methodOne{1}, its requirement for two decoders poses computational challenges, as observed during experimentation. Conversely, \methodTwo{2}, while showing potential in terms of KL loss and VQ objective loss, showed inferior performance compared to \methodOne{1} in reconstruction loss.
 
 %Future work%
-As \methodOne{1} showed promising results, it could be worth investigating how these methods could be applied to text-to-image generation for example by modifying the DALL-E architecture. One of the future works could also be to investigate the potential of training a model with a training schedule where the model is first trained with \methodOne{1} or \methodTwo{2} and then later is trained just as a standard VAE. This could potentially improve its results and improve the reconstruction loss.
+
+Looking ahead, future investigations could explore the application of these methods in text-to-image generation, potentially by modifying architectures such as DALL-E. Additionally,
+exploring the potential of training a model with a training schedule where the model is first trained with \methodOne{1} or \methodTwo{2} and then followed by standard VAE training could potentially improve results, particularly in improving non-conditioned reconstruction.
 
 % Overall%
-Overall the work presented in this thesis shows that my proposed methods have the potential to improve the performance of VAEs in terms of generalization capabilities and reconstruction accuracy. The results show that the integration of these methods with VQ-VAEs showed more promising results. The improvement of these methods and application to diffusion models could be an interesting area for future research.
+Overall the work presented in this thesis shows that the proposed methods hold promise for improving the performance of VAEs in terms of generalization capabilities and reconstruction accuracy, with more promising results observed when integrated with VQ-VAEs. This suggests potential avenues for further research, particularly in enhancing these methods and exploring their application to other generative models.
 
 
