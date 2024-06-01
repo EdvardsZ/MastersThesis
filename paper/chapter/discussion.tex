@@ -59,14 +59,7 @@ In both approaches applied to Gaussian VAEs with deeper encoder and decoder netw
 In both of the methods and implementations, it was decided to use a fully connected layer to use the conditioned information as input to the decoder. This was done to keep the model simple and avoid introducing too much complexity to the models. However, it could have been done differently, for example, by using convolutional layers to use the conditioned information as input to the decoder.
 
 %Try to compare the results of the two methods
-Both methods brought improvements to the quality of the reconstruction and the generalization capabilities when applied to VQ-VAEs. However, the \methodTwo{2} showed better results in terms of the VQ objective loss, while \methodOne{1} showed better results in terms of the reconstruction quality. This could be explained by the fact that \methodOne{1} has two decoders, which can make it better at the core task of the VQ-VAE, which is to reconstruct the image.
-
-
-% Tell about the extra complexity of the model and how it can be a problem for large-scale models.
-%One drawback of this method lies in the fact that it requires a second decoder, which increases the complexity of the model and the computational cost which can be a problem for large-scale models. This is something that was also observed in the experiments.
-% Tell about the trickiness of the training in gaussian vaes and how it is easier in vq-vaes.
-% Tell about the risk of posterior collapse in Gaussian VAEs and how it is not a problem in VQ-VAEs
-% SoftAdapt overall?.
+Both methods brought improvements to the quality of the reconstruction and the generalization capabilities when applied to VQ-VAEs. Thus, partially confirming the research question regarding the potential improvement in generalization capabilities. However, the \methodTwo{2} showed better results in terms of the VQ objective loss, while \methodOne{1} showed better results in terms of the reconstruction quality. This could be explained by the fact that \methodOne{1} has two decoders, which can make it better at the core task of the VQ-VAE, which is to reconstruct the image.
 
 \section{Limitations}
 
