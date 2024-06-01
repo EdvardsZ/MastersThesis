@@ -10,7 +10,7 @@ One of the disadvantages of this method is that it requires a second decoder, wh
 
 \subsection{Findings on Gaussian VAEs}
 
-The results on Gaussian VAEs showed that a standard Gaussian VAE can be combined with a semi-conditional VAE by using \methodOne{1}. This method improved the reconstruction quality of the non-conditioned decoder and added a second decoder that allows the model to reconstruct or generate images given some pixels. However, the results showed that this meant a slight increase in the KL divergence loss of the latent space. This is expected since the model has to learn two decoders instead of one, and it means it puts less emphasis on the KL divergence loss of the latent space.
+The results on Gaussian VAEs showed that a standard Gaussian VAE can be combined with a semi-conditional VAE by using \methodOne{1}. This method improved the reconstruction quality of the non-conditioned decoder and added a second decoder that allows the model to reconstruct or generate images given some pixels. However, the results showed that this meant a slight increase in the KL divergence loss of the latent space. This is expected since the model has to learn two decoders instead of one, and it means it puts less emphasis on the KL divergence loss of the latent space. Consequently, the model has a trade-off between the KL divergence loss of the latent space and the reconstruction loss of both decoders.
 
 It could be observed that the conditioned decoder was able to reconstruct the images with noticeably higher quality than the non-conditioned decoder. This is expected since the conditioned decoder has more direct information about image pixels, which makes it easier to reconstruct.  
 
