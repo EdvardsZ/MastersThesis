@@ -30,9 +30,15 @@ def create_plot_reconstruction_results(gaussian: list[Result], uniform: list[Res
         exponential = result.get_exponential_value()
         reconstruction_loss = result.get_unconditioned_losses()[0]
         average = reconstruction_loss.average
-            
-            
         std = reconstruction_loss.std
+            
+        
+            
+        if baseline is None:
+            average = average / (128 * 32 * 32 * 3)
+            std = average / (128 * 32 * 32 * 3)
+            
+            
         line_gaussian.append(average)
         line_gaussian_min.append(average - std)
         line_gaussian_max.append(average - std)
