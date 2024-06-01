@@ -99,11 +99,10 @@ encoder, respectively. The resulting loss has also extra weight parameters $W_1$
 
 During the training process, the encoder is trained to produce an accurate mean
 and standard deviation of the Gaussian distribution, and the decoders are
-trained to produce accurate reconstructions of the input data.
-
-As a result of the integration of the second conditioned decoder, the model has
+trained to produce accurate reconstructions of the input data.As a result of the integration of the second conditioned decoder, the model has
 the ability to reconstruct the input data based just on the latent variable $z$
 and as well as the conditioning information $m$.
+
 \begin{figure}[H]
     \centering
     \input{figures/scvae2d.tex}

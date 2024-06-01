@@ -11,14 +11,13 @@ The results presented in this section are based on the experiments conducted on 
 
 \subsection{Results on Gaussian VAEs}
 
-The experiments showed that Gaussian VAEs \methodOne{1} was successful in its core task to train 2 decoders with a shared encoder. Upon examining the results, it was observed that the initial idea that this method would reduce the reconstruction loss of both the conditioned and non-conditioned decoders was confirmed. However, the KL divergence loss of the latent space increased with the application of \methodOne{1}, which can be seen in figure \ref{fig:results_method1_gaussian_vae} and table \ref{tab:results_method1_gaussian_vae}.
+The experiments unveiled the effectiveness of \methodOne{1} on Gaussian VAEs in fulfilling its core task of training two decoders with a shared encoder. Upon analysis, it became evident that the implementation of \methodOne{1} successfully reduced the reconstruction loss for both the conditioned and non-conditioned decoders. However, it was observed that the KL divergence loss of the latent space increased with the application of \methodOne{1}, which can be seen in figure \ref{fig:results_method1_gaussian_vae} and table \ref{tab:results_method1_gaussian_vae}.
 
-The conditioned decoder produced outputs with much higher quality when compared to the non-conditioned decoder. This can be observed in figure~\ref{fig:rec_gaussian}. When comparing the results of the Exact Sampling and Uniform Sampling, in this case, the analysis revealed little difference between the two, which can be seen in table \ref{tab:results_method1_gaussian_vae}.
+Remarkably, as expected, the conditioned decoder consistently produced higher-quality reconstructions compared to its non-conditioned counterpart, as evidenced by the figure~\ref{fig:rec_gaussian}. Further comparison between the Exact Sampling and Uniform Sampling methods revealed minimal differences in the results, as shown in table \ref{tab:results_method1_gaussian_vae}.
 
-The experiments were also run with the SoftAdapt loss balancing technique and without it. In this case, the results showed
-that there was little to no difference between the two. However, the training validation loss looked more stable when using SoftAdapt, with fewer fluctuations in the losses.
+Moreover, the experiments explored the impact of employing the SoftAdapt loss balancing technique. Surprisingly, in this case, the results showed negligible differences between its application and the absence of it. However, the utilization of SoftAdapt appeared to stabilize the training process by reducing fluctuations in the losses.
 
-The experiments were also run with deeper neural networks, which showed that training instability in the form of posterior collapse was more likely to happen. This is a common problem in Gaussian VAEs~\cite{wang2023posterior}. That is why a more sophisticated configuration of a Gaussian VAE was not used in the experiments. 
+Additionally, experiments involving deeper neural networks unveiled a higher likelihood of training instability in the form of posterior collapse - a common challenge encountered in Gaussian VAEs~\cite{wang2023posterior}. Consequently, a more sophisticated configuration of a Gaussian VAE was deemed unsuitable for the experiments.
 
 % TODO: Add this to the discussion
 % This can be explained by the fact that there is a trade-off between the quality of the reconstruction and the KL divergence of the latent space. %
