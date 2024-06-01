@@ -18,11 +18,11 @@ When comparing Exact and Uniform sampling, I did not see any significant differe
 
 \subsection{Findings on VQ-VAEs}
 
-When applying \methodOne{1} to VQ-VAEs, the results showed that both the quality of the reconstruction and the VQ objective loss can be improved. As a result, the model gets multitask properties to reconstruct and generate images given some pixels or to reconstruct images with higher quality. The improvement can be explained that even though 2 decoders are used, they still share the same encoder, which can make it better at its core task. 
+One of the research questions investigated was whether the application of \methodOne{1} would lead to improvements over traditional methods. When the \methodOne{1} was applied to VQ-VAEs, notable improvements were observed in both the quality of the reconstruction and the VQ objective loss, confirming the research question. Consequently, the model gained multitask properties, enabling it to reconstruct and generate images from partial inputs while also enhancing overall reconstruction quality. This enhancement can be attributed to the shared encoder architecture, allowing for more effective learning of the latent space. In contrast to Gaussian VAEs, VQ-VAEs do not impose specific constraints on the latent space distribution beyond its discretization, this allows for more room for improvement and flexibility in the model.
 
 It was observed that the conditioned decoder was able to reconstruct the image with a higher quality compared to the non-conditioned decoder, however, the difference observed was not as significant as with Gaussian VAEs. The reasoning behind this could be that the VQ-VAEs already have a high-quality reconstruction, which makes it harder to improve the quality of the reconstruction.
 
-The \methodOne{1} was tested with both Exact Sampling and Uniform Sampling, and it was observed even though the results were similar, the Uniform Sampling showed slightly better results. The rationale behind this could be that Uniform Sampling gives much more diverse samples, which can be more informative for the network.
+Furthermore, \methodOne{1} was evaluated using both Exact Sampling and Uniform Sampling methods. Interestingly, while the results were similar, Gaussian Sampling demonstrated slightly superior performance. This may be attributed to the fact that Gaussian Sampling tends to sample the center pixels of the image more frequently, which is more informative for the network.
 
 
 \section{Analysis of \methodTwo{2}}
